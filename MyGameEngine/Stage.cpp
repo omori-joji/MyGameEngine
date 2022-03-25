@@ -22,6 +22,8 @@ void Stage::Initialize()
     hModel_[2] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[3] = Model::Load("Assets/PushButton.fbx");
     hModel_[4] = Model::Load("Assets/PushButton2.fbx");
+    hModel_[5] = Model::Load("Assets/UpButton.fbx");
+    hModel_[6] = Model::Load("Assets/UpButton2.fbx");
 
 
     //Csvファイルの読み込み
@@ -97,16 +99,28 @@ bool Stage::isCrash(int x, int y)
     }
 }
 
-void Stage::Button(int x, int y)
+//ボタンがPlayerの足元にあるかどうかを判断する関数
+//ボタンが入っている配列はmap_[x][y] == 4が入っている
+//この関数はPlayerクラスで常に呼ばれている
+void Stage::DownButton(int x, int y)
 {
-    //押す前のボタンを返す
+    //押した後のモデルに差し替える
     if(map_[x][y] == 4)
+    {
+        map_[x][y] = 5;
+    }
+
+
+
+    //押した後のモデルに差し替える
+    if (map_[x][y] == 5)
+    {
+        map_[x][y] = 6;
+    }
+    //押す前のモデルに差し替える
+    else if (map_[x][y] == 6)
     {
         map_[x][y] = 5;
     }
 }
 
-void Stage::Down(int x, int y)
-{
-    
-}

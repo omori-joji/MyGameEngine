@@ -4,7 +4,7 @@
 //ŸŸŸ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
 class Stage : public GameObject
 {
-    int hModel_[5];
+    int hModel_[7];
 
 public:
 
@@ -32,8 +32,6 @@ public:
     //‚Ô‚Â‚©‚é‚©‚Ç‚¤‚©
     bool isCrash(int x , int y);
 
-    void Button(int x, int y);
-
-    void Down(int x , int y);
+    void DownButton(int x, int y);
 };
 

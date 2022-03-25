@@ -159,8 +159,13 @@ void Player::Update()
 		isJump = false;
 		transform_.position_.y = prevPos_.y;
 	}
-	//下にボタンがあるかどうか
-	pStage_->Button((int)transform_.position_.x, (int)(transform_.position_.y)-1);
+
+
+
+	//下に一度押したら上がらないボタンがあるかどうか
+	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)-1);
+
+
 
 
 	//右か左に何かが当たっていれば、x座標だけ戻す
