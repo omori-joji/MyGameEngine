@@ -162,8 +162,8 @@ void Player::Update()
 
 
 
-	//下にボタンがあるかどうか
-	pStage_->Button((int)transform_.position_.x, (int)(transform_.position_.y)-1);
+	//下に一度押したら上がらないボタンがあるかどうか
+	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)-1);
 
 
 
