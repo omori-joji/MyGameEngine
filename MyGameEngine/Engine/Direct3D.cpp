@@ -110,7 +110,7 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 
     //データを画面に描画するための一通りの設定（パイプライン）
     pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // データの入力種類を指定
-    pContext->OMSetRenderTargets(1, &pRenderTargetView, nullptr/*pDepthStencilView*/);            // 描画先を設定
+    pContext->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);            // 描画先を設定
     pContext->RSSetViewports(1, &vp);
 
     //シェーダー準備
@@ -135,7 +135,7 @@ void Direct3D::InitShader()
 
         { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
         { "NORMAL",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0,sizeof(XMFLOAT3),	D3D11_INPUT_PER_VERTEX_DATA, 0 },//法線
-        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,   0, sizeof(XMFLOAT3), D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
+        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,   0, sizeof(XMFLOAT3)*2, D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
         
     };
     pDevice->CreateInputLayout(layout, sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC), pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
