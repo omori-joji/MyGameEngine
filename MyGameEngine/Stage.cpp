@@ -97,6 +97,9 @@ bool Stage::isCrash(int x, int y)
     }
 }
 
+//ボタンがPlayerの足元にあるかどうかを判断する関数
+//ボタンが入っている配列はmap_[x][y] == 4が入っている
+//この関数はPlayerクラスで常に呼ばれている
 void Stage::Button(int x, int y)
 {
     //押す前のボタンを返す
