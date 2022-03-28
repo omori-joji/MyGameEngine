@@ -18,7 +18,8 @@ Player::Player(GameObject* parent)
 	MAX_JUMP(3.0f),//ジャンプの上限
 	isJump(false),//ジャンプ中か
 
-	gravity_(0.01),//重力
+	move_(0.01),//Y軸の移動
+	gravity_(0.01),
 
 	hModel_(-1), 
 	pStage_(nullptr)
@@ -111,8 +112,8 @@ void Player::Update()
 			isJump = true;//ジャンプしている
 
 			//gravityの値をマイナスにすることによって今度は上方向に重力がかかるようになる
-			gravity_ = -0.2f;
-			transform_.position_.y += gravity_;
+			transform_.position_.y += move_;
+			move_ = -0.2f;
 		}
 	}
 
@@ -125,7 +126,8 @@ void Player::Update()
 
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		isJump = false;
+		isJump = false;//下にブロックがあったら今はジャンプしていない
+		move_ = 0;
 		transform_.position_.y = (float)checkY1 + 1.0f;
 	}
 	//重力
@@ -133,53 +135,17 @@ void Player::Update()
 	else
 	{
 
-		transform_.position_.y -= gravity_;
+		transform_.position_.y -= move_;
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
 		//ブロックの直系よりは大きくならないようにする
 		//gravityの値は0.01
-		if (gravity_ < BLOCK_SIZE)
+		if (move_ < BLOCK_SIZE)
 		{
-			gravity_ += 0.01f;
+			move_ += gravity_;
 		}
 	}
 
-
-
-	//上か下に何かが当たっていれば、ｙ座標だけ戻す
-	//上
-	if (pStage_->isCrash((int)transform_.position_.x, (int)(transform_.position_.y + 0.6f)) == true)
-	{
-		transform_.position_.y = prevPos_.y;
-	}
-
-	//下にブロックがあるかどうか
-	if (pStage_->isCrash((int)transform_.position_.x, (int)(transform_.position_.y)) == true)
-	{
-		gravity_ = 0;
-		isJump = false;
-		transform_.position_.y = prevPos_.y;
-	}
-
-
-
-	//下に一度押したら上がらないボタンがあるかどうか
-	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)-1);
-
-
-
-
-	//右か左に何かが当たっていれば、x座標だけ戻す
-	if (pStage_->isCrash((int)transform_.position_.x +0.3f, (int)(transform_.position_.y + 0.3f)) == true)
-	{
-		transform_.position_.x = prevPos_.x;
-	}
-
-	if (pStage_->isCrash((int)transform_.position_.x - 0.3f, (int)(transform_.position_.y + 0.3f)) == true)
-	{
-		transform_.position_.x = prevPos_.x;
-	}
-
-	prevPos_ = transform_.position_;
+	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 }
 
 void Player::Draw()
@@ -190,20 +156,5 @@ void Player::Draw()
 
 void Player::Release()
 {
+
 }
-
-
-//そのマスに障害物があるかどうか
-//戻り値、何かあるtrue,何もないfalse
-//bool Player::isCrash(int x, int y)
-//{
-//	//配列に1が入っていれば通れない
-//	if (map_[x][y] == 0)
-//	{
-//		return false;
-//	}
-//	else
-//	{
-//		return true;
-//	}
-//}

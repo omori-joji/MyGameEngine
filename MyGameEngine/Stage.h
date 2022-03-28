@@ -5,6 +5,7 @@
 class Stage : public GameObject
 {
     int hModel_[7];
+    bool isOpenWall_;
 
 public:
 
@@ -33,5 +34,7 @@ public:
     bool isCrash(int x , int y);
 
     void DownButton(int x, int y);
+
+    void OpenWall();
 };
 

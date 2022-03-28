@@ -15,7 +15,8 @@ class Player : public GameObject
     const float BLOCK_SIZE;//ブロックのサイズ
     const float MAX_JUMP;//ジャンプの上限
     bool isJump;
-    float gravity_; //重力
+    float move_; //重力
+    float gravity_;
 
     //Fbx* pFbx;
     int hModel_;

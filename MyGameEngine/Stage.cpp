@@ -5,7 +5,10 @@
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage")//, hModel_(-1)
+    :GameObject(parent, "Stage"),
+    isOpenWall_(true)
+    
+    //, hModel_(-1)
 {
 }
 
@@ -108,19 +111,25 @@ void Stage::DownButton(int x, int y)
     if(map_[x][y] == 4)
     {
         map_[x][y] = 5;
+
+        isOpenWall_ = false;//壁を開くよ
+
+        OpenWall();//壁を開く処理
     }
+}
 
-
-
-    //押した後のモデルに差し替える
-    if (map_[x][y] == 5)
+void Stage::OpenWall()
+{
+    for (int x = 0; x < 20; x++)
     {
-        map_[x][y] = 6;
+        for (int y = 0; y < 10; y++)
+        {
+            if (map_[x][y] == 6 && isOpenWall_ == false)
+            {
+                map_[x][y] = 0;//壁が配置されていたら0を入れてあげる
+            }
+        }
     }
-    //押す前のモデルに差し替える
-    else if (map_[x][y] == 6)
-    {
-        map_[x][y] = 5;
-    }
+    isOpenWall_ = true;//壁が全部開いた
 }
 
