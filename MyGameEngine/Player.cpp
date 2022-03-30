@@ -21,6 +21,9 @@ Player::Player(GameObject* parent)
 	move_(0.01),//Y軸の移動
 	gravity_(0.01),
 
+	frameCounter_(0),
+	isRecording_(true),
+
 	hModel_(-1), 
 	pStage_(nullptr)
 {
@@ -35,6 +38,8 @@ Player::~Player()
 void Player::Initialize()
 {
 	hModel_ = Model::Load("Assets/Player.fbx");
+
+	stertPos_ = transform_.position_; //初期スポーン地点を記録
 }
 
 void Player::Update()
@@ -46,19 +51,49 @@ void Player::Update()
 		pStage_ = (Stage*)Find("Stage");
 	}
 
-
-	//右移動
-	if (Input::IsKey(DIK_RIGHT))
+	//記録中
+	if (isRecording_ == true)
 	{
-		transform_.position_.x += SPEED;
+		//右移動
+		if (Input::IsKey(DIK_RIGHT))
+		{
+			transform_.position_.x += SPEED;
+		}
+
+		//左移動
+		if (Input::IsKey(DIK_LEFT))
+		{
+			transform_.position_.x -= SPEED;
+		}
+
+		//現在地を記録（可変長配列に今の位置を追加）
+		recordData_.push_back(transform_.position_);
 	}
 
-	//左移動
-	if (Input::IsKey(DIK_LEFT))
+	//再生中
+	else
 	{
-		transform_.position_.x -= SPEED;
+		//frameCounter_フレーム目に保存された位置へ
+		transform_.position_ = recordData_[frameCounter_];
+
+		//保存された最後のフレームまで行ってなかったら
+		if (frameCounter_ < recordData_.size() - 1)
+		{
+			//次のフレームへ
+			frameCounter_++;
+		}
 	}
 
+	//再生スタート
+	if (Input::IsKeyDown(DIK_LSHIFT)|| Input::IsKeyDown(DIK_RSHIFT))
+	{
+		frameCounter_ = 0;      //最初のフレームから
+		isRecording_ = false;   //フラグを変更して再生モードへ
+
+		transform_.position_ = stertPos_; //初期位置に戻る
+
+		isRecording_ = true;
+	}
 
 
 

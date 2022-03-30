@@ -14,9 +14,14 @@ class Player : public GameObject
     const float MARGIN;//当たり判定の遊び
     const float BLOCK_SIZE;//ブロックのサイズ
     const float MAX_JUMP;//ジャンプの上限
-    bool isJump;
-    float move_; //重力
-    float gravity_;
+    bool isJump; //ジャンプしているか
+    bool isRecording_; //Playerの動きを記録しているか
+    float move_; //Y軸の移動
+    float gravity_; //重力
+    DWORD frameCounter_; //フレーム数
+    XMFLOAT3 stertPos_; //影を再生したときに初期位置に戻るための変数
+    std::vector<XMFLOAT3>   recordData_;//プレイヤーの位置を記録する可変長配列
+
 
     //Fbx* pFbx;
     int hModel_;
