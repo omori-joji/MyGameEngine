@@ -126,7 +126,7 @@ void Direct3D::InitShader()
     // 頂点シェーダの作成（コンパイル）
     ID3DBlob* pCompileVS = nullptr;
     D3DCompileFromFile(L"Simple3D.hlsl", nullptr, nullptr, "VS", "vs_5_0", NULL, 0, &pCompileVS, NULL);
-    assert(pCompileVS != nullptr);
+    //assert(pCompileVS != nullptr);
     pDevice->CreateVertexShader(pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), NULL, &pVertexShader);
     assert(pVertexShader != nullptr);
 
