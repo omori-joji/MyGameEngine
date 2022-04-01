@@ -43,6 +43,9 @@ void Stage::Initialize()
 
             if (map_[x][y] == 99)
             {
+                //プレイヤーの生成
+                //プレイヤーの位置決定
+                //プレイヤーの初期位置を記憶する
                 Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
                 pPlayer->transform_.position_.x = x;
                 pPlayer->transform_.position_.y = y;
