@@ -185,8 +185,8 @@ void Player::Update()
 
 void Player::Draw()
 {
-	Model::SetTransform(hModel_, transform_);
-	Model::Draw(hModel_);
+	Model::SetTransform(hModel_[0], transform_);
+	Model::Draw(hModel_[0]);
 }
 
 void Player::Release()
