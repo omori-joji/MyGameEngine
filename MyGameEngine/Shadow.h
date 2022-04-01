@@ -1,7 +1,10 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/Fbx.h"
+#include "Player.h"
 
+
+class Player;
 
 //■■シーンを管理するクラス
 class Shadow : public GameObject

@@ -2,6 +2,7 @@
 #include "Engine/GameObject.h"
 #include "Engine/Fbx.h"
 #include "Stage.h"
+#include "Shadow.h"
 
 
 //Playerを管理するクラス
@@ -19,7 +20,6 @@ class Player : public GameObject
     float move_; //Y軸の移動
     float gravity_; //重力
     DWORD frameCounter_; //フレーム数
-    XMFLOAT3 stertPos_; //影を再生したときに初期位置に戻るための変数
     std::vector<XMFLOAT3>   recordData_;//プレイヤーの位置を記録する可変長配列
 
 
@@ -27,6 +27,10 @@ class Player : public GameObject
     int hModel_[2];
     Stage* pStage_;
     XMFLOAT3 prevPos_; //1フレーム前の位置
+
+public:
+    XMFLOAT3 stertPos_; //影を再生したときに初期位置に戻るための変数
+
 
 public:
     //コンストラクタ

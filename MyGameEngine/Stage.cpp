@@ -92,7 +92,7 @@ void Stage::Release()
 bool Stage::isCrash(int x, int y)
 {
     //”z—ñ‚É1‚ª“ü‚Á‚Ä‚¢‚ê‚Î’Ê‚ê‚È‚¢
-    if (map_[x][y] == 0)
+    if (map_[x][y] == 0 || map_[x][y] == 99)
     {
         return false;
     }

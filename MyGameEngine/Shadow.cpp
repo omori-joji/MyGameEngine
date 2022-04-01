@@ -1,5 +1,5 @@
 #include "Shadow.h"
-#include "Player.h"
+
 #include "Stage.h"
 #include "Engine/Model.h"
 
@@ -12,17 +12,19 @@ Shadow::Shadow(GameObject* parent)
 
 void Shadow::Initialize()
 {
-	hModel_ = Model::Load("Assets/Shadows.fbx");
+	hModel_ = Model::Load("Assets/Player.fbx");
+
+	if (pPlayer_ == nullptr)
+	{
+		pPlayer_ = (Player*)Find("Player");
+	}
 
 	transform_.position_ = pPlayer_->stertPos_;
 }
 
 void Shadow::Update()
 {
-	if (pPlayer_ == nullptr)
-	{
-		pPlayer_ = (Player*)Find("Player");
-	}
+
 
 
 

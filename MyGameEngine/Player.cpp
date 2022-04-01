@@ -87,6 +87,8 @@ void Player::Update()
 	//再生スタート
 	if (Input::IsKeyDown(DIK_LSHIFT)|| Input::IsKeyDown(DIK_RSHIFT))
 	{
+		Instantiate<Shadow>(this);
+
 		frameCounter_ = 0;      //最初のフレームから
 		isRecording_ = false;   //フラグを変更して再生モードへ
 
