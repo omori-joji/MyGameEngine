@@ -23,8 +23,7 @@ Player::Player(GameObject* parent)
 
 	frameCounter_(0),
 	isRecording_(true),
-
-	hModel_(-1), 
+ 
 	pStage_(nullptr)
 {
 
@@ -37,7 +36,8 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_ = Model::Load("Assets/Player.fbx");
+	hModel_[0] = Model::Load("Assets/Player.fbx");
+	hModel_[1] = Model::Load("Assets/Shadows.fbx");
 
 	stertPos_ = transform_.position_; //初期スポーン地点を記録
 }

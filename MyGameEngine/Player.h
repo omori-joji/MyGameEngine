@@ -24,7 +24,7 @@ class Player : public GameObject
 
 
     //Fbx* pFbx;
-    int hModel_;
+    int hModel_[2];
     Stage* pStage_;
     XMFLOAT3 prevPos_; //1フレーム前の位置
 
