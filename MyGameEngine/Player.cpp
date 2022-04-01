@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Shadow.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 
@@ -39,7 +40,8 @@ void Player::Initialize()
 	hModel_[0] = Model::Load("Assets/Player.fbx");
 	hModel_[1] = Model::Load("Assets/Shadows.fbx");
 
-	stertPos_ = transform_.position_; //初期スポーン地点を記録
+	//stertPos_ = transform_.position_;
+
 }
 
 void Player::Update()
@@ -50,6 +52,8 @@ void Player::Update()
 	{
 		pStage_ = (Stage*)Find("Stage");
 	}
+	
+
 
 	//記録中
 	if (isRecording_ == true)
@@ -87,12 +91,13 @@ void Player::Update()
 	//再生スタート
 	if (Input::IsKeyDown(DIK_LSHIFT)|| Input::IsKeyDown(DIK_RSHIFT))
 	{
-		Instantiate<Shadow>(this);
+		Shadow* pShadow = (Shadow*)Instantiate<Shadow>(this);
+		pShadow->transform_.position_ = pStage_->stertPos;
 
 		frameCounter_ = 0;      //最初のフレームから
 		isRecording_ = false;   //フラグを変更して再生モードへ
 
-		transform_.position_ = stertPos_; //初期位置に戻る
+		transform_.position_ = pStage_->stertPos; //初期位置に戻る
 
 		isRecording_ = true;
 	}

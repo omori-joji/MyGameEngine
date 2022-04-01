@@ -1,12 +1,12 @@
 #include "Shadow.h"
-
 #include "Stage.h"
 #include "Engine/Model.h"
+#include "Player.h"
 
 Shadow::Shadow(GameObject* parent)
 	:GameObject(parent, "Shadow"),
 	pPlayer_(nullptr),
-     hModel_(-1)
+    hModel_(-1)
 {
 }
 
@@ -24,11 +24,6 @@ void Shadow::Initialize()
 
 void Shadow::Update()
 {
-
-
-
-
-
 }
 
 void Shadow::Draw()
@@ -38,5 +33,9 @@ void Shadow::Draw()
 }
 
 void Shadow::Release()
+{
+}
+
+void Shadow::Collision()
 {
 }

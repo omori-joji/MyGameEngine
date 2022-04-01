@@ -46,6 +46,7 @@ void Stage::Initialize()
                 Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
                 pPlayer->transform_.position_.x = x;
                 pPlayer->transform_.position_.y = y;
+                stertPos = pPlayer->transform_.position_;
             }
         }
     }

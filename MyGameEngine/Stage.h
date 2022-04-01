@@ -15,6 +15,7 @@ class Stage : public GameObject
 public:
 
     int map_[20][10];
+    XMFLOAT3 stertPos;
 
 public:
     //コンストラクタ

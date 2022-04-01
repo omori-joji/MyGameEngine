@@ -26,7 +26,7 @@ class Player : public GameObject
     //Fbx* pFbx;
     int hModel_[2];
     Stage* pStage_;
-    XMFLOAT3 prevPos_; //1フレーム前の位置
+    //XMFLOAT3 prevPos_; //1フレーム前の位置
 
 public:
     XMFLOAT3 stertPos_; //影を再生したときに初期位置に戻るための変数

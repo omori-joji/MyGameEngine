@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/Fbx.h"
-#include "Player.h"
+
 
 
 class Player;
@@ -29,5 +29,7 @@ public:
 
 	//ŠJ•ú
 	void Release() override;
+
+	void Collision();
 };
 
