@@ -6,7 +6,8 @@
 //コンストラクタ
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"),
-    isOpenWall_(true)
+    isOpenWall_(true),
+    pPlayer_(nullptr)
     
     //, hModel_(-1)
 {
@@ -53,7 +54,10 @@ void Stage::Initialize()
 //更新
 void Stage::Update()
 {
-
+    if (pPlayer_ == nullptr)
+    {
+        pPlayer_ = (Player*)Find("Player");
+    }
 }
 
 //描画
@@ -115,6 +119,12 @@ void Stage::DownButton(int x, int y)
         isOpenWall_ = false;//壁を開くよ
 
         OpenWall();//壁を開く処理
+    }
+
+
+    if (map_[x][y] == 5)
+    {
+        pPlayer_->transform_.position_.y -= 0.5f;//沈んだボタンの位置分、Playerも下に沈む
     }
 }
 

@@ -1,11 +1,16 @@
 #pragma once
 #include "Engine/GameObject.h"
 
+class Player;
+
+
 //ŸŸŸ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
 class Stage : public GameObject
 {
     int hModel_[7];
     bool isOpenWall_;
+
+    Player* pPlayer_;
 
 public:
 
