@@ -23,10 +23,8 @@ class Player : public GameObject
     std::vector<XMFLOAT3>   recordData_;//プレイヤーの位置を記録する可変長配列
 
 
-    //Fbx* pFbx;
     int hModel_[2];
     Stage* pStage_;
-    //XMFLOAT3 prevPos_; //1フレーム前の位置
 
 public:
     XMFLOAT3 stertPos_; //影を再生したときに初期位置に戻るための変数

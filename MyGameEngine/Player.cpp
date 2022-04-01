@@ -20,12 +20,12 @@ Player::Player(GameObject* parent)
 	isJump(false),//ジャンプ中か
 
 	move_(0.01),//Y軸の移動
-	gravity_(0.01),
+	gravity_(0.01),//重力
 
-	frameCounter_(0),
-	isRecording_(true),
+	frameCounter_(0),//フレーム数
+	isRecording_(true),//記録中
  
-	pStage_(nullptr)
+	pStage_(nullptr)//ステージの情報を入れるポインタ
 {
 
 }
@@ -39,9 +39,6 @@ void Player::Initialize()
 {
 	hModel_[0] = Model::Load("Assets/Player.fbx");
 	hModel_[1] = Model::Load("Assets/Shadows.fbx");
-
-	//stertPos_ = transform_.position_;
-
 }
 
 void Player::Update()
@@ -91,7 +88,9 @@ void Player::Update()
 	//再生スタート
 	if (Input::IsKeyDown(DIK_LSHIFT)|| Input::IsKeyDown(DIK_RSHIFT))
 	{
-		Shadow* pShadow = (Shadow*)Instantiate<Shadow>(this);
+		//影の生成
+		//影の位置をプレイヤーの初期位置に設定する
+		Shadow* pShadow = (Shadow*)Instantiate<Shadow>(this); 
 		pShadow->transform_.position_ = pStage_->stertPos;
 
 		frameCounter_ = 0;      //最初のフレームから
