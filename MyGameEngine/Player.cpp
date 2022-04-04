@@ -72,18 +72,18 @@ void Player::Update()
 	}
 
 	//再生中
-	else
-	{
-		//frameCounter_フレーム目に保存された位置へ
-		transform_.position_ = recordData_[frameCounter_];
+	//else
+	//{
+	//	//frameCounter_フレーム目に保存された位置へ
+	//	transform_.position_ = recordData_[frameCounter_];
 
-		//保存された最後のフレームまで行ってなかったら
-		if (frameCounter_ < recordData_.size() - 1)
-		{
-			//次のフレームへ
-			frameCounter_++;
-		}
-	}
+	//	//保存された最後のフレームまで行ってなかったら
+	//	if (frameCounter_ < recordData_.size() - 1)
+	//	{
+	//		//次のフレームへ
+	//		frameCounter_++;
+	//	}
+	//}
 
 	//再生スタート
 	if (Input::IsKeyDown(DIK_LSHIFT)|| Input::IsKeyDown(DIK_RSHIFT))

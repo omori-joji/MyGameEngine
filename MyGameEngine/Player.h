@@ -19,8 +19,7 @@ class Player : public GameObject
     bool isRecording_; //Playerの動きを記録しているか
     float move_; //Y軸の移動
     float gravity_; //重力
-    DWORD frameCounter_; //フレーム数
-    std::vector<XMFLOAT3>   recordData_;//プレイヤーの位置を記録する可変長配列
+
 
 
     int hModel_[2];
@@ -28,6 +27,8 @@ class Player : public GameObject
 
 public:
     XMFLOAT3 stertPos_; //影を再生したときに初期位置に戻るための変数
+    DWORD frameCounter_; //フレーム数
+    std::vector<XMFLOAT3>   recordData_;//プレイヤーの位置を記録する可変長配列
 
 
 public:

@@ -24,6 +24,17 @@ void Shadow::Initialize()
 
 void Shadow::Update()
 {
+	//再生中
+	//frameCounter_フレーム目に保存された位置へ
+	transform_.position_ = pPlayer_->recordData_[pPlayer_->frameCounter_];
+
+		//保存された最後のフレームまで行ってなかったら
+		if (pPlayer_->frameCounter_ < pPlayer_->recordData_.size() - 1)
+		{
+			//次のフレームへ
+			pPlayer_->frameCounter_++;
+		}
+
 }
 
 void Shadow::Draw()
