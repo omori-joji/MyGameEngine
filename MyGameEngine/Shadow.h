@@ -14,6 +14,9 @@ class Shadow : public GameObject
 	int hModel_;
 
 public:
+
+
+public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
 	Shadow(GameObject* parent);

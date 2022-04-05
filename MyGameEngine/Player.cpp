@@ -71,20 +71,6 @@ void Player::Update()
 		recordData_.push_back(transform_.position_);
 	}
 
-	//再生中
-	//else
-	//{
-	//	//frameCounter_フレーム目に保存された位置へ
-	//	transform_.position_ = recordData_[frameCounter_];
-
-	//	//保存された最後のフレームまで行ってなかったら
-	//	if (frameCounter_ < recordData_.size() - 1)
-	//	{
-	//		//次のフレームへ
-	//		frameCounter_++;
-	//	}
-	//}
-
 	//再生スタート
 	if (Input::IsKeyDown(DIK_LSHIFT)|| Input::IsKeyDown(DIK_RSHIFT))
 	{
@@ -98,7 +84,7 @@ void Player::Update()
 
 		transform_.position_ = pStage_->stertPos; //初期位置に戻る
 
-		isRecording_ = true;
+		//isRecording_ = true;
 	}
 
 

@@ -126,10 +126,10 @@ void Stage::DownButton(int x, int y)
     }
 
 
-    if (map_[x][y] == 5)
-    {
-        pPlayer_->transform_.position_.y -= 0.5f;//沈んだボタンの位置分、Playerも下に沈む
-    }
+    //if (map_[x][y] == 5)
+    //{
+    //    pPlayer_->transform_.position_.y -= 0.5f;//沈んだボタンの位置分、Playerも下に沈む
+    //}
 }
 
 void Stage::OpenWall()

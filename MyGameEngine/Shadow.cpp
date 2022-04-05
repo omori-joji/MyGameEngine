@@ -34,6 +34,10 @@ void Shadow::Update()
 			//ŽŸ‚ÌƒtƒŒ[ƒ€‚Ö
 			pPlayer_->frameCounter_++;
 		}
+		else
+		{
+			pPlayer_->frameCounter_ = 0;
+		}
 
 }
 
