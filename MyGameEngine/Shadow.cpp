@@ -18,17 +18,22 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	hModel_ = Model::Load("Assets/Player.fbx");
-
-
-	pPlayer_ = (Player*)Find("Player");
-	pStage_ = (Stage*)Find("Stage");
-
-	//transform_.position_ = pStage_->stertPos;
 }
 
 void Shadow::Update()
 {
-	int a = 1;
+	int a = 0;
+	if (pPlayer_ == nullptr)
+	{
+		pPlayer_ = (Player*)Find("Player");
+	}
+
+	if (pStage_ == nullptr)
+	{
+		pStage_ = (Stage*)Find("Stage");
+	}
+
+
 
 	//‹L˜^’†
 	if (isRecording_ == false)
@@ -39,6 +44,7 @@ void Shadow::Update()
 	//Ä¶’†
 	else if(frameCounter_<recordData_.size()-1 && isRecording_ == true)
 	{
+		int a = 0;
 		transform_.position_ = recordData_[frameCounter_];
 		frameCounter_++;
 	}

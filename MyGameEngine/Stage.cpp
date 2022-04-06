@@ -3,6 +3,7 @@
 #include "Player.h"
 #include "Shadow.h"
 #include "Engine/CsvReader.h"
+#include "Engine/Input.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
@@ -55,9 +56,8 @@ void Stage::Initialize()
             }
         }
     }
-    //影の生成
     pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
-    //pShadow[shadowCount_]->transform_.position_ = stertPos;
+    
 }
 
 //更新
@@ -66,6 +66,16 @@ void Stage::Update()
     if (pPlayer_ == nullptr)
     {
         pPlayer_ = (Player*)Find("Player");
+    }
+
+
+    //再生スタート
+    if (Input::IsKeyDown(DIK_LSHIFT) || Input::IsKeyDown(DIK_RSHIFT))
+    {
+        shadowCount_++;
+        //影の生成
+        pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
+        pShadow[shadowCount_]->transform_.position_ = stertPos;
     }
 }
 
