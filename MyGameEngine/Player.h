@@ -4,6 +4,7 @@
 #include "Stage.h"
 #include "Shadow.h"
 
+class Shadow;
 
 //Playerを管理するクラス
 class Player : public GameObject
@@ -16,19 +17,19 @@ class Player : public GameObject
     const float BLOCK_SIZE;//ブロックのサイズ
     const float MAX_JUMP;//ジャンプの上限
     bool isJump; //ジャンプしているか
-    bool isRecording_; //Playerの動きを記録しているか
     float move_; //Y軸の移動
     float gravity_; //重力
+   
 
 
 
     int hModel_[2];
     Stage* pStage_;
 
+
 public:
-    XMFLOAT3 stertPos_; //影を再生したときに初期位置に戻るための変数
-    DWORD frameCounter_; //フレーム数
-    std::vector<XMFLOAT3>   recordData_;//プレイヤーの位置を記録する可変長配列
+
+
 
 
 public:
