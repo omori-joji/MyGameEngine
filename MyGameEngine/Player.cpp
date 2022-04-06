@@ -21,9 +21,6 @@ Player::Player(GameObject* parent)
 
 	move_(0.01),//Y軸の移動
 	gravity_(0.01),//重力
-
-	frameCounter_(0),//フレーム数
-	isRecording_(true),//記録中
  
 	pStage_(nullptr)//ステージの情報を入れるポインタ
 {
@@ -52,39 +49,24 @@ void Player::Update()
 	
 
 
-	//記録中
-	if (isRecording_ == true)
+
+	//右移動
+	if (Input::IsKey(DIK_RIGHT))
 	{
-		//右移動
-		if (Input::IsKey(DIK_RIGHT))
-		{
-			transform_.position_.x += SPEED;
-		}
+	    transform_.position_.x += SPEED;
+	}
 
 		//左移動
-		if (Input::IsKey(DIK_LEFT))
-		{
-			transform_.position_.x -= SPEED;
-		}
-
-		//現在地を記録（可変長配列に今の位置を追加）
-		recordData_.push_back(transform_.position_);
+	if (Input::IsKey(DIK_LEFT))
+	{
+	    transform_.position_.x -= SPEED;
 	}
+
 
 	//再生スタート
 	if (Input::IsKeyDown(DIK_LSHIFT)|| Input::IsKeyDown(DIK_RSHIFT))
 	{
-		//影の生成
-		//影の位置をプレイヤーの初期位置に設定する
-		Shadow* pShadow = (Shadow*)Instantiate<Shadow>(this); 
-		pShadow->transform_.position_ = pStage_->stertPos;
-
-		frameCounter_ = 0;      //最初のフレームから
-		isRecording_ = false;   //フラグを変更して再生モードへ
-
 		transform_.position_ = pStage_->stertPos; //初期位置に戻る
-
-		//isRecording_ = true;
 	}
 
 

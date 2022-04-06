@@ -2,6 +2,7 @@
 #include "Engine/GameObject.h"
 
 class Player;
+class Shadow;
 
 
 //ŸŸŸ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
@@ -9,8 +10,10 @@ class Stage : public GameObject
 {
     int hModel_[7];
     bool isOpenWall_;
+    int shadowCount_;
 
     Player* pPlayer_;
+    Shadow* pShadow[5];
 
 public:
 

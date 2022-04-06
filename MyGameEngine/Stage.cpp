@@ -1,13 +1,15 @@
 #include "Stage.h"
 #include "Engine/Model.h"
 #include "Player.h"
+#include "Shadow.h"
 #include "Engine/CsvReader.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"),
     isOpenWall_(true),
-    pPlayer_(nullptr)
+    pPlayer_(nullptr),
+    shadowCount_(0)
     
     //, hModel_(-1)
 {
@@ -53,6 +55,9 @@ void Stage::Initialize()
             }
         }
     }
+    //影の生成
+    pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
+    //pShadow[shadowCount_]->transform_.position_ = stertPos;
 }
 
 //更新
