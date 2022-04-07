@@ -44,14 +44,17 @@ void Shadow::Update()
 	//再生中
 	else if(frameCounter_<recordData_.size()-1 && isRecording_ == true)
 	{
-		int a = 0;
 		transform_.position_ = recordData_[frameCounter_];
 		frameCounter_++;
 	}
-	//再生が終わったらもう一度再生し始める
-	else if(frameCounter_>=recordData_.size()-1 && isRecording_ == true)
+
+
+
+	//再生し終わったら
+	if (frameCounter_ >= recordData_.size() - 1)
 	{
-		frameCounter_ = 0;
+		//非表示
+		isRecording_ = false;
 	}
 }
 
@@ -76,4 +79,5 @@ void Shadow::Collision()
 void Shadow::Flag()
 {
 	isRecording_ = true;
+	frameCounter_ = 0;
 }

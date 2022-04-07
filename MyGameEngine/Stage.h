@@ -13,7 +13,7 @@ class Stage : public GameObject
     int shadowCount_;
 
     Player* pPlayer_;
-    Shadow* pShadow[5];
+    Shadow* pShadow[6];
 
 public:
 

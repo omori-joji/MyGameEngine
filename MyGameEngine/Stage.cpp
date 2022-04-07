@@ -70,7 +70,7 @@ void Stage::Update()
 
 
     //再生スタート
-    if (Input::IsKeyDown(DIK_LSHIFT) || Input::IsKeyDown(DIK_RSHIFT))
+    if (Input::IsKeyDown(DIK_1)&& shadowCount_ <= 5 )
     {
         pShadow[shadowCount_]->Flag(); //表示するフラグ
 
