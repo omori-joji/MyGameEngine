@@ -56,7 +56,7 @@ void Stage::Initialize()
             }
         }
     }
-    pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
+    pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
     
 }
 
@@ -72,7 +72,10 @@ void Stage::Update()
     //再生スタート
     if (Input::IsKeyDown(DIK_LSHIFT) || Input::IsKeyDown(DIK_RSHIFT))
     {
-        shadowCount_++;
+        pShadow[shadowCount_]->Flag(); //表示するフラグ
+
+        shadowCount_++; //二体目の影の番号
+
         //影の生成
         pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
         pShadow[shadowCount_]->transform_.position_ = stertPos;

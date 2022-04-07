@@ -53,12 +53,6 @@ void Shadow::Update()
 	{
 		frameCounter_ = 0;
 	}
-	
-
-	if (Input::IsKeyDown(DIK_LSHIFT) || Input::IsKeyDown(DIK_RSHIFT))
-	{
-		isRecording_ = true;
-	}
 }
 
 void Shadow::Draw()
@@ -77,4 +71,9 @@ void Shadow::Release()
 
 void Shadow::Collision()
 {
+}
+
+void Shadow::Flag()
+{
+	isRecording_ = true;
 }

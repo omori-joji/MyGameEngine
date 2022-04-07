@@ -16,7 +16,7 @@ class Shadow : public GameObject
 	int hModel_;
 	bool isRecording_; //Playerの動きを記録しているか
 	DWORD frameCounter_;
-	std::vector<XMFLOAT3>   recordData_;//プレイヤーの位置を記録する可変長配列
+	std::vector<XMFLOAT3> recordData_;//プレイヤーの位置を記録する可変長配列
 
 public:
 
@@ -39,5 +39,7 @@ public:
 	void Release() override;
 
 	void Collision();
+
+	void Flag();
 };
 
