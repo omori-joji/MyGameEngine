@@ -53,6 +53,7 @@ void Shadow::Update()
 	//Ä¶‚µI‚í‚Á‚½‚ç
 	if (frameCounter_ >= recordData_.size() - 1)
 	{
+
 		//”ñ•\Ž¦
 		isRecording_ = false;
 		frameCounter_ = 0;

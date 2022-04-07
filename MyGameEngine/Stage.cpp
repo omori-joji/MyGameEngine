@@ -70,8 +70,16 @@ void Stage::Update()
 
 
     //再生スタート
-    if (Input::IsKeyDown(DIK_1)&& shadowCount_ <= 5 )
+    if (Input::IsKeyDown(DIK_1))
     {
+        if (shadowCount_ != 0)
+        {
+            for (int i = 0; i <= shadowCount_; i++)
+            {
+                pShadow[i]->Flag();
+            }
+        }
+
         pShadow[shadowCount_]->Flag(); //表示するフラグ
 
         shadowCount_++; //二体目以降の影の番号
