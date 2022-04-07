@@ -55,6 +55,7 @@ void Shadow::Update()
 	{
 		//”ñ•\Ž¦
 		isRecording_ = false;
+		frameCounter_ = 0;
 	}
 }
 

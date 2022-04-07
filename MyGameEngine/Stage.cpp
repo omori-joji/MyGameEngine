@@ -74,12 +74,16 @@ void Stage::Update()
     {
         pShadow[shadowCount_]->Flag(); //•\¦‚·‚éƒtƒ‰ƒO
 
-        shadowCount_++; //“ñ‘Ì–Ú‚Ì‰e‚Ì”Ô†
+        shadowCount_++; //“ñ‘Ì–ÚˆÈ~‚Ì‰e‚Ì”Ô†
 
-        //‰e‚Ì¶¬
-        pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
-        pShadow[shadowCount_]->transform_.position_ = stertPos;
+        if (shadowCount_ <= 5)
+        {
+            //‰e‚Ì¶¬
+            pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
+            pShadow[shadowCount_]->transform_.position_ = stertPos;
+        }
     }
+    
 }
 
 //•`‰æ
@@ -104,6 +108,7 @@ void Stage::Draw()
 
             Model::SetTransform(hModel_[type], trans);
             Model::Draw(hModel_[type]);
+            int a = 0;
         }
     }
 }

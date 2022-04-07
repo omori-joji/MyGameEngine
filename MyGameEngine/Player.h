@@ -23,7 +23,7 @@ class Player : public GameObject
 
 
 
-    int hModel_[2];
+    int hModel_;
     Stage* pStage_;
 
 

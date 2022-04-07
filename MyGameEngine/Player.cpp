@@ -34,8 +34,7 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_[0] = Model::Load("Assets/Player.fbx");
-	hModel_[1] = Model::Load("Assets/Shadows.fbx");
+	hModel_ = Model::Load("Assets/Player.fbx");
 }
 
 void Player::Update()
@@ -64,7 +63,7 @@ void Player::Update()
 
 
 	//再生スタート
-	if (Input::IsKeyDown(DIK_LSHIFT)|| Input::IsKeyDown(DIK_RSHIFT))
+	if (Input::IsKeyDown(DIK_1))
 	{
 		transform_.position_ = pStage_->stertPos; //初期位置に戻る
 	}
@@ -159,8 +158,8 @@ void Player::Update()
 
 void Player::Draw()
 {
-	Model::SetTransform(hModel_[0], transform_);
-	Model::Draw(hModel_[0]);
+	Model::SetTransform(hModel_, transform_);
+	Model::Draw(hModel_);
 }
 
 void Player::Release()
