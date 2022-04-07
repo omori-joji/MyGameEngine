@@ -56,6 +56,9 @@ void Stage::Initialize()
             }
         }
     }
+
+
+    //影の生成
     pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
     
 }
@@ -69,9 +72,15 @@ void Stage::Update()
     }
 
 
+
+
+
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
     {
+
+
+        //すでに生成している影をもう一度再生する
         if (shadowCount_ != 0)
         {
             for (int i = 0; i <= shadowCount_; i++)
@@ -80,19 +89,28 @@ void Stage::Update()
             }
         }
 
-        pShadow[shadowCount_]->Flag(); //表示するフラグ
 
-        shadowCount_++; //二体目以降の影の番号
+        //表示するフラグ
+        pShadow[shadowCount_]->Flag(); 
 
+
+        //二体目以降の影の番号
+        shadowCount_++; 
+
+
+        //影の最大生成数まで行ってなかったら
         if (shadowCount_ <= 5)
         {
             //影の生成
             pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
-            pShadow[shadowCount_]->transform_.position_ = stertPos;
         }
     }
     
 }
+
+
+
+
 
 //描画
 void Stage::Draw()
@@ -121,10 +139,18 @@ void Stage::Draw()
     }
 }
 
+
+
+
+
 //開放
 void Stage::Release()
 {
 }
+
+
+
+
 
 //そのマスに障害物があるかどうか
 //戻り値、何かあるtrue,何もないfalse
@@ -141,6 +167,10 @@ bool Stage::isCrash(int x, int y)
     }
 }
 
+
+
+
+
 //ボタンがPlayerの足元にあるかどうかを判断する関数
 //ボタンが入っている配列はmap_[x][y] == 4が入っている
 //この関数はPlayerクラスで常に呼ばれている
@@ -155,13 +185,10 @@ void Stage::DownButton(int x, int y)
 
         OpenWall();//壁を開く処理
     }
-
-
-    //if (map_[x][y] == 5)
-    //{
-    //    pPlayer_->transform_.position_.y -= 0.5f;//沈んだボタンの位置分、Playerも下に沈む
-    //}
 }
+
+
+
 
 void Stage::OpenWall()
 {
@@ -171,10 +198,13 @@ void Stage::OpenWall()
         {
             if (map_[x][y] == 6 && isOpenWall_ == false)
             {
-                map_[x][y] = 0;//壁が配置されていたら0を入れてあげる
+                //壁が配置されていたら0を入れてあげる
+                map_[x][y] = 0;
             }
         }
     }
-    isOpenWall_ = true;//壁が全部開いた
+
+    //壁が全部開いた
+    isOpenWall_ = true;
 }
 

@@ -10,12 +10,17 @@ class Stage;
 //■■シーンを管理するクラス
 class Shadow : public GameObject
 {
-	Player* pPlayer_;
-	Stage* pStage_;
+	Player* pPlayer_;//Playerの情報が入る変数
+	Stage* pStage_;//Stageの情報が入る変数
+
+
 
 	int hModel_;
 	bool isRecording_; //Playerの動きを記録しているか
-	DWORD frameCounter_;
+
+
+
+	DWORD frameCounter_;//フレーム数
 	std::vector<XMFLOAT3> recordData_;//プレイヤーの位置を記録する可変長配列
 
 public:

@@ -22,7 +22,6 @@ void Shadow::Initialize()
 
 void Shadow::Update()
 {
-	int a = 0;
 	if (pPlayer_ == nullptr)
 	{
 		pPlayer_ = (Player*)Find("Player");
@@ -44,7 +43,11 @@ void Shadow::Update()
 	//再生中
 	else if(frameCounter_<recordData_.size()-1 && isRecording_ == true)
 	{
+
+		//毎フレーム影のPositonをプレイヤーのPositionにしてあげる
 		transform_.position_ = recordData_[frameCounter_];
+
+		//次のフレームへ
 		frameCounter_++;
 	}
 
@@ -56,12 +59,15 @@ void Shadow::Update()
 
 		//非表示
 		isRecording_ = false;
+
+		//フレーム数のリセット
 		frameCounter_ = 0;
 	}
 }
 
 void Shadow::Draw()
 {
+	//表示・非表示
 	if (isRecording_)
 	{
 		Model::SetTransform(hModel_, transform_);
