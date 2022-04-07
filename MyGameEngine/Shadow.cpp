@@ -82,6 +82,7 @@ void Shadow::Release()
 
 void Shadow::Collision()
 {
+
 }
 
 void Shadow::Flag()

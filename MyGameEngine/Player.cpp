@@ -74,7 +74,7 @@ void Player::Update()
 	//プレイヤーの原点は上下で見ると下。左右で見ると真ん中
 	//当たったかどうか
 
-	//
+	//当たり判定の変数宣言
 	int checkX1 , checkX2;
 	int checkY1 , checkY2;
 
