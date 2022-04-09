@@ -135,13 +135,18 @@ void Player::Update()
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
 		isJump = false;//下にブロックがあったら今はジャンプしていない
+
 		move_ = 0;
+
 		transform_.position_.y = (float)checkY1 + 1.0f;
+
+		pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 	}
 	//重力
 	//下に何もなかったらどんどん下がる
 	else
 	{
+		pStage_->isButtonCol_ = true;
 
 		transform_.position_.y -= move_;
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
@@ -153,7 +158,7 @@ void Player::Update()
 		}
 	}
 
-	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
+	
 }
 
 void Player::Draw()

@@ -9,6 +9,7 @@
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"),
     isOpenWall_(true),
+    isButtonCol_(true),
     pPlayer_(nullptr),
     shadowCount_(0)
     
@@ -179,6 +180,12 @@ void Stage::DownButton(int x, int y)
         isOpenWall_ = false;//•Ç‚ðŠJ‚­‚æ
 
         OpenWall();//•Ç‚ðŠJ‚­ˆ—
+    }
+    else if (map_[x][y] == 5 && isButtonCol_ == true)
+    {
+        pPlayer_->transform_.position_.y -= 0.5f;
+
+        isButtonCol_ = false;
     }
 }
 
