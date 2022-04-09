@@ -77,7 +77,6 @@ void Stage::Update()
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
     {
-
         //すでに生成している影を表示し、もう一度再生する
         if (shadowCount_ <= 5)
         {
@@ -88,8 +87,11 @@ void Stage::Update()
                 pShadow[i]->Flag();
             }
 
-            //二体目以降の影の番号
-            shadowCount_++;
+            if (shadowCount_ <= 4)
+            {
+                //二体目以降の影の番号
+                shadowCount_++;
+            }
         }
 
 
