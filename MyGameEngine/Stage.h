@@ -17,7 +17,6 @@ class Stage : public GameObject
     Shadow* pShadow[6];
 
 public:
-    bool isButtonCol_;
     int map_[20][12];
     XMFLOAT3 stertPos;
 
@@ -46,5 +45,7 @@ public:
     void DownButton(int x, int y);
 
     void OpenWall();
+
+    void CheckBrock(int find);
 };
 

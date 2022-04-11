@@ -147,7 +147,6 @@ void Player::Update()
 	//下に何もなかったらどんどん下がる
 	else
 	{
-		pStage_->isButtonCol_ = true;
 
 		transform_.position_.y -= move_;
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
