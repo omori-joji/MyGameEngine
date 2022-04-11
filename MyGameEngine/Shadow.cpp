@@ -4,6 +4,7 @@
 #include "Player.h"
 #include "Engine/Input.h"
 
+
 Shadow::Shadow(GameObject* parent)
 	:GameObject(parent, "Shadow"),
 	pPlayer_(nullptr),

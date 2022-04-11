@@ -27,10 +27,52 @@ void Stage::Initialize()
     hModel_[0] = Model::Load("Assets/BlueBlock.fbx");
     hModel_[1] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[2] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[3] = Model::Load("Assets/PushButton.fbx");
-    hModel_[4] = Model::Load("Assets/PushButton2.fbx");
-    hModel_[5] = Model::Load("Assets/UpButton.fbx");
-    hModel_[6] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[3] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[4] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[5] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[6] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[7] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[8] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[9] = Model::Load("Assets/GreenBlock.fbx");
+
+
+    hModel_[10] = Model::Load("Assets/PushButton.fbx");
+    hModel_[11] = Model::Load("Assets/PushButton.fbx");
+    hModel_[12] = Model::Load("Assets/PushButton.fbx");
+    hModel_[13] = Model::Load("Assets/PushButton.fbx");
+    hModel_[14] = Model::Load("Assets/PushButton.fbx");
+    hModel_[15] = Model::Load("Assets/PushButton.fbx");
+    hModel_[16] = Model::Load("Assets/PushButton.fbx");
+    hModel_[17] = Model::Load("Assets/PushButton.fbx");
+    hModel_[18] = Model::Load("Assets/PushButton.fbx");
+    hModel_[19] = Model::Load("Assets/PushButton.fbx");
+
+
+    hModel_[20] = Model::Load("Assets/UpButton.fbx");
+    hModel_[21] = Model::Load("Assets/UpButton.fbx");
+    hModel_[22] = Model::Load("Assets/UpButton.fbx");
+    hModel_[23] = Model::Load("Assets/UpButton.fbx");
+    hModel_[24] = Model::Load("Assets/UpButton.fbx");
+    hModel_[25] = Model::Load("Assets/UpButton.fbx");
+    hModel_[26] = Model::Load("Assets/UpButton.fbx");
+    hModel_[27] = Model::Load("Assets/UpButton.fbx");
+    hModel_[28] = Model::Load("Assets/UpButton.fbx");
+    hModel_[29] = Model::Load("Assets/UpButton.fbx");
+
+
+
+    hModel_[30] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[31] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[32] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[33] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[34] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[35] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[36] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[37] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[38] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[39] = Model::Load("Assets/UpButton2.fbx");
+
+
 
 
     //Csvファイルの読み込み
@@ -40,9 +82,9 @@ void Stage::Initialize()
 
     for (int x = 0; x < 20; x++)
     {
-        for (int y = 0; y < 10; y++)
+        for (int y = 0; y < 12; y++)
         {
-            map_[x][y] = csv.GetValue(x, 9 - y); //エクセルだとyの値が逆なので-9をしてあげる
+            map_[x][y] = csv.GetValue(x, 11 - y); //エクセルだとyの値が逆なので-9をしてあげる
 
             if (map_[x][y] == 99)
             {
@@ -60,7 +102,6 @@ void Stage::Initialize()
 
     //影の生成
     pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
-    
 }
 
 //更新
@@ -113,7 +154,7 @@ void Stage::Draw()
 {
     for (int x = 0; x < 20; x++)
     {
-        for (int y = 0; y < 10; y++)
+        for (int y = 0; y < 12; y++)
         {
             if (map_[x][y] == 0 || map_[x][y] == 99)
             {
@@ -173,9 +214,9 @@ bool Stage::isCrash(int x, int y)
 void Stage::DownButton(int x, int y)
 {
     //押した後のモデルに差し替える
-    if(map_[x][y] == 4)
+    if(map_[x][y] == 21)
     {
-        map_[x][y] = 5;
+        map_[x][y] = map_[x][y] + 10;
 
         isOpenWall_ = false;//壁を開くよ
 
@@ -187,6 +228,22 @@ void Stage::DownButton(int x, int y)
 
         isButtonCol_ = false;
     }
+
+
+
+    if (map_[x][y] == 0)
+    {
+        for (int x = 0; x < 20; x++)
+        {
+            for (int y = 0; y < 12; y++)
+            {
+                if (map_[x][y] == 31)
+                {
+                    map_[x][y] = map_[x][y] - 10;
+                }
+            }
+        }
+    }
 }
 
 
@@ -196,7 +253,7 @@ void Stage::OpenWall()
 {
     for (int x = 0; x < 20; x++)
     {
-        for (int y = 0; y < 10; y++)
+        for (int y = 0; y < 12; y++)
         {
             if (map_[x][y] == 6 && isOpenWall_ == false)
             {

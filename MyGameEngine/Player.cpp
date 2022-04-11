@@ -6,6 +6,7 @@
 
 
 
+
 Player::Player(GameObject* parent)
 	: GameObject(parent, "Player"),
 
@@ -140,7 +141,7 @@ void Player::Update()
 
 		transform_.position_.y = (float)checkY1 + 1.0f;
 
-		pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
+
 	}
 	//d—Í
 	//‰º‚É‰½‚à‚È‚©‚Á‚½‚ç‚Ç‚ñ‚Ç‚ñ‰º‚ª‚é
@@ -158,7 +159,7 @@ void Player::Update()
 		}
 	}
 
-	
+	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 }
 
 void Player::Draw()
