@@ -8,7 +8,7 @@ class Shadow;
 //ŸŸŸ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
 class Stage : public GameObject
 {
-    int hModel_[7];
+    int hModel_[99];
     int shadowCount_;
     bool isOpenWall_;
     
@@ -18,7 +18,7 @@ class Stage : public GameObject
 
 public:
     bool isButtonCol_;
-    int map_[20][10];
+    int map_[20][12];
     XMFLOAT3 stertPos;
 
 public:
