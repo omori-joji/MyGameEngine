@@ -199,8 +199,6 @@ void FbxParts::InitTexture(fbxsdk::FbxSurfaceMaterial* pMaterial, const DWORD& i
 
 		pMaterial_[i].pTexture = new Texture;
 		pMaterial_[i].pTexture->Load(name);
-
-
 	}
 }
 

@@ -35,11 +35,13 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_ = Model::Load("Assets/Player.fbx");
+	hModel_ = Model::Load("Assets/a.fbx");
 }
 
 void Player::Update()
 {
+
+
 	//StageƒNƒ‰ƒX‚ğ’T‚·
 	//pStage_‚É’T‚µ‚½î•ñ‚ª“ü‚é
 	if (pStage_ == nullptr)

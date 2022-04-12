@@ -11,8 +11,8 @@ Stage::Stage(GameObject* parent)
     isOpenWall_(true),
     pPlayer_(nullptr),
     shadowCount_(0)
-    
 {
+
 }
 
 //デストラクタ
@@ -250,7 +250,7 @@ void Stage::DownButton(int x, int y)
 
 
     //Playerが離れたら
-    if (map_[x][y] == 0)
+    if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1))
     {
         //ボタンのモデルを切り替える
         CheckBrock(31);

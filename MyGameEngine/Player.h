@@ -51,5 +51,4 @@ public:
     //ŠJ•ú
     void Release() override;
 
-    /*bool isCrash(int x, int y);*/
 };

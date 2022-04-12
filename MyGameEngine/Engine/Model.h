@@ -2,6 +2,7 @@
 #include "Transform.h"
 #include "Fbx.h"
 #include "FbxParts.h"
+#include "Texture.h"
 #include<string>
 #include<vector>
 
