@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Transform.h"
 #include "Collider.h"
 #include <list>
@@ -19,6 +18,7 @@ protected:
 
 public:
 	Transform	 transform_; //位置、角度、拡大
+
 
 
 private:
@@ -66,4 +66,6 @@ public:
 		childList_.push_back(p);
 		return p;
 	}
+
+	int DeltaTime();
 };

@@ -10,6 +10,7 @@ class Stage : public GameObject
 {
     int hModel_[99];
     int shadowCount_;
+    int a;
     bool isOpenWall_;
     
 

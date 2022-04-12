@@ -4,13 +4,15 @@
 #include "Shadow.h"
 #include "Engine/CsvReader.h"
 #include "Engine/Input.h"
+#include "time.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"),
     isOpenWall_(true),
     pPlayer_(nullptr),
-    shadowCount_(0)
+    shadowCount_(0),
+    a(0)
 {
 
 }
@@ -136,10 +138,14 @@ void Stage::Update()
     {
         pPlayer_ = (Player*)Find("Player");
     }
+    int s = 0;
 
+    a += DeltaTime();
 
-
-
+    if (a >= 3)
+    {
+        int A;
+    }
 
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
