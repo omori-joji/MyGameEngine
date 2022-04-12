@@ -1,6 +1,7 @@
 #pragma once
 #include "Transform.h"
 #include "Fbx.h"
+#include "FbxParts.h"
 #include<string>
 #include<vector>
 
