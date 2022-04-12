@@ -5,6 +5,7 @@
 #include "Engine/CsvReader.h"
 #include "Engine/Input.h"
 #include "time.h"
+#include <time.h>
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
@@ -140,7 +141,7 @@ void Stage::Update()
     }
     int s = 0;
 
-    a += DeltaTime();
+    a +=DeltaTime();
 
     if (a >= 3)
     {
