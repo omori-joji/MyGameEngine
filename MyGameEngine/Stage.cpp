@@ -139,14 +139,7 @@ void Stage::Update()
     {
         pPlayer_ = (Player*)Find("Player");
     }
-    int s = 0;
-
-    a += DeltaTime();
-
-    if (a >= 3)
-    {
-        int A;
-    }
+    
 
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
