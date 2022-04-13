@@ -181,22 +181,3 @@ GameObject* GameObject::Find(std::string objectName)
 {
 	return GetRootJob()->FindSub(objectName);
 }
-
-int GameObject::DeltaTime()
-{
-	//最終的に返す変数
-	static float time = 0;
-
-	//プログラムをスタートした時の時間
-	static float startTime = timeGetTime();
-
-	//現在の時間
-	float nowTime = timeGetTime();
-
-	//小数第１位まで計測する
-	time = (int)(nowTime - startTime) / 100;
-
-
-
-	return time;
-}

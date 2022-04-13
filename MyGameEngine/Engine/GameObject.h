@@ -66,6 +66,4 @@ public:
 		childList_.push_back(p);
 		return p;
 	}
-
-	int DeltaTime();
 };
