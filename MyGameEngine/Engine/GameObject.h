@@ -67,5 +67,5 @@ public:
 		return p;
 	}
 
-	double DeltaTime();
+	int DeltaTime();
 };

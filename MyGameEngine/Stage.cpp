@@ -141,7 +141,7 @@ void Stage::Update()
     }
     int s = 0;
 
-    a +=DeltaTime();
+    a += DeltaTime();
 
     if (a >= 3)
     {
