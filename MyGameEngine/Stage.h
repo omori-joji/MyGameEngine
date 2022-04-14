@@ -1,5 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
+#include <string>
 
 class Player;
 class Shadow;
@@ -10,8 +11,10 @@ class Stage : public GameObject
 {
     int hModel_[99];
     int shadowCount_;
-    int a;
+    int timeCount_;
+
     bool isOpenWall_;
+    bool isBlinking_;
     
 
     Player* pPlayer_;
@@ -47,6 +50,8 @@ public:
 
     void OpenWall();
 
-    void CheckBrock(int find);
+    void CheckBrock(int find , bool which);
+
+    void Blinking(int blockNum, int time);
 };
 

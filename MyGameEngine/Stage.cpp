@@ -13,7 +13,8 @@ Stage::Stage(GameObject* parent)
     isOpenWall_(true),
     pPlayer_(nullptr),
     shadowCount_(0),
-    a(0)
+    timeCount_(0),
+    isBlinking_(true)
 {
 
 }
@@ -103,6 +104,33 @@ void Stage::Initialize()
     hModel_[58] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[59] = Model::Load("Assets/YellowBlock.fbx");
 
+
+    //消えるブロック(消える前)
+    hModel_[60] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[61] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[62] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[63] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[64] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[65] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[66] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[67] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[68] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[69] = Model::Load("Assets/YellowBlock.fbx");
+
+
+    //消えるブロック(消えた後)
+    hModel_[70] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[71] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[72] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[73] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[74] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[75] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[76] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[77] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[78] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[79] = Model::Load("Assets/GreenBlock.fbx");
+
+
     //Csvファイルの読み込み
     CsvReader csv;
     csv.Load("Assets/Stage1.csv");
@@ -140,6 +168,9 @@ void Stage::Update()
         pPlayer_ = (Player*)Find("Player");
     }
     
+    timeCount_++;
+    Blinking(71, 180);
+
 
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
@@ -253,10 +284,10 @@ void Stage::DownButton(int x, int y)
     if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1))
     {
         //ボタンのモデルを切り替える
-        CheckBrock(31);
+        CheckBrock(31 , false);
 
         //壁のモデルを切り替える
-        CheckBrock(51);
+        CheckBrock(51 , false);
     }
 }
 
@@ -283,17 +314,46 @@ void Stage::OpenWall()
 
 
 //特定のブロックを探して、モデルを切り替える関数
-void Stage::CheckBrock(int find)
+//第一引数は切り替えたいブロックの番号
+//第二引数はプラスかマイナスか
+void Stage::CheckBrock(int find , bool which)
 {
     for (int x = 0; x < 20; x++)
     {
         for (int y = 0; y < 12; y++)
         {
-            if (map_[x][y] == find)
+            if (map_[x][y] == find && which == false)
             {
                 map_[x][y] = map_[x][y] - 10;
             }
+            else if(map_[x][y] == find && which == true)
+            {
+                map_[x][y] = find + 10;
+            }
         }
+    }
+}
+
+void Stage::Blinking(int blockNum, int time)
+{
+    if (timeCount_ >= time && isBlinking_ == true)
+    {
+        //モデルを切り替える関数
+        CheckBrock(blockNum , false);
+
+        isBlinking_ = false;
+
+        //計測時間をリセット
+        timeCount_ = 0;
+    }
+    else if(timeCount_ >= time && isBlinking_ == false)
+    {
+        CheckBrock(blockNum - 10, true);
+
+        isBlinking_ = true;
+
+        //計測時間をリセット
+        timeCount_ = 0;
     }
 }
 

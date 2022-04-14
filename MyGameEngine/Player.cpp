@@ -37,6 +37,7 @@ void Player::Initialize()
 {
 	hModel_ = Model::Load("Assets/Player3.fbx");
 	transform_.rotate_.y += 180;
+	//transform_.scale_.y *= -1;
 }
 
 void Player::Update()
