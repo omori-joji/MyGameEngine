@@ -1,11 +1,9 @@
-#include "Stage.h"
 #include "Engine/Model.h"
+#include "Engine/Input.h"
+#include "Engine/CsvReader.h"
+#include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
-#include "Engine/CsvReader.h"
-#include "Engine/Input.h"
-#include "time.h"
-#include <time.h>
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
@@ -26,6 +24,248 @@ Stage::~Stage()
 
 //初期化
 void Stage::Initialize()
+{
+    ModelLoad();
+
+
+    //Csvファイルの読み込み
+    CsvReader csv;
+    csv.Load("Assets/Stage1.csv");
+
+
+    for (int x = 0; x < 20; x++)
+    {
+        for (int y = 0; y < 12; y++)
+        {
+            map_[x][y] = csv.GetValue(x, 11 - y); //エクセルだとyの値が逆なので-9をしてあげる
+
+            if (map_[x][y] == 99)
+            {
+                //プレイヤーの生成
+                //プレイヤーの位置決定
+                //プレイヤーの初期位置を記憶する
+                Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
+                pPlayer->transform_.position_.x = x;
+                pPlayer->transform_.position_.y = y;
+                stertPos = pPlayer->transform_.position_;
+            }
+        }
+    }
+
+
+    //影の生成
+    pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
+}
+
+//更新
+void Stage::Update()
+{
+    if (pPlayer_ == nullptr)
+    {
+        pPlayer_ = (Player*)Find("Player");
+    }
+    
+    timeCount_++;
+    Blinking(71, 180);
+
+
+    //再生スタート
+    if (Input::IsKeyDown(DIK_1))
+    {
+        //すでに生成している影を表示し、もう一度再生する
+        if (shadowCount_ <= 5)
+        {
+            //すでに生成している影をもう一度1から再生する
+            for (int i = 0; i <= shadowCount_; i++)
+            {
+                //表示するフラグ
+                pShadow[i]->Flag();
+            }
+
+            if (shadowCount_ <= 4)
+            {
+                //二体目以降の影の番号
+                shadowCount_++;
+            }
+        }
+
+
+        //影の生成
+        if (shadowCount_ <= 5)
+        {
+            pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
+        }
+    }
+}
+
+
+
+
+
+//描画
+void Stage::Draw()
+{
+    //ブロックの配置
+    for (int x = 0; x < 20; x++)
+    {
+        for (int y = 0; y < 12; y++)
+        {
+            //プレイヤーの位置とブロックを置かない位置の場合
+            if (map_[x][y] == 0 || map_[x][y] == 99)
+            {
+                continue;
+            }
+
+            //モデル番号の格納
+            int type = map_[x][y] - 1;
+
+            //位置
+            Transform trans;
+            trans.position_.x = x;
+            trans.position_.y = y;
+
+            //Calclationクラスで位置を変更する
+            trans.Calclation();
+
+
+            //モデルのロード
+            Model::SetTransform(hModel_[type], trans);
+            Model::Draw(hModel_[type]);
+        }
+    }
+}
+
+
+
+
+
+//開放
+void Stage::Release()
+{
+}
+
+
+
+
+
+
+
+//そのマスに障害物があるかどうか
+//戻り値、何かあるtrue,何もないfalse
+bool Stage::isCrash(int x, int y)
+{
+    //そこにはブロックはない
+    if (map_[x][y] == 0 || map_[x][y] == 99)
+    {
+        return false;
+    }
+    //そこにはブロックがあるから通れない
+    else
+    {
+        return true;
+    }
+}
+
+
+
+
+
+//ボタンがPlayerの足元にあるかどうかを判断する関数
+//ボタンが入っている配列はmap_[x][y] == 4が入っている
+//この関数はPlayerクラスで常に呼ばれている
+void Stage::DownButton(int x, int y)
+{
+    //押した後のモデルに差し替える
+    if(map_[x][y] == 21)
+    {
+        map_[x][y] = map_[x][y] + 10;
+
+        isOpenWall_ = false;//壁を開くよ
+
+        OpenWall();//壁を開く処理
+    }
+
+
+    //Playerが離れたら
+    if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1))
+    {
+        //ボタンのモデルを切り替える
+        CheckBrock(31 , false);
+
+        //壁のモデルを切り替える
+        CheckBrock(51 , false);
+    }
+}
+
+
+
+//壁を開く関数
+void Stage::OpenWall()
+{
+    for (int x = 0; x < 20; x++)
+    {
+        for (int y = 0; y < 12; y++)
+        {
+            if (map_[x][y] == 41 && isOpenWall_ == false)
+            {
+                //壁が配置されていたら0を入れてあげる
+                map_[x][y] = map_[x][y] + 10;
+            }
+        }
+    }
+
+    //壁が全部開いた
+    isOpenWall_ = true;
+}
+
+
+//特定のブロックを探して、モデルを切り替える関数
+//第一引数は切り替えたいブロックの番号
+//第二引数はプラスかマイナスか
+void Stage::CheckBrock(int find , bool which)
+{
+    for (int x = 0; x < 20; x++)
+    {
+        for (int y = 0; y < 12; y++)
+        {
+            if (map_[x][y] == find && which == false)
+            {
+                map_[x][y] = map_[x][y] - 10;
+            }
+            else if(map_[x][y] == find && which == true)
+            {
+                map_[x][y] = find + 10;
+            }
+        }
+    }
+}
+
+void Stage::Blinking(int blockNum, int time)
+{
+    if (timeCount_ >= time && isBlinking_ == true)
+    {
+        //モデルを切り替える関数
+        CheckBrock(blockNum , false);
+
+        isBlinking_ = false;
+
+        //計測時間をリセット
+        timeCount_ = 0;
+    }
+    else if(timeCount_ >= time && isBlinking_ == false)
+    {
+        CheckBrock(blockNum - 10, true);
+
+        isBlinking_ = true;
+
+        //計測時間をリセット
+        timeCount_ = 0;
+    }
+}
+
+
+
+void Stage::ModelLoad()
 {
     //ステージを構成するブロック
     hModel_[0] = Model::Load("Assets/BlueBlock.fbx");
@@ -129,231 +369,5 @@ void Stage::Initialize()
     hModel_[77] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[78] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[79] = Model::Load("Assets/GreenBlock.fbx");
-
-
-    //Csvファイルの読み込み
-    CsvReader csv;
-    csv.Load("Assets/Stage1.csv");
-
-
-    for (int x = 0; x < 20; x++)
-    {
-        for (int y = 0; y < 12; y++)
-        {
-            map_[x][y] = csv.GetValue(x, 11 - y); //エクセルだとyの値が逆なので-9をしてあげる
-
-            if (map_[x][y] == 99)
-            {
-                //プレイヤーの生成
-                //プレイヤーの位置決定
-                //プレイヤーの初期位置を記憶する
-                Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
-                pPlayer->transform_.position_.x = x;
-                pPlayer->transform_.position_.y = y;
-                stertPos = pPlayer->transform_.position_;
-            }
-        }
-    }
-
-
-    //影の生成
-    pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
-}
-
-//更新
-void Stage::Update()
-{
-    if (pPlayer_ == nullptr)
-    {
-        pPlayer_ = (Player*)Find("Player");
-    }
-    
-    timeCount_++;
-    Blinking(71, 180);
-
-
-    //再生スタート
-    if (Input::IsKeyDown(DIK_1))
-    {
-        //すでに生成している影を表示し、もう一度再生する
-        if (shadowCount_ <= 5)
-        {
-            //すでに生成している影をもう一度1から再生する
-            for (int i = 0; i <= shadowCount_; i++)
-            {
-                //表示するフラグ
-                pShadow[i]->Flag();
-            }
-
-            if (shadowCount_ <= 4)
-            {
-                //二体目以降の影の番号
-                shadowCount_++;
-            }
-        }
-
-
-        //影の生成
-        if (shadowCount_ <= 5)
-        {
-            pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
-        }
-    }
-}
-
-
-
-
-
-//描画
-void Stage::Draw()
-{
-    for (int x = 0; x < 20; x++)
-    {
-        for (int y = 0; y < 12; y++)
-        {
-            if (map_[x][y] == 0 || map_[x][y] == 99)
-            {
-                continue;
-            }
-
-            int type = map_[x][y] - 1;
-            Transform trans;
-            trans.position_.x = x;
-            trans.position_.y = y;
-            trans.Calclation();
-
-
-
-            Model::SetTransform(hModel_[type], trans);
-            Model::Draw(hModel_[type]);
-            int a = 0;
-        }
-    }
-}
-
-
-
-
-
-//開放
-void Stage::Release()
-{
-}
-
-
-
-
-
-//そのマスに障害物があるかどうか
-//戻り値、何かあるtrue,何もないfalse
-bool Stage::isCrash(int x, int y)
-{
-    //配列に1が入っていれば通れない
-    if (map_[x][y] == 0 || map_[x][y] == 99)
-    {
-        return false;
-    }
-    else
-    {
-        return true;
-    }
-}
-
-
-
-
-
-//ボタンがPlayerの足元にあるかどうかを判断する関数
-//ボタンが入っている配列はmap_[x][y] == 4が入っている
-//この関数はPlayerクラスで常に呼ばれている
-void Stage::DownButton(int x, int y)
-{
-    //押した後のモデルに差し替える
-    if(map_[x][y] == 21)
-    {
-        map_[x][y] = map_[x][y] + 10;
-
-        isOpenWall_ = false;//壁を開くよ
-
-        OpenWall();//壁を開く処理
-    }
-
-
-    //Playerが離れたら
-    if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1))
-    {
-        //ボタンのモデルを切り替える
-        CheckBrock(31 , false);
-
-        //壁のモデルを切り替える
-        CheckBrock(51 , false);
-    }
-}
-
-
-
-
-void Stage::OpenWall()
-{
-    for (int x = 0; x < 20; x++)
-    {
-        for (int y = 0; y < 12; y++)
-        {
-            if (map_[x][y] == 41 && isOpenWall_ == false)
-            {
-                //壁が配置されていたら0を入れてあげる
-                map_[x][y] = map_[x][y] + 10;
-            }
-        }
-    }
-
-    //壁が全部開いた
-    isOpenWall_ = true;
-}
-
-
-//特定のブロックを探して、モデルを切り替える関数
-//第一引数は切り替えたいブロックの番号
-//第二引数はプラスかマイナスか
-void Stage::CheckBrock(int find , bool which)
-{
-    for (int x = 0; x < 20; x++)
-    {
-        for (int y = 0; y < 12; y++)
-        {
-            if (map_[x][y] == find && which == false)
-            {
-                map_[x][y] = map_[x][y] - 10;
-            }
-            else if(map_[x][y] == find && which == true)
-            {
-                map_[x][y] = find + 10;
-            }
-        }
-    }
-}
-
-void Stage::Blinking(int blockNum, int time)
-{
-    if (timeCount_ >= time && isBlinking_ == true)
-    {
-        //モデルを切り替える関数
-        CheckBrock(blockNum , false);
-
-        isBlinking_ = false;
-
-        //計測時間をリセット
-        timeCount_ = 0;
-    }
-    else if(timeCount_ >= time && isBlinking_ == false)
-    {
-        CheckBrock(blockNum - 10, true);
-
-        isBlinking_ = true;
-
-        //計測時間をリセット
-        timeCount_ = 0;
-    }
 }
 

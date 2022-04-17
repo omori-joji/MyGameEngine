@@ -1,23 +1,24 @@
+#include "Engine/Model.h"
+#include "Engine/Input.h"
 #include "Shadow.h"
 #include "Stage.h"
-#include "Engine/Model.h"
 #include "Player.h"
-#include "Engine/Input.h"
 
 
 Shadow::Shadow(GameObject* parent)
-	:GameObject(parent, "Shadow"),
-	pPlayer_(nullptr),
-	pStage_(nullptr),
-    hModel_(-1),
-	isRecording_(false),//Playerの動きを記録しているか
-	frameCounter_(0)
+	:GameObject(parent, "Shadow"),  //親情報
+	pPlayer_(nullptr),       //プレイヤーの情報を入れる関数
+	pStage_(nullptr),        //ステージの情報を入れる関数
+    hModel_(-1),             //モデル番号
+	isRecording_(false),     //Playerの動きを記録しているか
+	frameCounter_(0)         //毎フレーム動きを記録するためのカウンター
 {
 
 }
 
 void Shadow::Initialize()
 {
+	//何のFBXファイルをロードするか
 	hModel_ = Model::Load("Assets/Player.fbx");
 }
 
@@ -86,6 +87,7 @@ void Shadow::Collision()
 
 }
 
+//保存した動きを再生する関数
 void Shadow::Flag()
 {
 	isRecording_ = true;

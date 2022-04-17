@@ -37,7 +37,6 @@ void Player::Initialize()
 {
 	hModel_ = Model::Load("Assets/Player3.fbx");
 	transform_.rotate_.y += 180;
-	//transform_.scale_.y *= -1;
 }
 
 void Player::Update()
@@ -62,7 +61,7 @@ void Player::Update()
 	    transform_.position_.x += SPEED;
 	}
 
-		//左移動
+	//左移動
 	if (Input::IsKey(DIK_LEFT))
 	{
 	    transform_.position_.x -= SPEED;
@@ -72,7 +71,8 @@ void Player::Update()
 	//再生スタート
 	if (Input::IsKeyDown(DIK_1))
 	{
-		transform_.position_ = pStage_->stertPos; //初期位置に戻る
+		//初期位置に戻る
+		transform_.position_ = pStage_->stertPos; 
 	}
 
 
@@ -164,6 +164,7 @@ void Player::Update()
 		}
 	}
 
+	//足元にボタンがあるかないかを判別する関数
 	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 }
 

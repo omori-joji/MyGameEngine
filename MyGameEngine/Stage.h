@@ -1,7 +1,7 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include <string>
 
+//クラスの前方宣言
 class Player;
 class Shadow;
 
@@ -20,9 +20,16 @@ class Stage : public GameObject
     Player* pPlayer_;
     Shadow* pShadow[6];
 
+
+
+
 public:
+
+
     int map_[20][12];
     XMFLOAT3 stertPos;
+
+
 
 public:
     //コンストラクタ
@@ -42,6 +49,8 @@ public:
 
     //開放
     void Release() override;
+
+    void ModelLoad();
 
     //ぶつかるかどうか
     bool isCrash(int x , int y);
