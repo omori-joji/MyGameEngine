@@ -65,8 +65,8 @@ void Stage::Update()
         pPlayer_ = (Player*)Find("Player");
     }
     
-    timeCount_++;
-    Blinking(71, 180);
+
+    Blinking(71, 60);
 
 
     //再生スタート
@@ -95,6 +95,17 @@ void Stage::Update()
         {
             pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
         }
+    }
+
+    //保存された影の動きをすべてリセットする
+    if (Input::IsKeyDown(DIK_2))
+    {
+        for (int i = 0; i <= shadowCount_; i++)
+        {
+            pShadow[i]->killMe();
+        }
+
+        shadowCount_ = 0;
     }
 }
 
@@ -242,6 +253,8 @@ void Stage::CheckBrock(int find , bool which)
 
 void Stage::Blinking(int blockNum, int time)
 {
+    timeCount_++;
+
     if (timeCount_ >= time && isBlinking_ == true)
     {
         //モデルを切り替える関数

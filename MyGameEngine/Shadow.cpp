@@ -11,7 +11,9 @@ Shadow::Shadow(GameObject* parent)
 	pStage_(nullptr),        //ステージの情報を入れる関数
     hModel_(-1),             //モデル番号
 	isRecording_(false),     //Playerの動きを記録しているか
-	frameCounter_(0)         //毎フレーム動きを記録するためのカウンター
+	frameCounter_(0),         //毎フレーム動きを記録するためのカウンター
+	sWIDTH(0.3f),
+	sMARGIN(0.11f)
 {
 
 }
@@ -64,6 +66,22 @@ void Shadow::Update()
 
 		//フレーム数のリセット
 		frameCounter_ = 0;
+	}
+
+
+
+	int checkX1, checkX2;
+	int checkY1, checkY2;
+
+
+	checkX1 = (int)(transform_.position_.x + (sWIDTH - sMARGIN));
+	checkX2 = (int)(transform_.position_.x - (sWIDTH - sMARGIN));
+	checkY1 = (int)(transform_.position_.y);
+	checkY2 = (int)(transform_.position_.y);
+
+	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
+	{
+		pStage_->DownButton(transform_.position_.x, transform_.position_.y);
 	}
 }
 

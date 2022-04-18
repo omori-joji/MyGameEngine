@@ -54,7 +54,7 @@ void Model::Draw(int hModele)
     datas[hModele]->pFbx->Draw(datas[hModele]->transform, 0);
 }
 
-void Model::AllRelese()
+void Model::AllRelease()
 {
     for (int i = 0; i < datas.size(); i++)
     {

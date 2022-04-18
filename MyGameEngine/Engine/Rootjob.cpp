@@ -1,4 +1,5 @@
 #include "Rootjob.h"
+#include "SceneManager.h"
 #include "../PlayScene.h"
 
 Rootjob::Rootjob()
@@ -11,7 +12,7 @@ Rootjob::~Rootjob()
 
 void Rootjob::Initialize()
 {
-	Instantiate<PlayScene>(this);
+	Instantiate<SceneManager>(this);
 }
 
 void Rootjob::Update()

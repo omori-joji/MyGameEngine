@@ -69,7 +69,7 @@ void Player::Update()
 
 
 	//再生スタート
-	if (Input::IsKeyDown(DIK_1))
+	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
 	{
 		//初期位置に戻る
 		transform_.position_ = pStage_->stertPos; 

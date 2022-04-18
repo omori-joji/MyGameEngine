@@ -16,8 +16,11 @@ class Shadow : public GameObject
 
 
 	int hModel_;
+
 	bool isRecording_; //Player‚Ì“®‚«‚ğ‹L˜^‚µ‚Ä‚¢‚é‚©
 
+	const float sWIDTH;//Player‚Ì•
+	const float sMARGIN;//“–‚½‚è”»’è‚Ì—V‚Ñ
 
 
 	DWORD frameCounter_;//ƒtƒŒ[ƒ€”
