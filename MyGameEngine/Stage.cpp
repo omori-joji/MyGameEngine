@@ -57,6 +57,8 @@ void Stage::Initialize()
     pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
 }
 
+
+
 //XV
 void Stage::Update()
 {

@@ -23,7 +23,10 @@ Player::Player(GameObject* parent)
 	move_(0.01),//Y軸の移動
 	gravity_(0.01),//重力
  
-	pStage_(nullptr)//ステージの情報を入れるポインタ
+	pStage_(nullptr),//ステージの情報を入れるポインタ
+	plyerRightMoveCount(0),
+	isDirection(true),
+	plyerLeftMoveCount(0)
 {
 
 }
@@ -35,8 +38,11 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_ = Model::Load("Assets/Player_0.fbx");
-	//transform_.rotate_.y += 180;
+	hModel_Left[0] = Model::Load("Assets/Player_0.fbx");
+	hModel_Left[1] = Model::Load("Assets/Player_Run.fbx");
+
+	hModel_Right[0] = Model::Load("Assets/Player_2.fbx");
+	hModel_Right[1] = Model::Load("Assets/PlayerRun_2.fbx");
 }
 
 void Player::Update()
@@ -52,22 +58,52 @@ void Player::Update()
 
 
 
-	//右移動
-	if (Input::IsKey(DIK_RIGHT))
-	{
-	    transform_.position_.x += SPEED;
-	}
+	
 
 	//左移動
 	if (Input::IsKey(DIK_LEFT))
 	{
+		
 	    transform_.position_.x -= SPEED;
 	}
+
+	if (Input::IsKeyDown(DIK_LEFT))
+	{
+		isDirection = false;
+		plyerLeftMoveCount++;
+	}
+
+	if (Input::IsKeyUp(DIK_LEFT))
+	{
+		plyerLeftMoveCount--; 
+	}
+
+
+
+	//右移動
+	if (Input::IsKey(DIK_RIGHT))
+	{
+		transform_.position_.x += SPEED;
+	}
+
+	//プレイヤーのモデル切り替え
+	if (Input::IsKeyDown(DIK_RIGHT))
+	{
+		isDirection = true;
+		plyerRightMoveCount++;
+	}
+
+	if (Input::IsKeyUp(DIK_RIGHT))
+	{
+		plyerRightMoveCount--;
+	}
+
 
 
 	//再生スタート
 	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
 	{
+
 		//初期位置に戻る
 		transform_.position_ = pStage_->stertPos; 
 	}
@@ -167,8 +203,17 @@ void Player::Update()
 
 void Player::Draw()
 {
-	Model::SetTransform(hModel_, transform_);
-	Model::Draw(hModel_);
+	if (isDirection)
+	{
+		Model::SetTransform(hModel_Left[plyerRightMoveCount], transform_);
+		Model::Draw(hModel_Left[plyerRightMoveCount]);
+	}
+	else if(!isDirection)
+	{
+		Model::SetTransform(hModel_Left[plyerLeftMoveCount], transform_);
+		Model::Draw(hModel_Left[plyerLeftMoveCount]);
+	}
+
 }
 
 void Player::Release()
