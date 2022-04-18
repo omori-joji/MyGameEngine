@@ -35,15 +35,12 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_ = Model::Load("Assets/Player3.fbx");
-	transform_.rotate_.y += 180;
+	hModel_ = Model::Load("Assets/Player_0.fbx");
+	//transform_.rotate_.y += 180;
 }
 
 void Player::Update()
 {
-	
-
-
 
 	//StageƒNƒ‰ƒX‚ğ’T‚·
 	//pStage_‚É’T‚µ‚½î•ñ‚ª“ü‚é
