@@ -38,11 +38,11 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_Left[0] = Model::Load("Assets/Player_0.fbx");
-	hModel_Left[1] = Model::Load("Assets/Player_Run.fbx");
+	hModel_Right[0] = Model::Load("Assets/Player_0.fbx");
+	hModel_Right[1] = Model::Load("Assets/Player_Run.fbx");
 
-	hModel_Right[0] = Model::Load("Assets/Player_2.fbx");
-	hModel_Right[1] = Model::Load("Assets/PlayerRun_2.fbx");
+	hModel_Left[0] = Model::Load("Assets/Player_2.fbx");
+	hModel_Left[1] = Model::Load("Assets/PlayerRun_2.fbx");
 }
 
 void Player::Update()
@@ -205,8 +205,8 @@ void Player::Draw()
 {
 	if (isDirection)
 	{
-		Model::SetTransform(hModel_Left[plyerRightMoveCount], transform_);
-		Model::Draw(hModel_Left[plyerRightMoveCount]);
+		Model::SetTransform(hModel_Right[plyerRightMoveCount], transform_);
+		Model::Draw(hModel_Right[plyerRightMoveCount]);
 	}
 	else if(!isDirection)
 	{
