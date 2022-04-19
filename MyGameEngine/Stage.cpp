@@ -39,7 +39,7 @@ void Stage::Initialize()
         {
             map_[x][y] = csv.GetValue(x, 11 - y); //エクセルだとyの値が逆なので-9をしてあげる
 
-            if (map_[x][y] == 99)
+            if (map_[x][y] == 200)
             {
                 //プレイヤーの生成
                 //プレイヤーの位置決定
@@ -124,7 +124,7 @@ void Stage::Draw()
         for (int y = 0; y < 12; y++)
         {
             //プレイヤーの位置とブロックを置かない位置の場合
-            if (map_[x][y] == 0 || map_[x][y] == 99)
+            if (map_[x][y] == 0 || map_[x][y] == 200)
             {
                 continue;
             }
@@ -168,7 +168,7 @@ void Stage::Release()
 bool Stage::isCrash(int x, int y)
 {
     //そこにはブロックはない
-    if (map_[x][y] == 0 || map_[x][y] == 99)
+    if (map_[x][y] == 0 || map_[x][y] == 200 || map_[x][y] == 81 || map_[x][y] == 91)
     {
         return false;
     }
@@ -203,10 +203,10 @@ void Stage::DownButton(int x, int y)
     if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1))
     {
         //ボタンのモデルを切り替える
-        CheckBrock(31 , false);
+        CheckBlock(31 , false);
 
         //壁のモデルを切り替える
-        CheckBrock(51 , false);
+        CheckBlock(51 , false);
     }
 }
 
@@ -235,7 +235,7 @@ void Stage::OpenWall()
 //特定のブロックを探して、モデルを切り替える関数
 //第一引数は切り替えたいブロックの番号
 //第二引数はプラスかマイナスか
-void Stage::CheckBrock(int find , bool which)
+void Stage::CheckBlock(int find , bool which)
 {
     for (int x = 0; x < 20; x++)
     {
@@ -260,7 +260,7 @@ void Stage::Blinking(int blockNum, int time)
     if (timeCount_ >= time && isBlinking_ == true)
     {
         //モデルを切り替える関数
-        CheckBrock(blockNum , false);
+        CheckBlock(blockNum , false);
 
         isBlinking_ = false;
 
@@ -269,12 +269,25 @@ void Stage::Blinking(int blockNum, int time)
     }
     else if(timeCount_ >= time && isBlinking_ == false)
     {
-        CheckBrock(blockNum - 10, true);
+        CheckBlock(blockNum - 10, true);
 
         isBlinking_ = true;
 
         //計測時間をリセット
         timeCount_ = 0;
+    }
+}
+
+void Stage::WarpBlock(int x, int y)
+{
+    if (map_[x][y] == 81)
+    {
+        pPlayer_->killMe();
+
+        Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
+
+        pPlayer->transform_.position_.x = map_[x][y]+10;
+        pPlayer->transform_.position_.y = map_[x][y]+10;
     }
 }
 
@@ -384,5 +397,33 @@ void Stage::ModelLoad()
     hModel_[77] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[78] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[79] = Model::Load("Assets/GreenBlock.fbx");
+
+
+    //ワープブロック(入口)
+    hModel_[80] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[81] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[82] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[83] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[84] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[85] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[86] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[87] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[88] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[89] = Model::Load("Assets/WarpEntrance.fbx");
+
+
+    //ワープブロック(出口)
+    hModel_[90] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[91] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[92] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[93] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[94] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[95] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[96] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[97] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[98] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[99] = Model::Load("Assets/WarpEntrance.fbx");
+
+
 }
 
