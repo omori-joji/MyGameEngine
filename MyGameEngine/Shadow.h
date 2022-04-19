@@ -15,9 +15,13 @@ class Shadow : public GameObject
 
 
 
-	int hModel_;
+	int hModel_Right[2];
+	int hModel_Left[2];
+	int leftModel;
+	int rightModel;
 
 	bool isRecording_; //Playerの動きを記録しているか
+	bool isRecordCheck;
 
 	const float sWIDTH;//Playerの幅
 	const float sMARGIN;//当たり判定の遊び
@@ -25,6 +29,10 @@ class Shadow : public GameObject
 
 	DWORD frameCounter_;//フレーム数
 	std::vector<XMFLOAT3> recordData_;//プレイヤーの位置を記録する可変長配列
+	std::vector<bool> recordCheck_;
+	std::vector<int> recordRightMove_;
+	std::vector<int> recordLeftMove_;
+
 
 public:
 
