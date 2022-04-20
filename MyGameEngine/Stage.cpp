@@ -296,8 +296,8 @@ void Stage::WarpBlock(int x, int y)
 void Stage::ModelLoad()
 {
     //ステージを構成するブロック
-    hModel_[0] = Model::Load("Assets/BlueBlock.fbx");
-    hModel_[1] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[0] = Model::Load("Assets/Block.fbx");
+    hModel_[1] = Model::Load("Assets/NaturalBlock.fbx");
     hModel_[2] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[3] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[4] = Model::Load("Assets/GreenBlock.fbx");
