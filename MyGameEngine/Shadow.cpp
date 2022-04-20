@@ -20,11 +20,11 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	//何のFBXファイルをロードするか
-	hModel_Right[0] = Model::Load("Assets/Player_0.fbx");
-	hModel_Right[1] = Model::Load("Assets/Player_Run.fbx");
+	hModel_Right[0] = Model::Load("Assets/Shadow_Right.fbx");
+	hModel_Right[1] = Model::Load("Assets/ShadowRun_Right.fbx");
 
-	hModel_Left[0] = Model::Load("Assets/Player_2.fbx");
-	hModel_Left[1] = Model::Load("Assets/PlayerRun_2.fbx");
+	hModel_Left[0] = Model::Load("Assets/ShadowLeft.fbx");
+	hModel_Left[1] = Model::Load("Assets/ShadowRun_Left.fbx");
 }
 
 void Shadow::Update()
