@@ -17,7 +17,6 @@ class Player : public GameObject
     const float BLOCK_SIZE;//ブロックのサイズ
     const float MAX_JUMP;//ジャンプの上限
     bool isJump; //ジャンプしているか
-    bool isDirection;
     float move_; //Y軸の移動
     float gravity_; //重力
    
@@ -26,15 +25,17 @@ class Player : public GameObject
 
     int hModel_Left[2];
     int hModel_Right[2];
-    int plyerRightMoveCount;
-    int plyerLeftMoveCount;
+    
+    
 
     Stage* pStage_;
 
 
 public:
 
-
+    int plyerRightMoveCount;
+    int plyerLeftMoveCount;
+    bool isDirection;
 
 
 public:

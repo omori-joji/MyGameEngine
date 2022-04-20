@@ -179,8 +179,6 @@ void Player::Update()
 		move_ = 0;
 
 		transform_.position_.y = (float)checkY1 + 1.0f;
-
-
 	}
 	//重力
 	//下に何もなかったらどんどん下がる
@@ -188,6 +186,7 @@ void Player::Update()
 	{
 
 		transform_.position_.y -= move_;
+
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
 		//ブロックの直系よりは大きくならないようにする
 		//gravityの値は0.01
@@ -199,6 +198,8 @@ void Player::Update()
 
 	//足元にボタンがあるかないかを判別する関数
 	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
+
+	//pStage_->WarpBlock((int)transform_.position_.x, (int)(transform_.position_.y));
 }
 
 void Player::Draw()
