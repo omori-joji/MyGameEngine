@@ -9,7 +9,6 @@ Shadow::Shadow(GameObject* parent)
 	:GameObject(parent, "Shadow"),  //親情報
 	pPlayer_(nullptr),       //プレイヤーの情報を入れる関数
 	pStage_(nullptr),        //ステージの情報を入れる関数
-    hModel_(-1),             //モデル番号
 	isRecording_(false),     //Playerの動きを記録しているか
 	frameCounter_(0),         //毎フレーム動きを記録するためのカウンター
 	sWIDTH(0.3f),
@@ -21,7 +20,11 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	//何のFBXファイルをロードするか
-	hModel_ = Model::Load("Assets/Player_0.fbx");
+	hModel_Right[0] = Model::Load("Assets/Shadow_Right.fbx");
+	hModel_Right[1] = Model::Load("Assets/ShadowRun_Right.fbx");
+
+	hModel_Left[0] = Model::Load("Assets/ShadowLeft.fbx");
+	hModel_Left[1] = Model::Load("Assets/ShadowRun_Left.fbx");
 }
 
 void Shadow::Update()
@@ -41,8 +44,21 @@ void Shadow::Update()
 	//記録中
 	if (isRecording_ == false)
 	{
-		//可変長配列に毎フレームプレイヤーの位置を記録する
+
+		//動的配列に毎フレームプレイヤーの位置を記録する
 		recordData_.push_back(pPlayer_->transform_.position_);
+
+
+		//動的配列にプレイヤーの向いている方向を記録する
+		recordCheck_.push_back(pPlayer_->isDirection);
+
+
+		//動的配列に現在のプレイヤーのモデル番号を記録する
+		recordLeftMove_.push_back(pPlayer_->plyerLeftMoveCount);
+
+
+		//動的配列に現在のプレイヤーのモデル番号を記録する
+		recordRightMove_.push_back(pPlayer_->plyerRightMoveCount);
 	}
 	//再生中
 	else if(frameCounter_<recordData_.size()-1 && isRecording_ == true)
@@ -50,6 +66,19 @@ void Shadow::Update()
 
 		//毎フレーム影のPositonをプレイヤーのPositionにしてあげる
 		transform_.position_ = recordData_[frameCounter_];
+
+
+		//毎フレームプレイヤーの向いている方向を格納する
+		isRecordCheck = recordCheck_[frameCounter_];
+
+
+		//毎フレームプレイヤーのモデル番号を格納する
+		leftModel = recordLeftMove_[frameCounter_];
+
+
+		//毎フレームプレイヤーのモデル番号を格納する
+		rightModel = recordRightMove_[frameCounter_];
+
 
 		//次のフレームへ
 		frameCounter_++;
@@ -90,8 +119,19 @@ void Shadow::Draw()
 	//表示・非表示
 	if (isRecording_)
 	{
-		Model::SetTransform(hModel_, transform_);
-		Model::Draw(hModel_);
+		if (isRecordCheck)
+		{
+			Model::SetTransform(hModel_Right[rightModel], transform_);
+			Model::Draw(hModel_Right[rightModel]);
+		}
+		else
+		{
+			Model::SetTransform(hModel_Left[leftModel], transform_);
+			Model::Draw(hModel_Left[leftModel]);
+		}
+
+
+
 	}
 
 }

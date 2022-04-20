@@ -9,7 +9,8 @@ class Shadow;
 //ŸŸŸ‚ğŠÇ—‚·‚éƒNƒ‰ƒX
 class Stage : public GameObject
 {
-    int hModel_[99];
+    int hModel_[500];
+    //int groundModel[1];
     int shadowCount_;
     int timeCount_;
 
@@ -59,8 +60,10 @@ public:
 
     void OpenWall();
 
-    void CheckBrock(int find , bool which);
+    void CheckBlock(int find , bool which);
 
     void Blinking(int blockNum, int time);
+
+    void WarpBlock(int x, int y);
 };
 
