@@ -10,6 +10,7 @@ class Shadow;
 class Stage : public GameObject
 {
     int hModel_[500];
+    //int groundModel[1];
     int shadowCount_;
     int timeCount_;
 

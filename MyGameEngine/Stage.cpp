@@ -28,6 +28,8 @@ void Stage::Initialize()
     ModelLoad();
 
 
+
+
     //Csvファイルの読み込み
     CsvReader csv;
     csv.Load("Assets/Stage1.csv");
@@ -128,6 +130,33 @@ void Stage::Draw()
             {
                 continue;
             }
+
+            //if (x == 20 && y == 12)
+            //{
+            //    Transform trans;
+            //    if (x % 2 == 0)
+            //    {
+            //        trans.position_.x = (x / 2) + 0.5f;
+            //    }
+            //    else
+            //    {
+            //        trans.position_.x = (x / 2);
+            //    }
+
+            //    if (y % 2 == 0)
+            //    {
+            //        trans.position_.y = (y/2) + 0.5f;
+            //    }
+            //    else
+            //    {
+            //        trans.position_.y = (y / 2);
+            //    }
+            //    trans.position_.z += 3;
+
+
+            //    Model::SetTransform(groundModel[0], trans);
+            //    Model::Draw(groundModel[0]);
+            //}
 
             //モデル番号の格納
             int type = map_[x][y] - 1;
@@ -295,6 +324,8 @@ void Stage::WarpBlock(int x, int y)
 
 void Stage::ModelLoad()
 {
+    //groundModel[0] = Model::Load("Assets/BackGround.fbx");
+
     //ステージを構成するブロック
     hModel_[0] = Model::Load("Assets/Block.fbx");
     hModel_[1] = Model::Load("Assets/NaturalBlock.fbx");
