@@ -168,7 +168,12 @@ void Stage::Release()
 bool Stage::isCrash(int x, int y)
 {
     //そこにはブロックはない
-    if (map_[x][y] == 0 || map_[x][y] == 200 || map_[x][y] == 81 || map_[x][y] == 91)
+    if (map_[x][y] == 0 || 
+        map_[x][y] == 200 || 
+        map_[x][y] == 81 || 
+        map_[x][y] == 91 ||
+        map_[x][y] == 51 ||
+        map_[x][y] == 71)
     {
         return false;
     }
@@ -298,7 +303,7 @@ void Stage::ModelLoad()
     //ステージを構成するブロック
     hModel_[0] = Model::Load("Assets/Block.fbx");
     hModel_[1] = Model::Load("Assets/NaturalBlock.fbx");
-    hModel_[2] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[2] = Model::Load("Assets/Goal.fbx");
     hModel_[3] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[4] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[5] = Model::Load("Assets/GreenBlock.fbx");
@@ -348,7 +353,7 @@ void Stage::ModelLoad()
 
 
     //開く壁
-    hModel_[40] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[40] = Model::Load("Assets/Wall.fbx");
     hModel_[41] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[42] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[43] = Model::Load("Assets/GreenBlock.fbx");
@@ -361,7 +366,7 @@ void Stage::ModelLoad()
 
 
     //開いている間の何もないブロック
-    hModel_[50] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[50] = Model::Load("Assets/AlphaBlock.fbx");
     hModel_[51] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[52] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[53] = Model::Load("Assets/YellowBlock.fbx");
@@ -374,7 +379,7 @@ void Stage::ModelLoad()
 
 
     //消えるブロック(消える前)
-    hModel_[60] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[60] = Model::Load("Assets/Wall.fbx");
     hModel_[61] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[62] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[63] = Model::Load("Assets/YellowBlock.fbx");
@@ -387,7 +392,7 @@ void Stage::ModelLoad()
 
 
     //消えるブロック(消えた後)
-    hModel_[70] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[70] = Model::Load("Assets/AlphaBlock.fbx");
     hModel_[71] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[72] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[73] = Model::Load("Assets/GreenBlock.fbx");
