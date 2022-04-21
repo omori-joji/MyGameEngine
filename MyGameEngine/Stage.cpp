@@ -240,7 +240,6 @@ void Stage::DownButton(int x, int y)
 }
 
 
-
 //•Ç‚ğŠJ‚­ŠÖ”
 void Stage::OpenWall()
 {
