@@ -19,8 +19,9 @@ class Shadow : public GameObject
 	int hModel_Left[2];
 	int leftModel;
 	int rightModel;
+	int reproduction_;
 
-	bool isRecording_; //Playerの動きを記録しているか
+	
 	bool isRecordCheck;
 
 	const float sWIDTH;//Playerの幅
@@ -32,10 +33,11 @@ class Shadow : public GameObject
 	std::vector<bool> recordCheck_;
 	std::vector<int> recordRightMove_;
 	std::vector<int> recordLeftMove_;
+	std::vector<int> recordKillTime_;
 
 
 public:
-
+	bool isRecording_; //Playerの動きを記録しているか
 
 public:
 	//コンストラクタ

@@ -25,8 +25,6 @@ class Player : public GameObject
 
     int hModel_Left[2];
     int hModel_Right[2];
-    
-    
 
     Stage* pStage_;
 

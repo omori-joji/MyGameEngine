@@ -12,7 +12,8 @@ Shadow::Shadow(GameObject* parent)
 	isRecording_(false),     //Playerの動きを記録しているか
 	frameCounter_(0),         //毎フレーム動きを記録するためのカウンター
 	sWIDTH(0.3f),
-	sMARGIN(0.11f)
+	sMARGIN(0.11f),
+	reproduction_(0)
 {
 
 }
@@ -23,7 +24,7 @@ void Shadow::Initialize()
 	hModel_Right[0] = Model::Load("Assets/Shadow_Right.fbx");
 	hModel_Right[1] = Model::Load("Assets/ShadowRun_Right.fbx");
 
-	hModel_Left[0] = Model::Load("Assets/ShadowLeft.fbx");
+	hModel_Left[0] = Model::Load("Assets/Shadow_Left.fbx");
 	hModel_Left[1] = Model::Load("Assets/ShadowRun_Left.fbx");
 }
 
@@ -39,7 +40,7 @@ void Shadow::Update()
 		pStage_ = (Stage*)Find("Stage");
 	}
 
-
+	reproduction_++;
 
 	//記録中
 	if (isRecording_ == false)
@@ -89,6 +90,7 @@ void Shadow::Update()
 	//再生し終わったら
 	if (frameCounter_ >= recordData_.size() - 1)
 	{
+		pStage_->DownButton((int)transform_.position_.x , (int)(transform_.position_.y)-1);
 
 		//非表示
 		isRecording_ = false;

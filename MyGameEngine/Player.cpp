@@ -197,9 +197,7 @@ void Player::Update()
 	}
 
 	//‘«Œ³‚Éƒ{ƒ^ƒ“‚ª‚ ‚é‚©‚È‚¢‚©‚ð”»•Ê‚·‚éŠÖ”
-	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
-
-	//pStage_->WarpBlock((int)transform_.position_.x, (int)(transform_.position_.y));
+	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)-1);
 }
 
 void Player::Draw()

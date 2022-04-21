@@ -131,33 +131,6 @@ void Stage::Draw()
                 continue;
             }
 
-            //if (x == 20 && y == 12)
-            //{
-            //    Transform trans;
-            //    if (x % 2 == 0)
-            //    {
-            //        trans.position_.x = (x / 2) + 0.5f;
-            //    }
-            //    else
-            //    {
-            //        trans.position_.x = (x / 2);
-            //    }
-
-            //    if (y % 2 == 0)
-            //    {
-            //        trans.position_.y = (y/2) + 0.5f;
-            //    }
-            //    else
-            //    {
-            //        trans.position_.y = (y / 2);
-            //    }
-            //    trans.position_.z += 3;
-
-
-            //    Model::SetTransform(groundModel[0], trans);
-            //    Model::Draw(groundModel[0]);
-            //}
-
             //モデル番号の格納
             int type = map_[x][y] - 1;
 
@@ -197,7 +170,12 @@ void Stage::Release()
 bool Stage::isCrash(int x, int y)
 {
     //そこにはブロックはない
-    if (map_[x][y] == 0 || map_[x][y] == 200 || map_[x][y] == 81 || map_[x][y] == 91)
+    if (map_[x][y] == 0 || 
+        map_[x][y] == 200 || 
+        map_[x][y] == 81 || 
+        map_[x][y] == 91 ||
+        map_[x][y] == 51 ||
+        map_[x][y] == 71)
     {
         return false;
     }
@@ -218,7 +196,7 @@ bool Stage::isCrash(int x, int y)
 void Stage::DownButton(int x, int y)
 {
     //押した後のモデルに差し替える
-    if(map_[x][y] == 21)
+    if (map_[x][y] == 21)
     {
         map_[x][y] = map_[x][y] + 10;
 
@@ -229,7 +207,7 @@ void Stage::DownButton(int x, int y)
 
 
     //Playerが離れたら
-    if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1))
+    if (map_[x][y] == 0||Input::IsKeyDown(DIK_1))
     {
         //ボタンのモデルを切り替える
         CheckBlock(31 , false);
@@ -243,17 +221,7 @@ void Stage::DownButton(int x, int y)
 //壁を開く関数
 void Stage::OpenWall()
 {
-    for (int x = 0; x < 20; x++)
-    {
-        for (int y = 0; y < 12; y++)
-        {
-            if (map_[x][y] == 41 && isOpenWall_ == false)
-            {
-                //壁が配置されていたら0を入れてあげる
-                map_[x][y] = map_[x][y] + 10;
-            }
-        }
-    }
+    CheckBlock(41, true);
 
     //壁が全部開いた
     isOpenWall_ = true;
@@ -323,12 +291,11 @@ void Stage::WarpBlock(int x, int y)
 
 void Stage::ModelLoad()
 {
-    //groundModel[0] = Model::Load("Assets/BackGround.fbx");
 
     //ステージを構成するブロック
     hModel_[0] = Model::Load("Assets/Block.fbx");
     hModel_[1] = Model::Load("Assets/NaturalBlock.fbx");
-    hModel_[2] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[2] = Model::Load("Assets/Goal.fbx");
     hModel_[3] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[4] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[5] = Model::Load("Assets/GreenBlock.fbx");
@@ -378,7 +345,7 @@ void Stage::ModelLoad()
 
 
     //開く壁
-    hModel_[40] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[40] = Model::Load("Assets/Wall.fbx");
     hModel_[41] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[42] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[43] = Model::Load("Assets/GreenBlock.fbx");
@@ -391,7 +358,7 @@ void Stage::ModelLoad()
 
 
     //開いている間の何もないブロック
-    hModel_[50] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[50] = Model::Load("Assets/AlphaBlock.fbx");
     hModel_[51] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[52] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[53] = Model::Load("Assets/YellowBlock.fbx");
@@ -404,7 +371,7 @@ void Stage::ModelLoad()
 
 
     //消えるブロック(消える前)
-    hModel_[60] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[60] = Model::Load("Assets/Wall.fbx");
     hModel_[61] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[62] = Model::Load("Assets/YellowBlock.fbx");
     hModel_[63] = Model::Load("Assets/YellowBlock.fbx");
@@ -417,7 +384,7 @@ void Stage::ModelLoad()
 
 
     //消えるブロック(消えた後)
-    hModel_[70] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[70] = Model::Load("Assets/AlphaBlock.fbx");
     hModel_[71] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[72] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[73] = Model::Load("Assets/GreenBlock.fbx");
