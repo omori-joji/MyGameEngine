@@ -196,7 +196,7 @@ bool Stage::isCrash(int x, int y)
 void Stage::DownButton(int x, int y)
 {
     //押した後のモデルに差し替える
-    if(map_[x][y] == 21)
+    if (map_[x][y] == 21)
     {
         map_[x][y] = map_[x][y] + 10;
 
@@ -207,7 +207,7 @@ void Stage::DownButton(int x, int y)
 
 
     //Playerが離れたら
-    if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1))
+    if (map_[x][y] == 0||Input::IsKeyDown(DIK_1))
     {
         //ボタンのモデルを切り替える
         CheckBlock(31 , false);
@@ -222,17 +222,7 @@ void Stage::DownButton(int x, int y)
 //壁を開く関数
 void Stage::OpenWall()
 {
-    for (int x = 0; x < 20; x++)
-    {
-        for (int y = 0; y < 12; y++)
-        {
-            if (map_[x][y] == 41 && isOpenWall_ == false)
-            {
-                //壁が配置されていたら0を入れてあげる
-                map_[x][y] = map_[x][y] + 10;
-            }
-        }
-    }
+    CheckBlock(41, true);
 
     //壁が全部開いた
     isOpenWall_ = true;

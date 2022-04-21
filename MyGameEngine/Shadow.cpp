@@ -45,7 +45,6 @@ void Shadow::Update()
 	//記録中
 	if (isRecording_ == false)
 	{
-		reproduction_++;
 
 		//動的配列に毎フレームプレイヤーの位置を記録する
 		recordData_.push_back(pPlayer_->transform_.position_);
@@ -81,11 +80,6 @@ void Shadow::Update()
 		//毎フレームプレイヤーのモデル番号を格納する
 		rightModel = recordRightMove_[frameCounter_];
 
-		//reproduction_--;
-		//if (reproduction_ <= 0)
-		//{
-		//	pStage_->CheckBlock(31, false);
-		//}
 
 		//次のフレームへ
 		frameCounter_++;
@@ -96,6 +90,8 @@ void Shadow::Update()
 	//再生し終わったら
 	if (frameCounter_ >= recordData_.size() - 1)
 	{
+		pStage_->DownButton((int)transform_.position_.x , (int)(transform_.position_.y)-1);
+
 		//非表示
 		isRecording_ = false;
 
@@ -116,7 +112,7 @@ void Shadow::Update()
 
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)-1);
+		pStage_->DownButton(transform_.position_.x, transform_.position_.y);
 	}
 }
 
@@ -155,6 +151,5 @@ void Shadow::Collision()
 void Shadow::Flag()
 {
 	isRecording_ = true;
-	reproduction_ = 0;
 	frameCounter_ = 0;
 }
