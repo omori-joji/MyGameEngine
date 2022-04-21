@@ -23,7 +23,7 @@ void Shadow::Initialize()
 	hModel_Right[0] = Model::Load("Assets/Shadow_Right.fbx");
 	hModel_Right[1] = Model::Load("Assets/ShadowRun_Right.fbx");
 
-	hModel_Left[0] = Model::Load("Assets/ShadowLeft.fbx");
+	hModel_Left[0] = Model::Load("Assets/Shadow_Left.fbx");
 	hModel_Left[1] = Model::Load("Assets/ShadowRun_Left.fbx");
 }
 
@@ -89,6 +89,8 @@ void Shadow::Update()
 	//Ä¶‚µI‚í‚Á‚½‚ç
 	if (frameCounter_ >= recordData_.size() - 1)
 	{
+		pStage_->CheckBlock(51,true);
+		//pStage_->CheckBlock(31, false);
 
 		//”ñ•\Ž¦
 		isRecording_ = false;

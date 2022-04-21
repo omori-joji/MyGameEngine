@@ -20,7 +20,7 @@ class Shadow : public GameObject
 	int leftModel;
 	int rightModel;
 
-	bool isRecording_; //Playerの動きを記録しているか
+	
 	bool isRecordCheck;
 
 	const float sWIDTH;//Playerの幅
@@ -35,7 +35,7 @@ class Shadow : public GameObject
 
 
 public:
-
+	bool isRecording_; //Playerの動きを記録しているか
 
 public:
 	//コンストラクタ
