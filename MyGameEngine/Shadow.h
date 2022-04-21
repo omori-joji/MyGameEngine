@@ -19,6 +19,7 @@ class Shadow : public GameObject
 	int hModel_Left[2];
 	int leftModel;
 	int rightModel;
+	int reproduction_;
 
 	
 	bool isRecordCheck;
@@ -32,6 +33,7 @@ class Shadow : public GameObject
 	std::vector<bool> recordCheck_;
 	std::vector<int> recordRightMove_;
 	std::vector<int> recordLeftMove_;
+	std::vector<int> recordKillTime_;
 
 
 public:

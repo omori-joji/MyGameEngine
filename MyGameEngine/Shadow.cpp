@@ -12,7 +12,8 @@ Shadow::Shadow(GameObject* parent)
 	isRecording_(false),     //Playerの動きを記録しているか
 	frameCounter_(0),         //毎フレーム動きを記録するためのカウンター
 	sWIDTH(0.3f),
-	sMARGIN(0.11f)
+	sMARGIN(0.11f),
+	reproduction_(0)
 {
 
 }
@@ -59,6 +60,9 @@ void Shadow::Update()
 
 		//動的配列に現在のプレイヤーのモデル番号を記録する
 		recordRightMove_.push_back(pPlayer_->plyerRightMoveCount);
+
+
+		recordKillTime_.push_back()
 	}
 	//再生中
 	else if(frameCounter_<recordData_.size()-1 && isRecording_ == true)
@@ -112,7 +116,7 @@ void Shadow::Update()
 
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		pStage_->DownButton(transform_.position_.x, transform_.position_.y);
+		pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)-1);
 	}
 }
 

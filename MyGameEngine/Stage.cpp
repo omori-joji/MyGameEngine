@@ -234,7 +234,7 @@ void Stage::DownButton(int x, int y)
 
 
     //Player‚ª—£‚ê‚½‚ç
-    if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1))
+    if (map_[x][y] == 0 || Input::IsKeyDown(DIK_1)|| pShadow->isRecording_ == false)
     {
         //ƒ{ƒ^ƒ“‚Ìƒ‚ƒfƒ‹‚ğØ‚è‘Ö‚¦‚é
         CheckBlock(31 , false);
