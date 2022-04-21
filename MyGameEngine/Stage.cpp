@@ -70,6 +70,7 @@ void Stage::Update()
     }
     
 
+    //一定時間ごとにブロックを入れ替える
     Blinking(71, 60);
 
 
@@ -209,6 +210,15 @@ void Stage::DownButton(int x, int y)
     //Playerが離れたら
     if (map_[x][y] == 0||Input::IsKeyDown(DIK_1))
     {
+        for (int i = 0; i <= shadowCount_; i++)
+        {
+            if (pShadow[i]->isRecording_ == false)
+            {
+                CheckBlock(31, false);
+                CheckBlock(51, false);
+            }
+            
+        }
         //ボタンのモデルを切り替える
         CheckBlock(31 , false);
 
@@ -274,6 +284,7 @@ void Stage::Blinking(int blockNum, int time)
     }
 }
 
+//特定のブロックの位置にワープする関数
 void Stage::WarpBlock(int x, int y)
 {
     if (map_[x][y] == 81)

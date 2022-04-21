@@ -10,20 +10,20 @@ Shadow::Shadow(GameObject* parent)
 	pPlayer_(nullptr),       //プレイヤーの情報を入れる関数
 	pStage_(nullptr),        //ステージの情報を入れる関数
 	isRecording_(false),     //Playerの動きを記録しているか
-	frameCounter_(0),         //毎フレーム動きを記録するためのカウンター
-	sWIDTH(0.3f),
-	sMARGIN(0.11f),
-	reproduction_(0)
+	frameCounter_(0),        //毎フレーム動きを記録するためのカウンター
+	sWIDTH(0.3f),            //影の幅
+	sMARGIN(0.11f),          //当たり判定の遊び
 {
 
 }
 
 void Shadow::Initialize()
 {
-	//何のFBXファイルをロードするか
+	//右を向いているモデル
 	hModel_Right[0] = Model::Load("Assets/Shadow_Right.fbx");
 	hModel_Right[1] = Model::Load("Assets/ShadowRun_Right.fbx");
 
+	//左を向いているモデル
 	hModel_Left[0] = Model::Load("Assets/Shadow_Left.fbx");
 	hModel_Left[1] = Model::Load("Assets/ShadowRun_Left.fbx");
 }
@@ -39,8 +39,6 @@ void Shadow::Update()
 	{
 		pStage_ = (Stage*)Find("Stage");
 	}
-
-	reproduction_++;
 
 	//記録中
 	if (isRecording_ == false)
@@ -90,7 +88,8 @@ void Shadow::Update()
 	//再生し終わったら
 	if (frameCounter_ >= recordData_.size() - 1)
 	{
-		pStage_->DownButton((int)transform_.position_.x , (int)(transform_.position_.y)-1);
+		//ボタンを踏んでいる状態で影の再生が終了したときボタンを元に戻す
+		pStage_->CheckBlock(31, false);
 
 		//非表示
 		isRecording_ = false;
@@ -110,8 +109,10 @@ void Shadow::Update()
 	checkY1 = (int)(transform_.position_.y);
 	checkY2 = (int)(transform_.position_.y);
 
+	//下の当たり判定
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		//足元にあるボタンを探す
 		pStage_->DownButton(transform_.position_.x, transform_.position_.y);
 	}
 }
@@ -150,6 +151,9 @@ void Shadow::Collision()
 //保存した動きを再生する関数
 void Shadow::Flag()
 {
+	//再生開始
 	isRecording_ = true;
+
+	//最初のフレームへ
 	frameCounter_ = 0;
 }
