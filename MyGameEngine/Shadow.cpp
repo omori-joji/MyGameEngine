@@ -12,7 +12,7 @@ Shadow::Shadow(GameObject* parent)
 	isRecording_(false),     //Playerの動きを記録しているか
 	frameCounter_(0),        //毎フレーム動きを記録するためのカウンター
 	sWIDTH(0.3f),            //影の幅
-	sMARGIN(0.11f),          //当たり判定の遊び
+	sMARGIN(0.11f)           //当たり判定の遊び
 {
 
 }
