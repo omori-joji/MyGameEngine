@@ -30,7 +30,7 @@ void Stage::Initialize()
 
 
     //サウンドデータのロード
-    hSound_ = Audio::Load("Assets/Dog.wav");
+    hSound_ = Audio::Load("Dog.wav");
     assert(hSound_ >= 0);
 
 
@@ -204,7 +204,9 @@ void Stage::DownButton(int x, int y)
     //押した後のモデルに差し替える
     if (map_[x][y] == 21)
     {
+
         Audio::Play(hSound_);
+
 
         map_[x][y] = map_[x][y] + 10;
 
