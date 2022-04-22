@@ -1,13 +1,14 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/CsvReader.h"
+#include "Engine/Audio.h"
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"),
+    :GameObject(parent, "Stage"), hSound_(-1),
     isOpenWall_(true),
     pPlayer_(nullptr),
     shadowCount_(0),
@@ -27,6 +28,10 @@ void Stage::Initialize()
 {
     ModelLoad();
 
+
+    //サウンドデータのロード
+    hSound_ = Audio::Load("Assets/Dog.wav");
+    assert(hSound_ >= 0);
 
 
 
@@ -199,6 +204,8 @@ void Stage::DownButton(int x, int y)
     //押した後のモデルに差し替える
     if (map_[x][y] == 21)
     {
+        Audio::Play(hSound_);
+
         map_[x][y] = map_[x][y] + 10;
 
         isOpenWall_ = false;//壁を開くよ
