@@ -30,7 +30,7 @@ void Stage::Initialize()
 
 
     //サウンドデータのロード
-    hSound_ = Audio::Load("Dog.wav");
+    hSound_ = Audio::Load("Assets/Dog.wav");
     assert(hSound_ >= 0);
 
 
