@@ -1,7 +1,6 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/CsvReader.h"
-#include "Engine/Audio.h"
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
@@ -27,12 +26,6 @@ Stage::~Stage()
 void Stage::Initialize()
 {
     ModelLoad();
-
-
-    //サウンドデータのロード
-    hSound_ = Audio::Load("Assets/Dog.wav");
-    assert(hSound_ >= 0);
-
 
 
     //Csvファイルの読み込み
@@ -204,8 +197,6 @@ void Stage::DownButton(int x, int y)
     //押した後のモデルに差し替える
     if (map_[x][y] == 21)
     {
-
-        Audio::Play(hSound_);
 
 
         map_[x][y] = map_[x][y] + 10;
