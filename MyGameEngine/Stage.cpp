@@ -170,6 +170,7 @@ bool Stage::isCrash(int x, int y)
 {
     //‚»‚±‚É‚ÍƒuƒƒbƒN‚Í‚È‚¢
     if (map_[x][y] == 0 || 
+        map_[x][y] == 3 ||
         map_[x][y] == 200 || 
         map_[x][y] == 81 || 
         map_[x][y] == 91 ||
@@ -296,6 +297,15 @@ void Stage::WarpBlock(int x, int y)
         pPlayer->transform_.position_.x = map_[x][y]+10;
         pPlayer->transform_.position_.y = map_[x][y]+10;
     }
+}
+
+void Stage::GoalCol(int x, int y)
+{
+    if (map_[x][y] == 3)
+    {
+        int a = 0;
+    }
+
 }
 
 

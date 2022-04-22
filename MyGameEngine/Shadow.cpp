@@ -58,6 +58,7 @@ void Shadow::Update()
 
 		//動的配列に現在のプレイヤーのモデル番号を記録する
 		recordRightMove_.push_back(pPlayer_->plyerRightMoveCount);
+
 	}
 	//再生中
 	else if(frameCounter_<recordData_.size()-1 && isRecording_ == true)
@@ -65,6 +66,7 @@ void Shadow::Update()
 
 		//毎フレーム影のPositonをプレイヤーのPositionにしてあげる
 		transform_.position_ = recordData_[frameCounter_];
+		transform_.position_.z += 0.1f;
 
 
 		//毎フレームプレイヤーの向いている方向を格納する
