@@ -286,16 +286,15 @@ void Stage::Blinking(int blockNum, int time)
 }
 
 //特定のブロックの位置にワープする関数
-void Stage::WarpBlock(int x, int y)
+bool Stage::WarpBlockEnter(int x, int y)
 {
     if (map_[x][y] == 81)
     {
-        pPlayer_->killMe();
-
-        Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
-
-        pPlayer->transform_.position_.x = map_[x][y]+10;
-        pPlayer->transform_.position_.y = map_[x][y]+10;
+        return true;
+    }
+    else
+    {
+        return false;
     }
 }
 
@@ -306,6 +305,21 @@ void Stage::GoalCol(int x, int y)
         int a = 0;
     }
 
+}
+
+void Stage::WarpBlockExit()
+{
+    for (int x = 0; x < 20; x++)
+    {
+        for (int y = 0; y < 12; y++)
+        {
+            if (map_[x][y] == 91)
+            {
+                pPlayer_->transform_.position_.x = x;
+                pPlayer_->transform_.position_.y = y;
+            }
+        }
+    }
 }
 
 

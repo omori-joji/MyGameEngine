@@ -143,6 +143,7 @@ void Shadow::Draw()
 
 void Shadow::Release()
 {
+
 }
 
 void Shadow::Collision()

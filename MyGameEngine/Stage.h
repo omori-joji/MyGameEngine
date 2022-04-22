@@ -64,8 +64,10 @@ public:
 
     void Blinking(int blockNum, int time);
 
-    void WarpBlock(int x, int y);
+    bool WarpBlockEnter(int x, int y);
 
     void GoalCol(int x, int y);
+
+    void WarpBlockExit();
 };
 

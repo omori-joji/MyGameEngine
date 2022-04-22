@@ -200,6 +200,11 @@ void Player::Update()
 	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)-1);
 
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
+
+	if (pStage_->WarpBlockEnter((int)transform_.position_.x, (int)transform_.position_.y))
+	{
+		pStage_->WarpBlockExit();
+	}
 }
 
 void Player::Draw()
