@@ -27,6 +27,7 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
+    //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
 
@@ -34,11 +35,18 @@ void Stage::Initialize()
     CsvReader csv;
     csv.Load("Assets/Stage1.csv");
 
+
+    //Excelで設定したマスの値
+    //縦
     verticalValu = 23;
+
+    //横
     besideValu = 28;
 
 
 
+    //プレイヤーの生成
+    //200が入っているマスにプレイヤーが出現する
     for (int x = 0; x < besideValu; x++)
     {
         for (int y = 0; y < verticalValu; y++)
@@ -68,6 +76,7 @@ void Stage::Initialize()
 //更新
 void Stage::Update()
 {
+    //Player情報の格納
     if (pPlayer_ == nullptr)
     {
         pPlayer_ = (Player*)Find("Player");
@@ -77,7 +86,7 @@ void Stage::Update()
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
     {
-        //点滅ブロックをリセット
+        //点滅ブロックの情報をリセット
         timeCount_ = 0;
         isBlinking_ = true;
 
@@ -109,11 +118,13 @@ void Stage::Update()
     //保存された影の動きをすべてリセットする
     if (Input::IsKeyDown(DIK_2))
     {
+        //今ある影分
         for (int i = 0; i <= shadowCount_; i++)
         {
+            //解放処理
             pShadow[i]->killMe();
         }
-
+        //影の数をリセット
         shadowCount_ = 0;
     }
 
@@ -157,12 +168,17 @@ void Stage::Draw()
         }
     }
 
+    //背景の生成
+    //ど真ん中に出す
     Transform back;
 
+    //横軸の真ん中
     back.position_.x = besideValu / 2;
+    //縦軸の真ん中
     back.position_.y = verticalValu / 2 + 1;
+    //少し奥に
     back.position_.z = 0.5;
-
+    //位置の確定
     back.Calclation();
 
     Model::SetTransform(hModel_[3], back);
@@ -219,18 +235,22 @@ void Stage::DownButton(int x, int y)
     if (map_[x][y] == 21)
     {
 
-
+        //モデル変更
         map_[x][y] = map_[x][y] + 10;
 
-        isOpenWall_ = false;//壁を開くよ
+        //壁を開くよ
+        isOpenWall_ = false;
 
-        OpenWall();//壁を開く処理
+        //壁を開く処理
+        OpenWall();
     }
 
 
     //Playerが離れたら
+    //もしくはリセットしたら
     if (map_[x][y] == 0||Input::IsKeyDown(DIK_1))
     {
+        //押している間だけのボタンのモデルをリセットする
         for (int i = 0; i <= shadowCount_; i++)
         {
             if (pShadow[i]->isRecording_ == false)
@@ -280,10 +300,16 @@ void Stage::CheckBlock(int find , bool which)
     }
 }
 
+//点滅ブロック
+//第一引数は点滅させたいブロックの番号
+//第二引数は秒数。単位はフレーム
+//変えたいモデル番号+10には透明のブロック設定しておく
 void Stage::Blinking(int blockNum, int time)
 {
+    //計測
     timeCount_++;
 
+    //透明にする
     if (timeCount_ >= time && isBlinking_ == true)
     {
         //モデルを切り替える関数
@@ -294,6 +320,7 @@ void Stage::Blinking(int blockNum, int time)
         //計測時間をリセット
         timeCount_ = 0;
     }
+    //不透明にする
     else if(timeCount_ >= time && isBlinking_ == false)
     {
         CheckBlock(blockNum - 10, true);
