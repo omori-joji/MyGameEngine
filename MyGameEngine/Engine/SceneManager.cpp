@@ -3,6 +3,7 @@
 #include "../PlayScene.h"
 #include "Model.h"
 #include "../Stage.h"
+#include "../Clear.h"
 
 
 //コンストラクタ
@@ -18,7 +19,7 @@ void SceneManager::Initialize()
 	//最初のシーンを準備
 	currentSceneID_ = SCENE_ID_TEST;
 	nextSceneID_ = currentSceneID_;
-	Instantiate<TestScene>(this);
+	Instantiate<Stage>(this);
 }
 
 //更新
@@ -39,6 +40,7 @@ void SceneManager::Update()
 		switch (nextSceneID_)
 		{
 		case SCENE_ID_STAGE2: Instantiate<Stage>(this); break;
+		case SCENE_ID_CLEAR: Instantiate<Clear>(this); break;
 		}
 
 		currentSceneID_ = nextSceneID_;

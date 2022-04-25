@@ -356,9 +356,8 @@ void Stage::GoalCol(int x, int y)
     //‚»‚±‚ÍƒS[ƒ‹
     if (map_[x][y] == 3)
     {
-        int a = 0;
-        //SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
-        //pSceneManager->ChangeScene(SCENE_ID_STAGE2);
+        SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
+        pSceneManager->ChangeScene(SCENE_ID_CLEAR);
     }
 
 }
