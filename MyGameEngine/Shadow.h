@@ -15,13 +15,13 @@ class Shadow : public GameObject
 
 
 
-	int hModel_Right[2];
-	int hModel_Left[2];
-	int leftModel;
-	int rightModel;
+	int hModel_Right_[2]; //右を向いているモデル
+	int hModel_Left_[2];  //左を向いているモデル
+	int leftModel_;       //左のモデル番号
+	int rightModel_;      //右のモデル番号
 
 	
-	bool isRecordCheck;
+	bool isRecordCheck_;
 
 	const float sWIDTH;//影の幅
 	const float sMARGIN;//当たり判定の遊び

@@ -12,7 +12,10 @@ Shadow::Shadow(GameObject* parent)
 	isRecording_(false),     //Playerの動きを記録しているか
 	frameCounter_(0),        //毎フレーム動きを記録するためのカウンター
 	sWIDTH(0.3f),            //影の幅
-	sMARGIN(0.11f)           //当たり判定の遊び
+	sMARGIN(0.11f),          //当たり判定の遊び
+	isRecordCheck_(true),    //プレイヤーが右を向いているか左を向いているか
+	leftModel_(0),           //左のモデル番号
+	rightModel_(0)           //右のモデル番号
 {
 
 }
@@ -20,12 +23,12 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	//右を向いているモデル
-	hModel_Right[0] = Model::Load("Assets/Shadow_Right.fbx");
-	hModel_Right[1] = Model::Load("Assets/ShadowRun_Right.fbx");
+	hModel_Right_[0] = Model::Load("Assets/Shadow_Right.fbx");
+	hModel_Right_[1] = Model::Load("Assets/ShadowRun_Right.fbx");
 
 	//左を向いているモデル
-	hModel_Left[0] = Model::Load("Assets/Shadow_Left.fbx");
-	hModel_Left[1] = Model::Load("Assets/ShadowRun_Left.fbx");
+	hModel_Left_[0] = Model::Load("Assets/Shadow_Left.fbx");
+	hModel_Left_[1] = Model::Load("Assets/ShadowRun_Left.fbx");
 }
 
 void Shadow::Update()
@@ -60,7 +63,10 @@ void Shadow::Update()
 		recordRightMove_.push_back(pPlayer_->plyerRightMoveCount);
 
 	}
+
 	//再生中
+	//動的配列のサイズ分影の位置を変える
+	//プレイヤーのアニメーション情報(モデル番号)を影に反映する(右左)
 	else if(frameCounter_<recordData_.size()-1 && isRecording_ == true)
 	{
 
@@ -70,15 +76,15 @@ void Shadow::Update()
 
 
 		//毎フレームプレイヤーの向いている方向を格納する
-		isRecordCheck = recordCheck_[frameCounter_];
+		isRecordCheck_ = recordCheck_[frameCounter_];
 
 
 		//毎フレームプレイヤーのモデル番号を格納する
-		leftModel = recordLeftMove_[frameCounter_];
+		leftModel_ = recordLeftMove_[frameCounter_];
 
 
 		//毎フレームプレイヤーのモデル番号を格納する
-		rightModel = recordRightMove_[frameCounter_];
+		rightModel_ = recordRightMove_[frameCounter_];
 
 
 		//次のフレームへ
@@ -102,16 +108,17 @@ void Shadow::Update()
 
 
 
+	//下の当たり判定
 	int checkX1, checkX2;
 	int checkY1, checkY2;
 
-
+	//当たり判定の位置設定
 	checkX1 = (int)(transform_.position_.x + (sWIDTH - sMARGIN));
 	checkX2 = (int)(transform_.position_.x - (sWIDTH - sMARGIN));
 	checkY1 = (int)(transform_.position_.y);
 	checkY2 = (int)(transform_.position_.y);
 
-	//下の当たり判定
+	//上の行で設定した位置にブロックが配置された配列があるならfalseが返される
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
 		//足元にあるボタンを探す
@@ -122,21 +129,21 @@ void Shadow::Update()
 void Shadow::Draw()
 {
 	//表示・非表示
+	//再生中であれば処理を行う
 	if (isRecording_)
 	{
-		if (isRecordCheck)
+		//右を向いていたらこっちを実行
+		if (isRecordCheck_)
 		{
-			Model::SetTransform(hModel_Right[rightModel], transform_);
-			Model::Draw(hModel_Right[rightModel]);
+			Model::SetTransform(hModel_Right_[rightModel_], transform_);
+			Model::Draw(hModel_Right_[rightModel_]);
 		}
+		//左を向いていたらこっちを実行
 		else
 		{
-			Model::SetTransform(hModel_Left[leftModel], transform_);
-			Model::Draw(hModel_Left[leftModel]);
+			Model::SetTransform(hModel_Left_[leftModel_], transform_);
+			Model::Draw(hModel_Left_[leftModel_]);
 		}
-
-
-
 	}
 
 }
