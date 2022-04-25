@@ -34,8 +34,8 @@ void Stage::Initialize()
     CsvReader csv;
     csv.Load("Assets/Stage1.csv");
 
-    verticalValu = 12;
-    besideValu = 20;
+    verticalValu = 23;
+    besideValu = 28;
 
 
 
@@ -72,15 +72,16 @@ void Stage::Update()
     {
         pPlayer_ = (Player*)Find("Player");
     }
-    
-
-    //一定時間ごとにブロックを入れ替える
-    Blinking(71, 60);
 
 
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
     {
+        //点滅ブロックをリセット
+        timeCount_ = 0;
+        isBlinking_ = true;
+
+
         //すでに生成している影を表示し、もう一度再生する
         if (shadowCount_ <= 5)
         {
@@ -97,7 +98,6 @@ void Stage::Update()
                 shadowCount_++;
             }
         }
-
 
         //影の生成
         if (shadowCount_ <= 5)
@@ -116,6 +116,9 @@ void Stage::Update()
 
         shadowCount_ = 0;
     }
+
+    //一定時間ごとにブロックを入れ替える
+    Blinking(71, 60);
 }
 
 
@@ -136,19 +139,6 @@ void Stage::Draw()
                 continue;
             }
 
-            Transform back;
-
-            back.position_.x = besideValu / 2;
-            back.position_.y = verticalValu / 2;
-            back.position_.z = 0.5;
-
-            back.Calclation();
-
-            Model::SetTransform(hModel_[3], back);
-            Model::Draw(hModel_[3]);
-
-
-
             //モデル番号の格納
             int type = map_[x][y] - 1;
 
@@ -166,6 +156,17 @@ void Stage::Draw()
             Model::Draw(hModel_[type]);
         }
     }
+
+    Transform back;
+
+    back.position_.x = besideValu / 2;
+    back.position_.y = verticalValu / 2 + 1;
+    back.position_.z = 0.5;
+
+    back.Calclation();
+
+    Model::SetTransform(hModel_[3], back);
+    Model::Draw(hModel_[3]);
 }
 
 

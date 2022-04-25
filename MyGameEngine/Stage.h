@@ -29,7 +29,7 @@ class Stage : public GameObject
 public:
 
 
-    int map_[20][12];
+    int map_[28][23];
     XMFLOAT3 stertPos;
 
 
