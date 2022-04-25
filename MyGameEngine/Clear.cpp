@@ -22,8 +22,6 @@ void Clear::Update()
 {
 	if (Input::IsKeyDown(DIK_SPACE))
 	{
-
-
 		SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
 		pSceneManager->ChangeScene(SCENE_ID_STAGE2);
 	}
