@@ -1,6 +1,7 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/CsvReader.h"
+#include "Engine/SceneManager.h"
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
@@ -333,27 +334,36 @@ void Stage::Blinking(int blockNum, int time)
 }
 
 //特定のブロックの位置にワープする関数
+//引数は今プレイヤーのいる位置にあるマス
 bool Stage::WarpBlockEnter(int x, int y)
 {
+    //そこはワープブロック
     if (map_[x][y] == 81)
     {
         return true;
     }
+    //何もない
     else
     {
         return false;
     }
 }
 
+//ゴールの処理をする関数
+//引数は今プレイヤーのいる位置にあるマス
 void Stage::GoalCol(int x, int y)
 {
+    //そこはゴール
     if (map_[x][y] == 3)
     {
         int a = 0;
+        //SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
+        //pSceneManager->ChangeScene(SCENE_ID_STAGE2);
     }
 
 }
 
+//
 void Stage::WarpBlockExit()
 {
     for (int x = 0; x < besideValu; x++)

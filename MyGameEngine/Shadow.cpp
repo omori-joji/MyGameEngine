@@ -33,11 +33,13 @@ void Shadow::Initialize()
 
 void Shadow::Update()
 {
+	//Player‚Ìî•ñ‚ğŠi”[
 	if (pPlayer_ == nullptr)
 	{
 		pPlayer_ = (Player*)Find("Player");
 	}
 
+	//ƒXƒe[ƒW‚Ìî•ñ‚ğŠi”[
 	if (pStage_ == nullptr)
 	{
 		pStage_ = (Stage*)Find("Stage");
