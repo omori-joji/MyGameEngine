@@ -12,7 +12,9 @@ Stage::Stage(GameObject* parent)
     pPlayer_(nullptr),
     shadowCount_(0),
     timeCount_(0),
-    isBlinking_(true)
+    isBlinking_(true),
+    verticalValu(0),     //マップ縦軸の値
+    besideValu(0)        //マップ横軸の値
 {
 
 }
@@ -32,14 +34,16 @@ void Stage::Initialize()
     CsvReader csv;
     csv.Load("Assets/Stage1.csv");
 
+    verticalValu = 12;
+    besideValu = 20;
 
 
 
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < besideValu; x++)
     {
-        for (int y = 0; y < 12; y++)
+        for (int y = 0; y < verticalValu; y++)
         {
-            map_[x][y] = csv.GetValue(x, 11 - y); //エクセルだとyの値が逆なので-9をしてあげる
+            map_[x][y] = csv.GetValue(x, (verticalValu-1) - y); //エクセルだとyの値が逆なので縦軸-1をしてあげる
 
             if (map_[x][y] == 200)
             {
@@ -122,18 +126,20 @@ void Stage::Update()
 void Stage::Draw()
 {
     //ブロックの配置
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < besideValu; x++)
     {
-        for (int y = 0; y < 12; y++)
+        for (int y = 0; y < verticalValu; y++)
         {
             //プレイヤーの位置とブロックを置かない位置の場合
             if (map_[x][y] == 0 || map_[x][y] == 200)
             {
                 continue;
             }
+
             Transform back;
-            back.position_.x = 10;
-            back.position_.y = 6;
+
+            back.position_.x = besideValu / 2;
+            back.position_.y = verticalValu / 2;
             back.position_.z = 0.5;
 
             back.Calclation();
@@ -257,9 +263,9 @@ void Stage::OpenWall()
 //第二引数はプラスかマイナスか
 void Stage::CheckBlock(int find , bool which)
 {
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < besideValu; x++)
     {
-        for (int y = 0; y < 12; y++)
+        for (int y = 0; y < verticalValu; y++)
         {
             if (map_[x][y] == find && which == false)
             {
@@ -322,9 +328,9 @@ void Stage::GoalCol(int x, int y)
 
 void Stage::WarpBlockExit()
 {
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < besideValu; x++)
     {
-        for (int y = 0; y < 12; y++)
+        for (int y = 0; y < verticalValu; y++)
         {
             if (map_[x][y] == 91)
             {

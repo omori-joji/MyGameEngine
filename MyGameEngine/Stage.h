@@ -13,6 +13,8 @@ class Stage : public GameObject
     int shadowCount_;
     int timeCount_;
     int hSound_;
+    int verticalValu;
+    int besideValu;
 
     bool isOpenWall_;
     bool isBlinking_;
