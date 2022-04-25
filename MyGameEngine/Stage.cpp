@@ -33,6 +33,8 @@ void Stage::Initialize()
     csv.Load("Assets/Stage1.csv");
 
 
+
+
     for (int x = 0; x < 20; x++)
     {
         for (int y = 0; y < 12; y++)
@@ -129,6 +131,17 @@ void Stage::Draw()
             {
                 continue;
             }
+            Transform back;
+            back.position_.x = 10;
+            back.position_.y = 6;
+            back.position_.z = 0.5;
+
+            back.Calclation();
+
+            Model::SetTransform(hModel_[3], back);
+            Model::Draw(hModel_[3]);
+
+
 
             //ƒ‚ƒfƒ‹”Ô†‚ÌŠi”[
             int type = map_[x][y] - 1;
@@ -331,7 +344,7 @@ void Stage::ModelLoad()
     hModel_[0] = Model::Load("Assets/Block.fbx");
     hModel_[1] = Model::Load("Assets/NaturalBlock.fbx");
     hModel_[2] = Model::Load("Assets/Goal.fbx");
-    hModel_[3] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[3] = Model::Load("Assets/BackGround.fbx");
     hModel_[4] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[5] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[6] = Model::Load("Assets/GreenBlock.fbx");
