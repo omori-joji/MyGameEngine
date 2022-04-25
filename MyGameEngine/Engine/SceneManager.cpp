@@ -28,7 +28,7 @@ void SceneManager::Update()
 	if (currentSceneID_ != nextSceneID_)
 	{
 		//そのシーンのオブジェクトを全削除
-		ReleaseSub();
+		KillAllChildren();
 
 		//ロードしたデータを全削除
 		//Audio::AllRelease();

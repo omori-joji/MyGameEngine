@@ -45,6 +45,12 @@ public:
 
 	void killMe();
 
+	void KillAllChildren();
+
+	void KillObjectSub(GameObject* obj);
+
+	std::list<GameObject*>* GetChildList();
+
 	void AddCollider(Collider* collider);
 
 	GameObject* GetRootJob();
