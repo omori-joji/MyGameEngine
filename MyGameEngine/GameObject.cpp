@@ -104,6 +104,51 @@ void GameObject::killMe()
 	isDead_ = true;
 }
 
+void GameObject::KillAllChildren()
+{
+	//子供がいないなら終わり
+	if (childList_.empty())
+		return;
+
+	//イテレータ
+	auto it = childList_.begin();	//先頭
+	auto end = childList_.end();	//末尾
+
+	//子オブジェクトを1個ずつ削除
+	while (it != end)
+	{
+		KillObjectSub(*it);
+		delete* it;
+		it = childList_.erase(it);
+	}
+
+	//リストをクリア
+	childList_.clear();
+}
+
+void GameObject::KillObjectSub(GameObject* obj)
+{
+	if (!childList_.empty())
+	{
+		auto list = obj->GetChildList();
+		auto it = list->begin();
+		auto end = list->end();
+		while (it != end)
+		{
+			KillObjectSub(*it);
+			delete* it;
+			it = list->erase(it);
+		}
+		list->clear();
+	}
+	obj->Release();
+}
+
+std::list<GameObject*>* GameObject::GetChildList()
+{
+	return &childList_;
+}
+
 void GameObject::AddCollider(Collider* collider)
 {
 	pCollider_ = collider;

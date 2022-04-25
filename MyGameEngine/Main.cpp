@@ -52,7 +52,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
   //ウィンドウを作成
     HWND hWnd = CreateWindow(
         WIN_CLASS_NAME,         //ウィンドウクラス名
-        "サンプルゲーム",     //タイトルバーに表示する内容
+        "RAN BACK AND RUN",     //タイトルバーに表示する内容
         WS_OVERLAPPEDWINDOW, //スタイル（普通のウィンドウ）
         CW_USEDEFAULT,       //表示位置左（おまかせ）
         CW_USEDEFAULT,       //表示位置上（おまかせ）
@@ -110,11 +110,11 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
             //現在の時間ースタートした時の時間が1000(1秒)経ったら
             if (nowTime - startTime >= 1000)
             {
-                char str[16]; //桁数
-                wsprintf(str, "%u", countFps);//現在の時間ープログラムを起動した時点の経過時間
+                //char str[16]; //桁数
+                //wsprintf(str, "%u", countFps);//現在の時間ープログラムを起動した時点の経過時間
 
                 //ウインドウの左上に指定したテキストを表示
-                SetWindowText(hWnd, str); //経過時間を表示
+                //SetWindowText(hWnd, str); //経過時間を表示
 
 
 

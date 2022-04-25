@@ -1,18 +1,21 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/CsvReader.h"
+#include "Engine/SceneManager.h"
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"),
+    :GameObject(parent, "Stage"), hSound_(-1),
     isOpenWall_(true),
     pPlayer_(nullptr),
     shadowCount_(0),
     timeCount_(0),
-    isBlinking_(true)
+    isBlinking_(true),
+    verticalValu(0),     //マップ縦軸の値
+    besideValu(0)        //マップ横軸の値
 {
 
 }
@@ -25,9 +28,8 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
+    //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
-
-
 
 
     //Csvファイルの読み込み
@@ -35,11 +37,22 @@ void Stage::Initialize()
     csv.Load("Assets/Stage1.csv");
 
 
-    for (int x = 0; x < 20; x++)
+    //Excelで設定したマスの値
+    //縦
+    verticalValu = 23;
+
+    //横
+    besideValu = 28;
+
+
+
+    //プレイヤーの生成
+    //200が入っているマスにプレイヤーが出現する
+    for (int x = 0; x < besideValu; x++)
     {
-        for (int y = 0; y < 12; y++)
+        for (int y = 0; y < verticalValu; y++)
         {
-            map_[x][y] = csv.GetValue(x, 11 - y); //エクセルだとyの値が逆なので-9をしてあげる
+            map_[x][y] = csv.GetValue(x, (verticalValu-1) - y); //エクセルだとyの値が逆なので縦軸-1をしてあげる
 
             if (map_[x][y] == 200)
             {
@@ -64,19 +77,21 @@ void Stage::Initialize()
 //更新
 void Stage::Update()
 {
+    //Player情報の格納
     if (pPlayer_ == nullptr)
     {
         pPlayer_ = (Player*)Find("Player");
     }
-    
-
-    //一定時間ごとにブロックを入れ替える
-    Blinking(71, 60);
 
 
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
     {
+        //点滅ブロックの情報をリセット
+        timeCount_ = 0;
+        isBlinking_ = true;
+
+
         //すでに生成している影を表示し、もう一度再生する
         if (shadowCount_ <= 5)
         {
@@ -94,7 +109,6 @@ void Stage::Update()
             }
         }
 
-
         //影の生成
         if (shadowCount_ <= 5)
         {
@@ -105,13 +119,18 @@ void Stage::Update()
     //保存された影の動きをすべてリセットする
     if (Input::IsKeyDown(DIK_2))
     {
+        //今ある影分
         for (int i = 0; i <= shadowCount_; i++)
         {
+            //解放処理
             pShadow[i]->killMe();
         }
-
+        //影の数をリセット
         shadowCount_ = 0;
     }
+
+    //一定時間ごとにブロックを入れ替える
+    Blinking(71, 60);
 }
 
 
@@ -122,9 +141,9 @@ void Stage::Update()
 void Stage::Draw()
 {
     //ブロックの配置
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < besideValu; x++)
     {
-        for (int y = 0; y < 12; y++)
+        for (int y = 0; y < verticalValu; y++)
         {
             //プレイヤーの位置とブロックを置かない位置の場合
             if (map_[x][y] == 0 || map_[x][y] == 200)
@@ -149,6 +168,22 @@ void Stage::Draw()
             Model::Draw(hModel_[type]);
         }
     }
+
+    //背景の生成
+    //ど真ん中に出す
+    Transform back;
+
+    //横軸の真ん中
+    back.position_.x = besideValu / 2;
+    //縦軸の真ん中
+    back.position_.y = verticalValu / 2 + 1;
+    //少し奥に
+    back.position_.z = 0.5;
+    //位置の確定
+    back.Calclation();
+
+    Model::SetTransform(hModel_[3], back);
+    Model::Draw(hModel_[3]);
 }
 
 
@@ -172,6 +207,7 @@ bool Stage::isCrash(int x, int y)
 {
     //そこにはブロックはない
     if (map_[x][y] == 0 || 
+        map_[x][y] == 3 ||
         map_[x][y] == 200 || 
         map_[x][y] == 81 || 
         map_[x][y] == 91 ||
@@ -199,17 +235,23 @@ void Stage::DownButton(int x, int y)
     //押した後のモデルに差し替える
     if (map_[x][y] == 21)
     {
+
+        //モデル変更
         map_[x][y] = map_[x][y] + 10;
 
-        isOpenWall_ = false;//壁を開くよ
+        //壁を開くよ
+        isOpenWall_ = false;
 
-        OpenWall();//壁を開く処理
+        //壁を開く処理
+        OpenWall();
     }
 
 
     //Playerが離れたら
+    //もしくはリセットしたら
     if (map_[x][y] == 0||Input::IsKeyDown(DIK_1))
     {
+        //押している間だけのボタンのモデルをリセットする
         for (int i = 0; i <= shadowCount_; i++)
         {
             if (pShadow[i]->isRecording_ == false)
@@ -243,9 +285,9 @@ void Stage::OpenWall()
 //第二引数はプラスかマイナスか
 void Stage::CheckBlock(int find , bool which)
 {
-    for (int x = 0; x < 20; x++)
+    for (int x = 0; x < besideValu; x++)
     {
-        for (int y = 0; y < 12; y++)
+        for (int y = 0; y < verticalValu; y++)
         {
             if (map_[x][y] == find && which == false)
             {
@@ -259,10 +301,16 @@ void Stage::CheckBlock(int find , bool which)
     }
 }
 
+//点滅ブロック
+//第一引数は点滅させたいブロックの番号
+//第二引数は秒数。単位はフレーム
+//変えたいモデル番号+10には透明のブロック設定しておく
 void Stage::Blinking(int blockNum, int time)
 {
+    //計測
     timeCount_++;
 
+    //透明にする
     if (timeCount_ >= time && isBlinking_ == true)
     {
         //モデルを切り替える関数
@@ -273,6 +321,7 @@ void Stage::Blinking(int blockNum, int time)
         //計測時間をリセット
         timeCount_ = 0;
     }
+    //不透明にする
     else if(timeCount_ >= time && isBlinking_ == false)
     {
         CheckBlock(blockNum - 10, true);
@@ -285,16 +334,47 @@ void Stage::Blinking(int blockNum, int time)
 }
 
 //特定のブロックの位置にワープする関数
-void Stage::WarpBlock(int x, int y)
+//引数は今プレイヤーのいる位置にあるマス
+bool Stage::WarpBlockEnter(int x, int y)
 {
+    //そこはワープブロック
     if (map_[x][y] == 81)
     {
-        pPlayer_->killMe();
+        return true;
+    }
+    //何もない
+    else
+    {
+        return false;
+    }
+}
 
-        Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
+//ゴールの処理をする関数
+//引数は今プレイヤーのいる位置にあるマス
+void Stage::GoalCol(int x, int y)
+{
+    //そこはゴール
+    if (map_[x][y] == 3)
+    {
+        SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
+        pSceneManager->ChangeScene(SCENE_ID_CLEAR);
+    }
 
-        pPlayer->transform_.position_.x = map_[x][y]+10;
-        pPlayer->transform_.position_.y = map_[x][y]+10;
+}
+
+//
+void Stage::WarpBlockExit()
+{
+    for (int x = 0; x < besideValu; x++)
+    {
+        for (int y = 0; y < verticalValu; y++)
+        {
+            if (map_[x][y] == 91)
+            {
+                pPlayer_->transform_.position_.x = x;
+                pPlayer_->transform_.position_.y = y;
+            }
+        }
     }
 }
 
@@ -307,7 +387,7 @@ void Stage::ModelLoad()
     hModel_[0] = Model::Load("Assets/Block.fbx");
     hModel_[1] = Model::Load("Assets/NaturalBlock.fbx");
     hModel_[2] = Model::Load("Assets/Goal.fbx");
-    hModel_[3] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[3] = Model::Load("Assets/BackGround.fbx");
     hModel_[4] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[5] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[6] = Model::Load("Assets/GreenBlock.fbx");

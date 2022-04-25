@@ -12,6 +12,9 @@ class Stage : public GameObject
     int hModel_[500];
     int shadowCount_;
     int timeCount_;
+    int hSound_;
+    int verticalValu;
+    int besideValu;
 
     bool isOpenWall_;
     bool isBlinking_;
@@ -26,7 +29,7 @@ class Stage : public GameObject
 public:
 
 
-    int map_[20][12];
+    int map_[28][23];
     XMFLOAT3 stertPos;
 
 
@@ -63,6 +66,10 @@ public:
 
     void Blinking(int blockNum, int time);
 
-    void WarpBlock(int x, int y);
+    bool WarpBlockEnter(int x, int y);
+
+    void GoalCol(int x, int y);
+
+    void WarpBlockExit();
 };
 

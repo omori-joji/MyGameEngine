@@ -6,9 +6,11 @@
 enum SCENE_ID
 {
 	SCENE_ID_TEST = 0,
-	SCENE_ID_PLAY,
+	SCENE_ID_STAGE1,
+	SCENE_ID_STAGE2,
+	SCENE_ID_STAGE3,
 	SCENE_ID_CLEAR,
-	SCENE_ID_GAMEOVER,
+	SCENE_ID_TITLE,
 };
 
 //-----------------------------------------------------------

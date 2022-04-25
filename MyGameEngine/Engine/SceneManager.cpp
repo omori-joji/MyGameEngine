@@ -1,6 +1,9 @@
 #include "sceneManager.h"
+#include "../TestScene.h"
 #include "../PlayScene.h"
 #include "Model.h"
+#include "../Stage.h"
+#include "../Clear.h"
 
 
 //コンストラクタ
@@ -14,9 +17,9 @@ SceneManager::SceneManager(GameObject * parent)
 void SceneManager::Initialize()
 {
 	//最初のシーンを準備
-	currentSceneID_ = SCENE_ID_PLAY;
+	currentSceneID_ = SCENE_ID_TEST;
 	nextSceneID_ = currentSceneID_;
-	Instantiate<PlayScene>(this);
+	Instantiate<Stage>(this);
 }
 
 //更新
@@ -26,7 +29,7 @@ void SceneManager::Update()
 	if (currentSceneID_ != nextSceneID_)
 	{
 		//そのシーンのオブジェクトを全削除
-		ReleaseSub();
+		KillAllChildren();
 
 		//ロードしたデータを全削除
 		//Audio::AllRelease();
@@ -36,10 +39,8 @@ void SceneManager::Update()
 		//次のシーンを作成
 		switch (nextSceneID_)
 		{
-		case SCENE_ID_PLAY: Instantiate<PlayScene>(this); break;
-		//case SCENE_ID_CLEAR: Instantiate<ClearScene>(this); break;
-		//case SCENE_ID_GAMEOVER: Instantiate<GameoverScene>(this); break;
-
+		case SCENE_ID_STAGE2: Instantiate<Stage>(this); break;
+		case SCENE_ID_CLEAR: Instantiate<Clear>(this); break;
 		}
 
 		currentSceneID_ = nextSceneID_;
