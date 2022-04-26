@@ -15,7 +15,6 @@ class Stage : public GameObject
     int hSound_;
     int verticalValu;
     int besideValu;
-    int memoryBlock_;
 
     bool isOpenWall_;
     bool isBlinking_;
@@ -29,6 +28,7 @@ class Stage : public GameObject
 
 public:
 
+    int memoryBlock_;
 
     int map_[28][23];
     XMFLOAT3 stertPos;

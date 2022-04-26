@@ -15,8 +15,7 @@ Stage::Stage(GameObject* parent)
     timeCount_(0),
     isBlinking_(true),
     verticalValu(0),     //マップ縦軸の値
-    besideValu(0),       //マップ横軸の値
-    memoryBlock_(0)
+    besideValu(0)       //マップ横軸の値
 {
 
 }
@@ -274,6 +273,7 @@ void Stage::DownButton(int x, int y)
 
             //壁のモデルを切り替える
             CheckBlock(memoryBlock_ + 20, false);
+            
         }
     }
 }

@@ -19,6 +19,7 @@ class Shadow : public GameObject
 	int hModel_Left_[2];  //左を向いているモデル
 	int leftModel_;       //左のモデル番号
 	int rightModel_;      //右のモデル番号
+	int sMemory;
 
 	
 	bool isRecordCheck_;  //プレイヤーが右を向いているか左を向いているか

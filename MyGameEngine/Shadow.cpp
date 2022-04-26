@@ -15,7 +15,8 @@ Shadow::Shadow(GameObject* parent)
 	sMARGIN(0.11f),          //当たり判定の遊び
 	isRecordCheck_(true),    //プレイヤーが右を向いているか左を向いているか
 	leftModel_(0),           //左のモデル番号
-	rightModel_(0)           //右のモデル番号
+	rightModel_(0),          //右のモデル番号
+	sMemory(0)
 {
 
 }
@@ -96,10 +97,9 @@ void Shadow::Update()
 
 
 	//再生し終わったら
-	if (frameCounter_ >= recordData_.size() - 1)
+	if (frameCounter_ >= recordData_.size() - 1 && isRecording_ == true)
 	{
-		//ボタンを踏んでいる状態で影の再生が終了したときボタンを元に戻す
-		pStage_->CheckBlock(41, false);
+		//pStage_->memoryBlock_ = 0;
 
 		//非表示
 		isRecording_ = false;
@@ -108,24 +108,7 @@ void Shadow::Update()
 		frameCounter_ = 0;
 	}
 
-
-
-	//下の当たり判定
-	int checkX1, checkX2;
-	int checkY1, checkY2;
-
-	//当たり判定の位置設定
-	checkX1 = (int)(transform_.position_.x + (sWIDTH - sMARGIN));
-	checkX2 = (int)(transform_.position_.x - (sWIDTH - sMARGIN));
-	checkY1 = (int)(transform_.position_.y);
-	checkY2 = (int)(transform_.position_.y);
-
-	//上の行で設定した位置にブロックが配置された配列があるならfalseが返される
-	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
-	{
-		//足元にあるボタンを探す
-		pStage_->DownButton((int)transform_.position_.x, (transform_.position_.y)-0.5f);
-	}
+	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 }
 
 void Shadow::Draw()
