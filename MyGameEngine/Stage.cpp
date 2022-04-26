@@ -34,7 +34,7 @@ void Stage::Initialize()
 
     //Csvファイルの読み込み
     CsvReader csv;
-    csv.Load("Assets/Stage1.csv");
+    csv.Load("Assets/Stage2.csv");
 
 
     //Excelで設定したマスの値
