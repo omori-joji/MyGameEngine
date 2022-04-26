@@ -124,7 +124,7 @@ void Shadow::Update()
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
 		//‘«Œ³‚É‚ ‚éƒ{ƒ^ƒ“‚ð’T‚·
-		pStage_->DownButton(transform_.position_.x, transform_.position_.y);
+		pStage_->DownButton((int)transform_.position_.x, ((int)transform_.position_.y)-1);
 	}
 }
 
