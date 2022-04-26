@@ -260,10 +260,10 @@ void Stage::DownButton(int x, int y)
         //押している間だけのボタンのモデルをリセットする
         for (int i = 0; i <= shadowCount_; i++)
         {
-            if (pShadow[i]->isRecording_ == false)
+            if (pShadow[i]->isRecording_ == false && memoryBlock_ >= 31)
             {
-                    CheckBlock(41, false);
-                    CheckBlock(61, false);
+                    CheckBlock(memoryBlock_, false);
+                    CheckBlock(memoryBlock_ + 20, false);
             }
         }
 
