@@ -34,7 +34,7 @@ void Stage::Initialize()
 
     //Csvファイルの読み込み
     CsvReader csv;
-    csv.Load("Assets/Stage2.csv");
+    csv.Load("Assets/Stage3.csv");
 
 
     //Excelで設定したマスの値
@@ -128,7 +128,6 @@ void Stage::Update()
         //影の数をリセット
         shadowCount_ = 0;
     }
-
     //一定時間ごとにブロックを入れ替える
     Blinking(81, 70);
 }
@@ -232,18 +231,20 @@ bool Stage::isCrash(int x, int y)
 //この関数はPlayerクラスで常に呼ばれている
 void Stage::DownButton(int x, int y)
 {
-    //押した後のモデルに差し替える
-    if (map_[x][y] == 31)
+    for (int i = 0; i <= 9; i++)
     {
+        if (map_[x][y] == 31 + i)
+        {
 
-        //モデル変更
-        map_[x][y] = map_[x][y] + 10;
+            //モデル変更
+            map_[x][y] = map_[x][y] + 10;
 
-        //壁を開くよ
-        isOpenWall_ = false;
+            //壁を開くよ
+            isOpenWall_ = false;
 
-        //壁を開く処理
-        OpenWall();
+            //壁を開く処理
+            OpenWall();
+        }
     }
 
 
@@ -256,16 +257,22 @@ void Stage::DownButton(int x, int y)
         {
             if (pShadow[i]->isRecording_ == false)
             {
-                CheckBlock(41, false);
-                CheckBlock(61, false);
+                for (int j = 0; j <= 9; j++)
+                {
+                    CheckBlock(41 + j, false);
+                    CheckBlock(61 + j, false);
+                }
             }
-            
         }
-        //ボタンのモデルを切り替える
-        CheckBlock(41 , false);
 
-        //壁のモデルを切り替える
-        CheckBlock(61 , false);
+        for (int i = 0; i <= 9; i++)
+        {
+            //ボタンのモデルを切り替える
+            CheckBlock(41 + i, false);
+
+            //壁のモデルを切り替える
+            CheckBlock(61 + i, false);
+        }
     }
 }
 
@@ -273,7 +280,11 @@ void Stage::DownButton(int x, int y)
 //壁を開く関数
 void Stage::OpenWall()
 {
-    CheckBlock(51, true);
+    for (int i = 0; i <= 9; i++)
+    {
+        CheckBlock(51 + i, true);
+    }
+    
 
     //壁が全部開いた
     isOpenWall_ = true;
