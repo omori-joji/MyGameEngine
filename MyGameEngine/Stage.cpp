@@ -205,22 +205,26 @@ void Stage::Release()
 //戻り値、何かあるtrue,何もないfalse
 bool Stage::isCrash(int x, int y)
 {
-    //そこにはブロックはない
-    if (map_[x][y] == 0 || 
-        map_[x][y] == 3 ||
-        map_[x][y] == 200 || 
-        map_[x][y] == 91 || 
-        map_[x][y] == 101 ||
-        map_[x][y] == 61 ||
-        map_[x][y] == 81)
+    for (int i = 0; i < 9; i++)
     {
-        return false;
+        //そこにはブロックはない
+        if (map_[x][y] == 0 ||
+            map_[x][y] == 3 ||
+            map_[x][y] == 200 ||
+            map_[x][y] == 91 ||
+            map_[x][y] == 101 ||
+            map_[x][y] == 61 ||
+            map_[x][y] == 81)
+        {
+            return false;
+        }
+        //そこにはブロックがあるから通れない
+        else
+        {
+            return true;
+        }
     }
-    //そこにはブロックがあるから通れない
-    else
-    {
-        return true;
-    }
+
 }
 
 
@@ -242,14 +246,8 @@ void Stage::DownButton(int x, int y)
 
             memoryBlock_ = map_[x][y];
 
-
-            //壁を開くよ
-            isOpenWall_ = false;
-
             //壁を開く処理
-            OpenWall();
-
-            
+            CheckBlock(memoryBlock_ + 10, true);
         }
     }
     
@@ -268,11 +266,15 @@ void Stage::DownButton(int x, int y)
                     CheckBlock(61, false);
             }
         }
-        //ボタンのモデルを切り替える
-        CheckBlock(memoryBlock_, false);
 
-        //壁のモデルを切り替える
-        CheckBlock(61, false);
+        if (memoryBlock_ >= 31)
+        {
+            //ボタンのモデルを切り替える
+            CheckBlock(memoryBlock_, false);
+
+            //壁のモデルを切り替える
+            CheckBlock(memoryBlock_ + 20, false);
+        }
     }
 }
 
@@ -280,14 +282,7 @@ void Stage::DownButton(int x, int y)
 //壁を開く関数
 void Stage::OpenWall()
 {
-    for (int i = 0; i <= 9; i++)
-    {
-        CheckBlock(51 + i, true);
-    }
-    
-
-    //壁が全部開いた
-    isOpenWall_ = true;
+    CheckBlock(51, true);
 }
 
 
