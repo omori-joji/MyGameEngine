@@ -99,7 +99,7 @@ void Shadow::Update()
 	if (frameCounter_ >= recordData_.size() - 1)
 	{
 		//ボタンを踏んでいる状態で影の再生が終了したときボタンを元に戻す
-		pStage_->CheckBlock(31, false);
+		pStage_->CheckBlock(41, false);
 
 		//非表示
 		isRecording_ = false;

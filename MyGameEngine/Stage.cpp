@@ -130,7 +130,7 @@ void Stage::Update()
     }
 
     //一定時間ごとにブロックを入れ替える
-    Blinking(71, 60);
+    Blinking(81, 70);
 }
 
 
@@ -209,10 +209,10 @@ bool Stage::isCrash(int x, int y)
     if (map_[x][y] == 0 || 
         map_[x][y] == 3 ||
         map_[x][y] == 200 || 
-        map_[x][y] == 81 || 
-        map_[x][y] == 91 ||
-        map_[x][y] == 51 ||
-        map_[x][y] == 71)
+        map_[x][y] == 91 || 
+        map_[x][y] == 101 ||
+        map_[x][y] == 61 ||
+        map_[x][y] == 81)
     {
         return false;
     }
@@ -233,7 +233,7 @@ bool Stage::isCrash(int x, int y)
 void Stage::DownButton(int x, int y)
 {
     //押した後のモデルに差し替える
-    if (map_[x][y] == 21)
+    if (map_[x][y] == 31)
     {
 
         //モデル変更
@@ -256,16 +256,16 @@ void Stage::DownButton(int x, int y)
         {
             if (pShadow[i]->isRecording_ == false)
             {
-                CheckBlock(31, false);
-                CheckBlock(51, false);
+                CheckBlock(41, false);
+                CheckBlock(61, false);
             }
             
         }
         //ボタンのモデルを切り替える
-        CheckBlock(31 , false);
+        CheckBlock(41 , false);
 
         //壁のモデルを切り替える
-        CheckBlock(51 , false);
+        CheckBlock(61 , false);
     }
 }
 
@@ -273,7 +273,7 @@ void Stage::DownButton(int x, int y)
 //壁を開く関数
 void Stage::OpenWall()
 {
-    CheckBlock(41, true);
+    CheckBlock(51, true);
 
     //壁が全部開いた
     isOpenWall_ = true;
@@ -338,7 +338,7 @@ void Stage::Blinking(int blockNum, int time)
 bool Stage::WarpBlockEnter(int x, int y)
 {
     //そこはワープブロック
-    if (map_[x][y] == 81)
+    if (map_[x][y] == 91)
     {
         return true;
     }
@@ -369,7 +369,7 @@ void Stage::WarpBlockExit()
     {
         for (int y = 0; y < verticalValu; y++)
         {
-            if (map_[x][y] == 91)
+            if (map_[x][y] == 101)
             {
                 pPlayer_->transform_.position_.x = x;
                 pPlayer_->transform_.position_.y = y;
@@ -396,7 +396,7 @@ void Stage::ModelLoad()
     hModel_[9] = Model::Load("Assets/GreenBlock.fbx");
 
 
-    //押したら発動するブロック
+    //押したら発動するbボタン
     hModel_[10] = Model::Load("Assets/PushButton.fbx");
     hModel_[11] = Model::Load("Assets/PushButton.fbx");
     hModel_[12] = Model::Load("Assets/PushButton.fbx");
@@ -409,108 +409,121 @@ void Stage::ModelLoad()
     hModel_[19] = Model::Load("Assets/PushButton.fbx");
 
 
-    //押している間だけ発動するブロック(押す前)
-    hModel_[20] = Model::Load("Assets/UpButton.fbx");
-    hModel_[21] = Model::Load("Assets/UpButton.fbx");
-    hModel_[22] = Model::Load("Assets/UpButton.fbx");
-    hModel_[23] = Model::Load("Assets/UpButton.fbx");
-    hModel_[24] = Model::Load("Assets/UpButton.fbx");
-    hModel_[25] = Model::Load("Assets/UpButton.fbx");
-    hModel_[26] = Model::Load("Assets/UpButton.fbx");
-    hModel_[27] = Model::Load("Assets/UpButton.fbx");
-    hModel_[28] = Model::Load("Assets/UpButton.fbx");
-    hModel_[29] = Model::Load("Assets/UpButton.fbx");
+    //押したら開き続ける壁
+    hModel_[20] = Model::Load("Assets/Wall.fbx");
+    hModel_[21] = Model::Load("Assets/Wall.fbx");
+    hModel_[22] = Model::Load("Assets/Wall.fbx");
+    hModel_[23] = Model::Load("Assets/Wall.fbx");
+    hModel_[24] = Model::Load("Assets/Wall.fbx");
+    hModel_[25] = Model::Load("Assets/Wall.fbx");
+    hModel_[26] = Model::Load("Assets/Wall.fbx");
+    hModel_[27] = Model::Load("Assets/Wall.fbx");
+    hModel_[28] = Model::Load("Assets/Wall.fbx");
+    hModel_[29] = Model::Load("Assets/Wall.fbx");
 
 
-    //押している間だけ発動するブロック(押した後)
-    hModel_[30] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[31] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[32] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[33] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[34] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[35] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[36] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[37] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[38] = Model::Load("Assets/UpButton2.fbx");
-    hModel_[39] = Model::Load("Assets/UpButton2.fbx");
+    //押している間だけ発動するボタン(押す前)
+    hModel_[30] = Model::Load("Assets/UpButton.fbx");
+    hModel_[31] = Model::Load("Assets/UpButton.fbx");
+    hModel_[32] = Model::Load("Assets/UpButton.fbx");
+    hModel_[33] = Model::Load("Assets/UpButton.fbx");
+    hModel_[34] = Model::Load("Assets/UpButton.fbx");
+    hModel_[35] = Model::Load("Assets/UpButton.fbx");
+    hModel_[36] = Model::Load("Assets/UpButton.fbx");
+    hModel_[37] = Model::Load("Assets/UpButton.fbx");
+    hModel_[38] = Model::Load("Assets/UpButton.fbx");
+    hModel_[39] = Model::Load("Assets/UpButton.fbx");
+
+
+    //押している間だけ発動するボタン(押した後)
+    hModel_[40] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[41] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[42] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[43] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[44] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[45] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[46] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[47] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[48] = Model::Load("Assets/UpButton2.fbx");
+    hModel_[49] = Model::Load("Assets/UpButton2.fbx");
 
 
     //開く壁
-    hModel_[40] = Model::Load("Assets/Wall.fbx");
-    hModel_[41] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[42] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[43] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[44] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[45] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[46] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[47] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[48] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[49] = Model::Load("Assets/GreenBlock.fbx");
+    hModel_[50] = Model::Load("Assets/Wall.fbx");
+    hModel_[51] = Model::Load("Assets/Wall.fbx");
+    hModel_[52] = Model::Load("Assets/Wall.fbx");
+    hModel_[53] = Model::Load("Assets/Wall.fbx");
+    hModel_[54] = Model::Load("Assets/Wall.fbx");
+    hModel_[55] = Model::Load("Assets/Wall.fbx");
+    hModel_[56] = Model::Load("Assets/Wall.fbx");
+    hModel_[57] = Model::Load("Assets/Wall.fbx");
+    hModel_[58] = Model::Load("Assets/Wall.fbx");
+    hModel_[59] = Model::Load("Assets/Wall.fbx");
 
 
     //開いている間の何もないブロック
-    hModel_[50] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[51] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[52] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[53] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[54] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[55] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[56] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[57] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[58] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[59] = Model::Load("Assets/YellowBlock.fbx");
+    hModel_[60] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[61] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[62] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[63] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[64] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[65] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[66] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[67] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[68] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[69] = Model::Load("Assets/AlphaBlock.fbx");
 
 
-    //消えるブロック(消える前)
-    hModel_[60] = Model::Load("Assets/Wall.fbx");
-    hModel_[61] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[62] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[63] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[64] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[65] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[66] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[67] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[68] = Model::Load("Assets/YellowBlock.fbx");
-    hModel_[69] = Model::Load("Assets/YellowBlock.fbx");
+    //点滅するブロック(消える前)
+    hModel_[70] = Model::Load("Assets/Wall.fbx");
+    hModel_[71] = Model::Load("Assets/Wall.fbx");
+    hModel_[72] = Model::Load("Assets/Wall.fbx");
+    hModel_[73] = Model::Load("Assets/Wall.fbx");
+    hModel_[74] = Model::Load("Assets/Wall.fbx");
+    hModel_[75] = Model::Load("Assets/Wall.fbx");
+    hModel_[76] = Model::Load("Assets/Wall.fbx");
+    hModel_[77] = Model::Load("Assets/Wall.fbx");
+    hModel_[78] = Model::Load("Assets/Wall.fbx");
+    hModel_[79] = Model::Load("Assets/Wall.fbx");
 
 
-    //消えるブロック(消えた後)
-    hModel_[70] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[71] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[72] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[73] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[74] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[75] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[76] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[77] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[78] = Model::Load("Assets/GreenBlock.fbx");
-    hModel_[79] = Model::Load("Assets/GreenBlock.fbx");
+    //点滅するブロック(消えた後)
+    hModel_[80] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[81] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[82] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[83] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[84] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[85] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[86] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[87] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[88] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[89] = Model::Load("Assets/AlphaBlock.fbx");
 
 
     //ワープブロック(入口)
-    hModel_[80] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[81] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[82] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[83] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[84] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[85] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[86] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[87] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[88] = Model::Load("Assets/WarpEntrance.fbx");
-    hModel_[89] = Model::Load("Assets/WarpEntrance.fbx");
-
-
-    //ワープブロック(出口)
-    hModel_[90] = Model::Load("Assets/WarpExit.fbx");
-    hModel_[91] = Model::Load("Assets/WarpExit.fbx");
-    hModel_[92] = Model::Load("Assets/WarpExit.fbx");
-    hModel_[93] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[90] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[91] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[92] = Model::Load("Assets/WarpEntrance.fbx");
+    hModel_[93] = Model::Load("Assets/WarpEntrance.fbx");
     hModel_[94] = Model::Load("Assets/WarpEntrance.fbx");
     hModel_[95] = Model::Load("Assets/WarpEntrance.fbx");
     hModel_[96] = Model::Load("Assets/WarpEntrance.fbx");
     hModel_[97] = Model::Load("Assets/WarpEntrance.fbx");
     hModel_[98] = Model::Load("Assets/WarpEntrance.fbx");
     hModel_[99] = Model::Load("Assets/WarpEntrance.fbx");
+
+
+    //ワープブロック(出口)
+    hModel_[100] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[101] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[102] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[103] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[104] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[105] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[106] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[107] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[108] = Model::Load("Assets/WarpExit.fbx");
+    hModel_[109] = Model::Load("Assets/WarpExit.fbx");
 
 
 }
