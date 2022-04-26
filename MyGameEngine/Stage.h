@@ -15,6 +15,7 @@ class Stage : public GameObject
     int hSound_;
     int verticalValu;
     int besideValu;
+    int memoryBlock_;
 
     bool isOpenWall_;
     bool isBlinking_;

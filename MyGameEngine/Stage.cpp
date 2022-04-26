@@ -15,7 +15,8 @@ Stage::Stage(GameObject* parent)
     timeCount_(0),
     isBlinking_(true),
     verticalValu(0),     //マップ縦軸の値
-    besideValu(0)        //マップ横軸の値
+    besideValu(0),       //マップ横軸の値
+    memoryBlock_(0)
 {
 
 }
@@ -231,7 +232,7 @@ bool Stage::isCrash(int x, int y)
 //この関数はPlayerクラスで常に呼ばれている
 void Stage::DownButton(int x, int y)
 {
-    for (int i = 0; i <= 9; i++)
+    for (int i = 0; i < 9; i++)
     {
         if (map_[x][y] == 31 + i)
         {
@@ -239,14 +240,20 @@ void Stage::DownButton(int x, int y)
             //モデル変更
             map_[x][y] = map_[x][y] + 10;
 
+            memoryBlock_ = map_[x][y];
+
+
             //壁を開くよ
             isOpenWall_ = false;
 
             //壁を開く処理
             OpenWall();
+
+            
         }
     }
-
+    
+    
 
     //Playerが離れたら
     //もしくはリセットしたら
@@ -257,22 +264,15 @@ void Stage::DownButton(int x, int y)
         {
             if (pShadow[i]->isRecording_ == false)
             {
-                for (int j = 0; j <= 9; j++)
-                {
-                    CheckBlock(41 + j, false);
-                    CheckBlock(61 + j, false);
-                }
+                    CheckBlock(41, false);
+                    CheckBlock(61, false);
             }
         }
+        //ボタンのモデルを切り替える
+        CheckBlock(memoryBlock_, false);
 
-        for (int i = 0; i <= 9; i++)
-        {
-            //ボタンのモデルを切り替える
-            CheckBlock(41 + i, false);
-
-            //壁のモデルを切り替える
-            CheckBlock(61 + i, false);
-        }
+        //壁のモデルを切り替える
+        CheckBlock(61, false);
     }
 }
 
