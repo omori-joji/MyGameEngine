@@ -15,19 +15,26 @@ void Title::Initialize()
     //モデルデータのロード
     hModel_[0] = Model::Load("Assets/Title.fbx");
     hModel_[1] = Model::Load("Assets/TitleNowLoding.fbx");
+    hModel_[2] = Model::Load("Assets/TitleNowLodingAnimation2.fbx");
+    hModel_[3] = Model::Load("Assets/TitleNowLodingAnimation3.fbx");
+    hModel_[4] = Model::Load("Assets/TitleNowLodingAnimation4.fbx");
 }
 
 //更新
 void Title::Update()
 {
-    //if (iskeyDown_)
+    //if (iskeyDown_ == true)
     //{
     //    chengeCount++;
     //    if (chengeCount >= 30)
     //    {
-    //        imageNum_++;
+    //        
     //        chengeCount = 0;
-    //        if (imageNum_ >= 4)
+    //        if (imageNum_ != 5)
+    //        {
+    //            imageNum_++;
+    //        }
+    //        else
     //        {
     //            imageNum_ = 1;
     //        }
