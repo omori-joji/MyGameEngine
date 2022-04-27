@@ -5,7 +5,11 @@
 //Titleシーンを管理するクラス
 class Title : public GameObject
 {
-	int hModel_;
+	int hModel_[5];
+	int imageNum_;
+	int chengeCount;
+
+	bool iskeyDown_;
 
 public:
 	//コンストラクタ

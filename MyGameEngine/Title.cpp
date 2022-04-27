@@ -5,7 +5,7 @@
 
 //コンストラクタ
 Title::Title(GameObject* parent)
-	: GameObject(parent, "Title"), hModel_(-1)
+	: GameObject(parent, "Title"), imageNum_(0), iskeyDown_(false), chengeCount(0)
 {
 }
 
@@ -13,27 +13,45 @@ Title::Title(GameObject* parent)
 void Title::Initialize()
 {
     //モデルデータのロード
-    hModel_ = Model::Load("Assets/Title.fbx");
-    assert(hModel_ >= 0);
+    hModel_[0] = Model::Load("Assets/Title.fbx");
+    hModel_[1] = Model::Load("Assets/TitleNowLoding.fbx");
 }
 
 //更新
 void Title::Update()
 {
+    if (iskeyDown_)
+    {
+        chengeCount++;
+        if (chengeCount >= 30)
+        {
+            imageNum_++;
+            chengeCount = 0;
+            if (imageNum_ >= 4)
+            {
+                imageNum_ = 1;
+            }
+        }
+    }
+
+
     if (Input::IsKeyDown(DIK_1))
     {
+        iskeyDown_ = true;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_STAGE1);
     }
 
     if (Input::IsKeyDown(DIK_2))
     {
+        iskeyDown_ = true;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_STAGE2);
     }
 
     if (Input::IsKeyDown(DIK_3))
     {
+        iskeyDown_ = true;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_STAGE3);
     }
@@ -49,8 +67,8 @@ void Title::Draw()
 
     trans.Calclation();
 
-    Model::SetTransform(hModel_, trans);
-    Model::Draw(hModel_);
+    Model::SetTransform(hModel_[imageNum_], trans);
+    Model::Draw(hModel_[imageNum_]);
 }
 
 //開放
