@@ -166,6 +166,7 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
+    <ClCompile Include="Setumei.cpp" />
     <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TestScene.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="resource.h" />
+    <ClInclude Include="Setumei.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TestScene.h" />
