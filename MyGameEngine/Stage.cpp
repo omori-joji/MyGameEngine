@@ -241,12 +241,11 @@ void Stage::DownButton(int x, int y)
         {
 
             //モデル変更
-            map_[x][y] = map_[x][y] + 10;
+            CheckBlock(map_[x][y], true);
 
-            memoryBlock_ = map_[x][y];
 
             //壁を開く処理
-            CheckBlock(memoryBlock_ + 10, true);
+            CheckBlock(51 + i, true);
         }
     }
     
@@ -254,26 +253,30 @@ void Stage::DownButton(int x, int y)
 
     //Playerが離れたら
     //もしくはリセットしたら
-    if (map_[x][y] == 0||Input::IsKeyDown(DIK_1))
+    if (map_[x][y] <= 2||Input::IsKeyDown(DIK_1))
     {
         //押している間だけのボタンのモデルをリセットする
         for (int i = 0; i <= shadowCount_; i++)
         {
-            if (pShadow[i]->isRecording_ == false && memoryBlock_ >= 31)
+            if (pShadow[i]->isRecording_ == false)
             {
-                    CheckBlock(memoryBlock_, false);
-                    CheckBlock(memoryBlock_ + 20, false);
+                for (int i = 0; i < 9; i++)
+                {
+                    //ボタンのモデルを切り替える
+                    CheckBlock(41 + i, false);
+
+                    //壁のモデルを切り替える
+                    CheckBlock(60 + i, false);
+                }
             }
         }
-
-        if (memoryBlock_ >= 31)
+        for (int i = 0; i < 9; i++)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(memoryBlock_, false);
+            CheckBlock(41 + i, false);
 
             //壁のモデルを切り替える
-            CheckBlock(memoryBlock_ + 20, false);
-            
+            CheckBlock(60 + i, false);
         }
     }
 }

@@ -99,7 +99,6 @@ void Shadow::Update()
 	//再生し終わったら
 	if (frameCounter_ >= recordData_.size() - 1 && isRecording_ == true)
 	{
-		//pStage_->memoryBlock_ = 0;
 
 		//非表示
 		isRecording_ = false;
@@ -107,7 +106,6 @@ void Shadow::Update()
 		//フレーム数のリセット
 		frameCounter_ = 0;
 	}
-
 	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 }
 
