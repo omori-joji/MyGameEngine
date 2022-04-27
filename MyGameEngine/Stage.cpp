@@ -253,7 +253,7 @@ void Stage::DownButton(int x, int y)
 
     //Playerが離れたら
     //もしくはリセットしたら
-    if (map_[x][y] <= 2||Input::IsKeyDown(DIK_1))
+    if (map_[x][y] == 0||Input::IsKeyDown(DIK_1))
     {
         //押している間だけのボタンのモデルをリセットする
         for (int i = 0; i <= shadowCount_; i++)

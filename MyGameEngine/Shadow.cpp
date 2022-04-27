@@ -92,6 +92,8 @@ void Shadow::Update()
 
 		//次のフレームへ
 		frameCounter_++;
+
+		pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 	}
 
 
@@ -99,6 +101,14 @@ void Shadow::Update()
 	//再生し終わったら
 	if (frameCounter_ >= recordData_.size() - 1 && isRecording_ == true)
 	{
+		for (int i = 0; i < 9; i++)
+		{
+			//ボタンのモデルを切り替える
+			pStage_->CheckBlock(41 + i, false);
+
+			//壁のモデルを切り替える
+			pStage_->CheckBlock(60 + i, false);
+		}
 
 		//非表示
 		isRecording_ = false;
@@ -106,7 +116,7 @@ void Shadow::Update()
 		//フレーム数のリセット
 		frameCounter_ = 0;
 	}
-	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
+	
 }
 
 void Shadow::Draw()
