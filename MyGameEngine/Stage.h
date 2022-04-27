@@ -4,6 +4,7 @@
 //クラスの前方宣言
 class Player;
 class Shadow;
+class SceneManager;
 
 
 //◆◆◆を管理するクラス
@@ -21,6 +22,7 @@ class Stage : public GameObject
     
 
     Player* pPlayer_;
+    SceneManager* pSceneManager_;
     Shadow* pShadow[6];
 
 

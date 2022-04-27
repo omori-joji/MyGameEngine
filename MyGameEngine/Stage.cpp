@@ -15,7 +15,8 @@ Stage::Stage(GameObject* parent)
     timeCount_(0),
     isBlinking_(true),
     verticalValu(0),     //マップ縦軸の値
-    besideValu(0)       //マップ横軸の値
+    besideValu(0),       //マップ横軸の値
+    pSceneManager_(nullptr)
 {
 
 }
@@ -31,10 +32,22 @@ void Stage::Initialize()
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
+    if (pSceneManager_ == nullptr)
+    {
+        pSceneManager_ = (SceneManager*)Find("SceneManager");
+    }
+
 
     //Csvファイルの読み込み
     CsvReader csv;
-    csv.Load("Assets/Stage3.csv");
+
+    switch(pSceneManager_->nextSceneID_)
+    {
+    case SCENE_ID_STAGE1: csv.Load("Assets/Stage1.csv");break;
+    case SCENE_ID_STAGE2: csv.Load("Assets/Stage2.csv");break;
+    case SCENE_ID_STAGE3: csv.Load("Assets/Stage3.csv");break;
+
+    }
 
 
     //Excelで設定したマスの値

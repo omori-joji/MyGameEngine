@@ -169,6 +169,7 @@
     <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TestScene.cpp" />
+    <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple3D.hlsl">
@@ -205,6 +206,7 @@
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TestScene.h" />
+    <ClInclude Include="Title.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyGameEngine.rc" />

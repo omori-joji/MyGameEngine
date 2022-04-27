@@ -10,6 +10,7 @@ enum SCENE_ID
 	SCENE_ID_STAGE2,
 	SCENE_ID_STAGE3,
 	SCENE_ID_CLEAR,
+	SCENE_ID_CLEDIT,
 	SCENE_ID_TITLE,
 };
 
@@ -33,8 +34,11 @@ public:
 	//引数：next	次のシーンのID
 	void ChangeScene(SCENE_ID next);
 
-private:
-	SCENE_ID currentSceneID_;	//現在のシーン
+	SCENE_ID SetnextSceneID(SCENE_ID x);
 	SCENE_ID nextSceneID_;		//次のシーン
 
+private:
+
+	SCENE_ID currentSceneID_;	//現在のシーン
+	
 };

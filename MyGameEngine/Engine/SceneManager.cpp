@@ -4,6 +4,7 @@
 #include "Model.h"
 #include "../Stage.h"
 #include "../Clear.h"
+#include "../Title.h"
 
 
 //コンストラクタ
@@ -17,9 +18,9 @@ SceneManager::SceneManager(GameObject * parent)
 void SceneManager::Initialize()
 {
 	//最初のシーンを準備
-	currentSceneID_ = SCENE_ID_TEST;
+	currentSceneID_ = SCENE_ID_TITLE;
 	nextSceneID_ = currentSceneID_;
-	Instantiate<Stage>(this);
+	Instantiate<Title>(this);
 }
 
 //更新
@@ -39,8 +40,11 @@ void SceneManager::Update()
 		//次のシーンを作成
 		switch (nextSceneID_)
 		{
-		case SCENE_ID_STAGE2: Instantiate<Stage>(this); break;
-		case SCENE_ID_CLEAR: Instantiate<Clear>(this); break;
+		   case SCENE_ID_STAGE1: Instantiate<Stage>(this); break;
+		   case SCENE_ID_STAGE2: Instantiate<Stage>(this); break;;
+		   case SCENE_ID_STAGE3: Instantiate<Stage>(this); break;
+		   case SCENE_ID_CLEAR: Instantiate<Clear>(this); break;
+		   case SCENE_ID_CLEDIT: Instantiate<Clear>(this); break;
 		}
 
 		currentSceneID_ = nextSceneID_;
@@ -61,4 +65,10 @@ void SceneManager::Release()
 void SceneManager::ChangeScene(SCENE_ID next)
 {
 	nextSceneID_ = next;
+}
+
+SCENE_ID SceneManager::SetnextSceneID(SCENE_ID x)
+{
+	x = nextSceneID_;
+	return x;
 }
