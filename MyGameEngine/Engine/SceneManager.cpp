@@ -47,6 +47,7 @@ void SceneManager::Update()
 		   case SCENE_ID_CLEAR: Instantiate<Clear>(this); break;
 		   case SCENE_ID_CLEDIT: Instantiate<Clear>(this); break;
 		   case SCENE_ID_SETUMEI: Instantiate<Setumei>(this); break;
+		   case SCENE_ID_TITLE2: Instantiate<Title>(this); break;
 		}
 
 		currentSceneID_ = nextSceneID_;

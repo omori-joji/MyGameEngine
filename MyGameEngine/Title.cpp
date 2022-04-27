@@ -20,38 +20,38 @@ void Title::Initialize()
 //XV
 void Title::Update()
 {
-    if (iskeyDown_)
-    {
-        chengeCount++;
-        if (chengeCount >= 30)
-        {
-            imageNum_++;
-            chengeCount = 0;
-            if (imageNum_ >= 4)
-            {
-                imageNum_ = 1;
-            }
-        }
-    }
+    //if (iskeyDown_)
+    //{
+    //    chengeCount++;
+    //    if (chengeCount >= 30)
+    //    {
+    //        imageNum_++;
+    //        chengeCount = 0;
+    //        if (imageNum_ >= 4)
+    //        {
+    //            imageNum_ = 1;
+    //        }
+    //    }
+    //}
 
 
     if (Input::IsKeyDown(DIK_1))
     {
-        iskeyDown_ = true;
+        imageNum_ = 1;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_STAGE1);
     }
 
     if (Input::IsKeyDown(DIK_2))
     {
-        iskeyDown_ = true;
+        imageNum_ = 1;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_STAGE2);
     }
 
     if (Input::IsKeyDown(DIK_3))
     {
-        iskeyDown_ = true;
+        imageNum_ = 1;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_STAGE3);
     }

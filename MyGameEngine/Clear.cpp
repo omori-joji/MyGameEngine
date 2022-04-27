@@ -20,10 +20,10 @@ void Clear::Initialize()
 //XV
 void Clear::Update()
 {
-	if (Input::IsKeyDown(DIK_SPACE))
+	if (Input::IsKeyDown(DIK_1))
 	{
 		SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
-		pSceneManager->ChangeScene(SCENE_ID_STAGE2);
+		pSceneManager->ChangeScene(SCENE_ID_TITLE2);
 	}
 }
 
