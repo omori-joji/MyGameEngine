@@ -203,8 +203,10 @@ void Player::Update()
 
 	if (pStage_->WarpBlockEnter((int)transform_.position_.x, (int)transform_.position_.y))
 	{
-		pStage_->WarpBlockExit();
+		pStage_->WarpBlockExit((int)transform_.position_.x, (int)(transform_.position_.y));
 	}
+
+	pStage_->WarpBlockExit((int)transform_.position_.x, (int)(transform_.position_.y));
 }
 
 void Player::Draw()

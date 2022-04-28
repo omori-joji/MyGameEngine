@@ -19,6 +19,7 @@ class Stage : public GameObject
 
     bool isOpenWall_;
     bool isBlinking_;
+    bool isWarp_;
     
 
     Player* pPlayer_;
@@ -71,6 +72,6 @@ public:
 
     void GoalCol(int x, int y);
 
-    void WarpBlockExit();
+    void WarpBlockExit(int getX, int getY);
 };
 

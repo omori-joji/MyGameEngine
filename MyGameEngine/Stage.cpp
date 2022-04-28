@@ -16,7 +16,8 @@ Stage::Stage(GameObject* parent)
     isBlinking_(true),
     verticalValu(0),     //マップ縦軸の値
     besideValu(0),       //マップ横軸の値
-    pSceneManager_(nullptr)
+    pSceneManager_(nullptr),
+    isWarp_(true)
 {
 
 }
@@ -249,6 +250,7 @@ bool Stage::isCrash(int x, int y)
 //この関数はPlayerクラスで常に呼ばれている
 void Stage::DownButton(int x, int y)
 {
+    //押している間ボタン
     for (int i = 0; i < 9; i++)
     {
         if (map_[x][y] == 31 + i)
@@ -263,6 +265,18 @@ void Stage::DownButton(int x, int y)
         }
     }
     
+    //同時押しボタン
+    for (int i = 0; i < 9; i++)
+    {
+        if (map_[x][y] == 111 + i)
+        {
+            CheckBlock(map_[x][y], true);
+        }
+        else if(map_[x][y] == 131 + i)
+        {
+            CheckBlock(map_[x][y], true);
+        }
+    }
     
 
     //Playerが離れたら
@@ -291,6 +305,10 @@ void Stage::DownButton(int x, int y)
 
             //壁のモデルを切り替える
             CheckBlock(60 + i, false);
+
+            CheckBlock(121 + i, false);
+
+            CheckBlock(141 + i, false);
         }
     }
 }
@@ -353,15 +371,18 @@ void Stage::Blinking(int blockNum, int time)
 //引数は今プレイヤーのいる位置にあるマス
 bool Stage::WarpBlockEnter(int x, int y)
 {
-    //そこはワープブロック
-    if (map_[x][y] == 91)
+    for (int i = 0; i < 9; i++)
     {
-        return true;
-    }
-    //何もない
-    else
-    {
-        return false;
+        //そこはワープブロック
+        if (map_[x][y] == 91 + i || map_[x][y] == 101 + i && isWarp_ == true)
+        {
+            return true;
+        }
+        //何もない
+        else
+        {
+            return false;
+        }
     }
 }
 
@@ -379,18 +400,47 @@ void Stage::GoalCol(int x, int y)
 }
 
 //
-void Stage::WarpBlockExit()
+void Stage::WarpBlockExit(int getX,int getY)
 {
-    for (int x = 0; x < besideValu; x++)
+    for (int i = 0; i < 9; i++)
     {
-        for (int y = 0; y < verticalValu; y++)
+        if (map_[getX][getY] == 91 + i && isWarp_ == true)
         {
-            if (map_[x][y] == 101)
+            for (int x = 0; x < besideValu; x++)
             {
-                pPlayer_->transform_.position_.x = x;
-                pPlayer_->transform_.position_.y = y;
+                for (int y = 0; y < verticalValu; y++)
+                {
+                    if (map_[x][y] == 101 + i)
+                    {
+                        pPlayer_->transform_.position_.x = x;
+                        pPlayer_->transform_.position_.y = y;
+                        isWarp_ = false;
+                    }
+                }
             }
         }
+    }
+
+
+    for (int i = 0; i < 9; i++)
+    {
+        if (map_[getX][getY] == 101 + i && isWarp_ == true)
+        {
+            for (int x = 0; x < besideValu; x++)
+            {
+                for (int y = 0; y < verticalValu; y++)
+                {
+                    pPlayer_->transform_.position_.x = x - 10;
+                    pPlayer_->transform_.position_.y = y - 10;
+                    isWarp_ = false;
+                }
+            }
+        }
+    }
+
+    if (map_[getX][getY] == 0)
+    {
+        isWarp_ = true;
     }
 }
 
@@ -556,43 +606,46 @@ void Stage::ModelLoad()
     hModel_[119] = Model::Load("Assets/&Button.fbx");
 
 
-    //同時押しボタン(押した後)
-    hModel_[120] = Model::Load("Assets/OrButton.fbx");
-    hModel_[121] = Model::Load("Assets/OrButton.fbx");
-    hModel_[122] = Model::Load("Assets/OrButton.fbx");
-    hModel_[123] = Model::Load("Assets/OrButton.fbx");
-    hModel_[124] = Model::Load("Assets/OrButton.fbx");
-    hModel_[125] = Model::Load("Assets/OrButton.fbx");
-    hModel_[126] = Model::Load("Assets/OrButton.fbx");
-    hModel_[127] = Model::Load("Assets/OrButton.fbx");
-    hModel_[128] = Model::Load("Assets/OrButton.fbx");
-    hModel_[129] = Model::Load("Assets/OrButton.fbx");
-
 
     //開く壁(開く前)
-    hModel_[130] = Model::Load("Assets/Wall.fbx");
-    hModel_[131] = Model::Load("Assets/Wall.fbx");
-    hModel_[132] = Model::Load("Assets/Wall.fbx");
-    hModel_[133] = Model::Load("Assets/Wall.fbx");
-    hModel_[134] = Model::Load("Assets/Wall.fbx");
-    hModel_[135] = Model::Load("Assets/Wall.fbx");
-    hModel_[136] = Model::Load("Assets/Wall.fbx");
-    hModel_[137] = Model::Load("Assets/Wall.fbx");
-    hModel_[138] = Model::Load("Assets/Wall.fbx");
-    hModel_[139] = Model::Load("Assets/Wall.fbx");
+    hModel_[120] = Model::Load("Assets/Or.fbx");
+    hModel_[121] = Model::Load("Assets/Or.fbx");
+    hModel_[122] = Model::Load("Assets/Or.fbx");
+    hModel_[123] = Model::Load("Assets/Or.fbx");
+    hModel_[124] = Model::Load("Assets/Or.fbx");
+    hModel_[125] = Model::Load("Assets/Or.fbx");
+    hModel_[126] = Model::Load("Assets/Or.fbx");
+    hModel_[127] = Model::Load("Assets/Or.fbx");
+    hModel_[128] = Model::Load("Assets/Or.fbx");
+    hModel_[129] = Model::Load("Assets/Or.fbx");
+
+
+
+
+    //同時押しボタン(押す前)
+    hModel_[130] = Model::Load("Assets/&Button.fbx");
+    hModel_[131] = Model::Load("Assets/&Button.fbx");
+    hModel_[132] = Model::Load("Assets/&Button.fbx");
+    hModel_[133] = Model::Load("Assets/&Button.fbx");
+    hModel_[134] = Model::Load("Assets/&Button.fbx");
+    hModel_[135] = Model::Load("Assets/&Button.fbx");
+    hModel_[136] = Model::Load("Assets/&Button.fbx");
+    hModel_[137] = Model::Load("Assets/&Button.fbx");
+    hModel_[138] = Model::Load("Assets/&Button.fbx");
+    hModel_[139] = Model::Load("Assets/&Button.fbx");
 
 
 
     //開く壁(開いた後)
-    hModel_[140] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[141] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[142] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[143] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[144] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[145] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[146] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[147] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[148] = Model::Load("Assets/AlphaBlock.fbx");
-    hModel_[149] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[140] = Model::Load("Assets/Or.fbx");
+    hModel_[141] = Model::Load("Assets/Or.fbx");
+    hModel_[142] = Model::Load("Assets/Or.fbx");
+    hModel_[143] = Model::Load("Assets/Or.fbx");
+    hModel_[144] = Model::Load("Assets/Or.fbx");
+    hModel_[145] = Model::Load("Assets/Or.fbx");
+    hModel_[146] = Model::Load("Assets/Or.fbx");
+    hModel_[147] = Model::Load("Assets/Or.fbx");
+    hModel_[148] = Model::Load("Assets/Or.fbx");
+    hModel_[149] = Model::Load("Assets/Or.fbx");
 }
 
