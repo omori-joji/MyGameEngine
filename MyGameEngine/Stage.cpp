@@ -295,13 +295,6 @@ void Stage::DownButton(int x, int y)
 }
 
 
-//壁を開く関数
-void Stage::OpenWall()
-{
-    CheckBlock(51, true);
-}
-
-
 //特定のブロックを探して、モデルを切り替える関数
 //第一引数は切り替えたいブロックの番号
 //第二引数はプラスかマイナスか
@@ -548,5 +541,57 @@ void Stage::ModelLoad()
     hModel_[109] = Model::Load("Assets/WarpExit.fbx");
 
 
+
+    //同時押しボタン(押す前)
+    hModel_[110] = Model::Load("Assets/&Button.fbx");
+    hModel_[111] = Model::Load("Assets/&Button.fbx");
+    hModel_[112] = Model::Load("Assets/&Button.fbx");
+    hModel_[113] = Model::Load("Assets/&Button.fbx");
+    hModel_[114] = Model::Load("Assets/&Button.fbx");
+    hModel_[115] = Model::Load("Assets/&Button.fbx");
+    hModel_[116] = Model::Load("Assets/&Button.fbx");
+    hModel_[117] = Model::Load("Assets/&Button.fbx");
+    hModel_[118] = Model::Load("Assets/&Button.fbx");
+    hModel_[119] = Model::Load("Assets/&Button.fbx");
+
+
+    //同時押しボタン(押した後)
+    hModel_[120] = Model::Load("Assets/OrButton.fbx");
+    hModel_[121] = Model::Load("Assets/OrButton.fbx");
+    hModel_[122] = Model::Load("Assets/OrButton.fbx");
+    hModel_[123] = Model::Load("Assets/OrButton.fbx");
+    hModel_[124] = Model::Load("Assets/OrButton.fbx");
+    hModel_[125] = Model::Load("Assets/OrButton.fbx");
+    hModel_[126] = Model::Load("Assets/OrButton.fbx");
+    hModel_[127] = Model::Load("Assets/OrButton.fbx");
+    hModel_[128] = Model::Load("Assets/OrButton.fbx");
+    hModel_[129] = Model::Load("Assets/OrButton.fbx");
+
+
+    //開く壁(開く前)
+    hModel_[130] = Model::Load("Assets/Wall.fbx");
+    hModel_[131] = Model::Load("Assets/Wall.fbx");
+    hModel_[132] = Model::Load("Assets/Wall.fbx");
+    hModel_[133] = Model::Load("Assets/Wall.fbx");
+    hModel_[134] = Model::Load("Assets/Wall.fbx");
+    hModel_[135] = Model::Load("Assets/Wall.fbx");
+    hModel_[136] = Model::Load("Assets/Wall.fbx");
+    hModel_[137] = Model::Load("Assets/Wall.fbx");
+    hModel_[138] = Model::Load("Assets/Wall.fbx");
+    hModel_[139] = Model::Load("Assets/Wall.fbx");
+
+
+
+    //開く壁(開いた後)
+    hModel_[140] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[141] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[142] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[143] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[144] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[145] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[146] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[147] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[148] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[149] = Model::Load("Assets/AlphaBlock.fbx");
 }
 

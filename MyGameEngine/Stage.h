@@ -63,8 +63,6 @@ public:
 
     void DownButton(int x, int y);
 
-    void OpenWall();
-
     void CheckBlock(int find , bool which);
 
     void Blinking(int blockNum, int time);
