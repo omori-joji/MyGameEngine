@@ -430,9 +430,12 @@ void Stage::WarpBlockExit(int getX,int getY)
             {
                 for (int y = 0; y < verticalValu; y++)
                 {
-                    pPlayer_->transform_.position_.x = x - 10;
-                    pPlayer_->transform_.position_.y = y - 10;
-                    isWarp_ = false;
+                    if (map_[x][y] == 91 + i)
+                    {
+                        pPlayer_->transform_.position_.x = x;
+                        pPlayer_->transform_.position_.y = y;
+                        isWarp_ = false;
+                    }
                 }
             }
         }
