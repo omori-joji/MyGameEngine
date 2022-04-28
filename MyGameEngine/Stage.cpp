@@ -46,6 +46,7 @@ void Stage::Initialize()
     case SCENE_ID_STAGE1: csv.Load("Assets/Stage1.csv");break;
     case SCENE_ID_STAGE2: csv.Load("Assets/Stage2.csv");break;
     case SCENE_ID_STAGE3: csv.Load("Assets/Stage3.csv");break;
+    case SCENE_ID_STAGE4: csv.Load("Assets/Stage4.csv");break;
 
     }
 

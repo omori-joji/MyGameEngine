@@ -44,6 +44,7 @@ void SceneManager::Update()
 		   case SCENE_ID_STAGE1: Instantiate<Stage>(this); break;
 		   case SCENE_ID_STAGE2: Instantiate<Stage>(this); break;;
 		   case SCENE_ID_STAGE3: Instantiate<Stage>(this); break;
+		   case SCENE_ID_STAGE4: Instantiate<Stage>(this); break;
 		   case SCENE_ID_CLEAR: Instantiate<Clear>(this); break;
 		   case SCENE_ID_CLEDIT: Instantiate<Clear>(this); break;
 		   case SCENE_ID_SETUMEI: Instantiate<Setumei>(this); break;
