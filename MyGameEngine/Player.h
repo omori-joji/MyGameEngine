@@ -4,6 +4,7 @@
 #include "Stage.h"
 #include "Shadow.h"
 
+
 class Shadow;
 
 //Player‚ğŠÇ—‚·‚éƒNƒ‰ƒX

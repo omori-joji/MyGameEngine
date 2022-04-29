@@ -162,6 +162,7 @@ void Stage::Update()
     {
         for (int i = 0; i < 9; i++)
         {
+            //モデルを切り替える
             CheckBlock(151 + i, true);
         }
     }
@@ -170,6 +171,7 @@ void Stage::Update()
     {
         for (int i = 0; i < 9; i++)
         {
+            //モデルを切り替える
             CheckBlock(161 + i, false);
         }
     }
@@ -187,7 +189,8 @@ void Stage::Draw()
     {
         for (int y = 0; y < verticalValu_; y++)
         {
-            //プレイヤーの位置とブロックを置かない位置の場合
+            //プレイヤーの位置とブロックを置かない位置
+            //その場合はそれ以降の処理はしない
             if (map[x][y] == 0 || map[x][y] == 200)
             {
                 continue;
@@ -235,17 +238,10 @@ void Stage::Draw()
 
 
 
-
-
 //開放
 void Stage::Release()
 {
 }
-
-
-
-
-
 
 
 //そのマスに障害物があるかどうか
@@ -272,11 +268,7 @@ bool Stage::isCrash(int x, int y)
             return true;
         }
     }
-
 }
-
-
-
 
 
 //ボタンがPlayerの足元にあるかどうかを判断する関数
@@ -304,12 +296,18 @@ void Stage::DownButton(int x, int y)
     {
         if (map[x][y] == 111 + i)
         {
+            //ボタンのモデルを切り替える
             CheckBlock(map[x][y], true);
+
+            //フラグをtrueにする
             isdoubleButton1_ = true;
         }
         else if(map[x][y] == 131 + i)
         {
+            //ボタンのモデルを切り替える
             CheckBlock(map[x][y], true);
+
+            //フラグをtrueにする
             isdoubleButton2_ = true;
         }
     }
@@ -342,29 +340,41 @@ void Stage::DownButton(int x, int y)
             //壁のモデルを切り替える
             CheckBlock(61 + i, false);
 
+            //押した後のボタンを切り替える
             CheckBlock(121 + i, false);
 
+            //開いた壁を元に戻す
             CheckBlock(141 + i, false);
         }
+
+        //同時ボタンのフラグ処理を初期化
         isdoubleButton1_ = false;
         isdoubleButton2_ = false;
     }
 }
 
 
-//特定のブロックを探して、モデルを切り替える関数
+//すべてのブロックを探して、モデルを切り替える関数
 //第一引数は切り替えたいブロックの番号
 //第二引数はプラスかマイナスか
 void Stage::CheckBlock(int find , bool which)
 {
+    //横
     for (int x = 0; x < besideValu_; x++)
     {
+        //縦
         for (int y = 0; y < verticalValu_; y++)
         {
+
+            //そこが引数で受け取ったブロックだったら
+            //第二引数がfalseでモデル番号-10のモデルに切り替える
             if (map[x][y] == find && which == false)
             {
-                map[x][y] = map[x][y] - 10;
+                map[x][y] = find - 10;
             }
+
+            //そこが引数で受け取ったブロックだったら
+            //第二引数がtrueでモデル番号+10のモデルに切り替える
             else if(map[x][y] == find && which == true)
             {
                 map[x][y] = find + 10;
@@ -388,6 +398,7 @@ void Stage::Blinking(int blockNum, int time)
         //モデルを切り替える関数
         CheckBlock(blockNum , false);
 
+        //フラグをfalseにする
         isBlinking_ = false;
 
         //計測時間をリセット
@@ -396,8 +407,11 @@ void Stage::Blinking(int blockNum, int time)
     //不透明にする
     else if(timeCount_ >= time && isBlinking_ == false)
     {
+        //モデルを切り替える関数
+        //引数に渡された値の-10のモデル番号を変える
         CheckBlock(blockNum - 10, true);
 
+        //フラグをtrueにする
         isBlinking_ = true;
 
         //計測時間をリセット
@@ -445,16 +459,26 @@ void Stage::WarpBlockExit(int getX,int getY)
 {
     for (int i = 0; i < 9; i++)
     {
+
+        //PlayerのPositionを引数で受け取る
+        //そこがワープブロックだったら
         if (map[getX][getY] == 91 + i && isWarp_ == true)
         {
+            //Stageのサイズ分調べる
+            //横
             for (int x = 0; x < besideValu_; x++)
             {
+                //縦
                 for (int y = 0; y < verticalValu_; y++)
                 {
+                    //そこがワープブロックの出口だったら
                     if (map[x][y] == 101 + i)
                     {
+                        //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
+
+                        //永久ループ防止のためにフラグ処理をしておく
                         isWarp_ = false;
                     }
                 }
@@ -465,16 +489,27 @@ void Stage::WarpBlockExit(int getX,int getY)
 
     for (int i = 0; i < 9; i++)
     {
+
+        //PlayerのPositionを引数で受け取る
+        //そこがワープブロックだったら
         if (map[getX][getY] == 101 + i && isWarp_ == true)
         {
+
+            //Stageのサイズ分調べる
+            //横
             for (int x = 0; x < besideValu_; x++)
             {
+                //縦
                 for (int y = 0; y < verticalValu_; y++)
                 {
+                    //そこがワープブロックの出口だったら
                     if (map[x][y] == 91 + i)
                     {
+                        //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
+
+                        //永久ループ防止のためにフラグ処理をしておく
                         isWarp_ = false;
                     }
                 }
@@ -482,6 +517,10 @@ void Stage::WarpBlockExit(int getX,int getY)
         }
     }
 
+
+    //フラグ処理の初期化
+    //引数はPlayerの位置
+    //ワープブロックから離れたらフラグを初期化してもう一度入れるようにする
     if (map[getX][getY] == 0)
     {
         isWarp_ = true;
