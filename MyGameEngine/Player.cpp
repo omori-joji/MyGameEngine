@@ -38,11 +38,11 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_Right[0] = Model::Load("Assets/Player_0.fbx");
-	hModel_Right[1] = Model::Load("Assets/Player_Run.fbx");
+	hModel_Right[0] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
+	hModel_Right[1] = Model::Load("Assets/Player/PlayerRightRun.fbx");
 
-	hModel_Left[0] = Model::Load("Assets/Player_2.fbx");
-	hModel_Left[1] = Model::Load("Assets/PlayerRun_2.fbx");
+	hModel_Left[0] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
+	hModel_Left[1] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
 }
 
 void Player::Update()

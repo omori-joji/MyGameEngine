@@ -24,12 +24,12 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	//‰E‚ğŒü‚¢‚Ä‚¢‚éƒ‚ƒfƒ‹
-	hModel_Right_[0] = Model::Load("Assets/Shadow_Right.fbx");
-	hModel_Right_[1] = Model::Load("Assets/ShadowRun_Right.fbx");
+	hModel_Right_[0] = Model::Load("Assets/Shadow/Shadow_Right.fbx");
+	hModel_Right_[1] = Model::Load("Assets/Shadow/ShadowRun_Right.fbx");
 
 	//¶‚ğŒü‚¢‚Ä‚¢‚éƒ‚ƒfƒ‹
-	hModel_Left_[0] = Model::Load("Assets/Shadow_Left.fbx");
-	hModel_Left_[1] = Model::Load("Assets/ShadowRun_Left.fbx");
+	hModel_Left_[0] = Model::Load("Assets/Shadow/Shadow_Left.fbx");
+	hModel_Left_[1] = Model::Load("Assets/Shadow/ShadowRun_Left.fbx");
 }
 
 void Shadow::Update()

@@ -13,11 +13,11 @@ Title::Title(GameObject* parent)
 void Title::Initialize()
 {
     //モデルデータのロード
-    hModel_[0] = Model::Load("Assets/Title.fbx");
-    hModel_[1] = Model::Load("Assets/TitleNowLoding.fbx");
-    hModel_[2] = Model::Load("Assets/TitleNowLodingAnimation2.fbx");
-    hModel_[3] = Model::Load("Assets/TitleNowLodingAnimation3.fbx");
-    hModel_[4] = Model::Load("Assets/TitleNowLodingAnimation4.fbx");
+    hModel_[0] = Model::Load("Assets/Stage/Title.fbx");
+    hModel_[1] = Model::Load("Assets/Stage/TitleNowLoding.fbx");
+    hModel_[2] = Model::Load("Assets/Stage/TitleNowLodingAnimation2.fbx");
+    hModel_[3] = Model::Load("Assets/Stage/TitleNowLodingAnimation3.fbx");
+    hModel_[4] = Model::Load("Assets/Stage/TitleNowLodingAnimation4.fbx");
 }
 
 //更新

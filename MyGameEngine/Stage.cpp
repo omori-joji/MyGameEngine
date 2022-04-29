@@ -47,10 +47,10 @@ void Stage::Initialize()
 
     switch(pSceneManager_->nextSceneID_)
     {
-    case SCENE_ID_STAGE1: csv.Load("Assets/Stage1.csv");break;
-    case SCENE_ID_STAGE2: csv.Load("Assets/Stage2.csv");break;
-    case SCENE_ID_STAGE3: csv.Load("Assets/Stage3.csv");break;
-    case SCENE_ID_STAGE4: csv.Load("Assets/Stage4.csv");break;
+    case SCENE_ID_STAGE1: csv.Load("Assets/Stage/Stage1.csv");break;
+    case SCENE_ID_STAGE2: csv.Load("Assets/Stage/Stage2.csv");break;
+    case SCENE_ID_STAGE3: csv.Load("Assets/Stage/Stage3.csv");break;
+    case SCENE_ID_STAGE4: csv.Load("Assets/Stage/Stage4.csv");break;
 
     }
 
@@ -242,14 +242,14 @@ bool Stage::isCrash(int x, int y)
     for (int i = 0; i < 9; i++)
     {
         //そこにはブロックはない
-        if (map_[x][y] == 0 + i ||
+        if (map_[x][y] == 0 + i||
             map_[x][y] == 3 + i||
             map_[x][y] == 200 + i||
             map_[x][y] == 91 + i||
             map_[x][y] == 101 + i||
             map_[x][y] == 61 + i||
             map_[x][y] == 81 + i||
-            map_[x][y] == 161 + 1)
+            map_[x][y] == 161 + i)
         {
             return false;
         }
@@ -478,10 +478,10 @@ void Stage::ModelLoad()
 {
 
     //ステージを構成するブロック
-    hModel_[0] = Model::Load("Assets/Block.fbx");
-    hModel_[1] = Model::Load("Assets/NaturalBlock.fbx");
-    hModel_[2] = Model::Load("Assets/Goal.fbx");
-    hModel_[3] = Model::Load("Assets/BackGround.fbx");
+    hModel_[0] = Model::Load("Assets/Stage/Block.fbx");
+    hModel_[1] = Model::Load("Assets/Stage/NaturalBlock.fbx");
+    hModel_[2] = Model::Load("Assets/Stage/Goal.fbx");
+    hModel_[3] = Model::Load("Assets/Stage/BackGround.fbx");
     hModel_[4] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[5] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[6] = Model::Load("Assets/GreenBlock.fbx");
@@ -636,16 +636,16 @@ void Stage::ModelLoad()
 
 
     //開く壁(開く前)
-    hModel_[120] = Model::Load("Assets/Or.fbx");
-    hModel_[121] = Model::Load("Assets/Or.fbx");
-    hModel_[122] = Model::Load("Assets/Or.fbx");
-    hModel_[123] = Model::Load("Assets/Or.fbx");
-    hModel_[124] = Model::Load("Assets/Or.fbx");
-    hModel_[125] = Model::Load("Assets/Or.fbx");
-    hModel_[126] = Model::Load("Assets/Or.fbx");
-    hModel_[127] = Model::Load("Assets/Or.fbx");
-    hModel_[128] = Model::Load("Assets/Or.fbx");
-    hModel_[129] = Model::Load("Assets/Or.fbx");
+    hModel_[120] = Model::Load("Assets/OrButton.fbx");
+    hModel_[121] = Model::Load("Assets/OrButton.fbx");
+    hModel_[122] = Model::Load("Assets/OrButton.fbx");
+    hModel_[123] = Model::Load("Assets/OrButton.fbx");
+    hModel_[124] = Model::Load("Assets/OrButton.fbx");
+    hModel_[125] = Model::Load("Assets/OrButton.fbx");
+    hModel_[126] = Model::Load("Assets/OrButton.fbx");
+    hModel_[127] = Model::Load("Assets/OrButton.fbx");
+    hModel_[128] = Model::Load("Assets/OrButton.fbx");
+    hModel_[129] = Model::Load("Assets/OrButton.fbx");
 
 
 
@@ -665,16 +665,16 @@ void Stage::ModelLoad()
 
 
     //開く壁(開いた後)
-    hModel_[140] = Model::Load("Assets/Or.fbx");
-    hModel_[141] = Model::Load("Assets/Or.fbx");
-    hModel_[142] = Model::Load("Assets/Or.fbx");
-    hModel_[143] = Model::Load("Assets/Or.fbx");
-    hModel_[144] = Model::Load("Assets/Or.fbx");
-    hModel_[145] = Model::Load("Assets/Or.fbx");
-    hModel_[146] = Model::Load("Assets/Or.fbx");
-    hModel_[147] = Model::Load("Assets/Or.fbx");
-    hModel_[148] = Model::Load("Assets/Or.fbx");
-    hModel_[149] = Model::Load("Assets/Or.fbx");
+    hModel_[140] = Model::Load("Assets/OrButton.fbx");
+    hModel_[141] = Model::Load("Assets/OrButton.fbx");
+    hModel_[142] = Model::Load("Assets/OrButton.fbx");
+    hModel_[143] = Model::Load("Assets/OrButton.fbx");
+    hModel_[144] = Model::Load("Assets/OrButton.fbx");
+    hModel_[145] = Model::Load("Assets/OrButton.fbx");
+    hModel_[146] = Model::Load("Assets/OrButton.fbx");
+    hModel_[147] = Model::Load("Assets/OrButton.fbx");
+    hModel_[148] = Model::Load("Assets/OrButton.fbx");
+    hModel_[149] = Model::Load("Assets/OrButton.fbx");
 
 
     //同時ボタンが押されたら開く壁
