@@ -1,5 +1,4 @@
 #include "Engine/Model.h"
-#include "Engine/Fbx.h"
 #include "Engine/Input.h"
 #include "Engine/CsvReader.h"
 #include "Engine/SceneManager.h"
@@ -10,13 +9,12 @@
 //コンストラクタ
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"), hSound_(-1),
-    isOpenWall_(true),
     pPlayer_(nullptr),
     shadowCount_(0),
     timeCount_(0),
     isBlinking_(true),
-    verticalValu(0),     //マップ縦軸の値
-    besideValu(0),       //マップ横軸の値
+    verticalValu_(0),     //マップ縦軸の値
+    besideValu_(0),       //マップ横軸の値
     pSceneManager_(nullptr),
     isWarp_(true),
     isdoubleButton1_(false),
@@ -36,6 +34,8 @@ void Stage::Initialize()
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
+
+    //SceneManagerクラスの情報を格納する
     if (pSceneManager_ == nullptr)
     {
         pSceneManager_ = (SceneManager*)Find("SceneManager");
@@ -45,34 +45,38 @@ void Stage::Initialize()
     //Csvファイルの読み込み
     CsvReader csv;
 
+
+    //読み込まれたステージIDに対応するCSVファイルを読み込む
     switch(pSceneManager_->nextSceneID_)
     {
     case SCENE_ID_STAGE1: csv.Load("Assets/Stage/Stage1.csv");break;
     case SCENE_ID_STAGE2: csv.Load("Assets/Stage/Stage2.csv");break;
     case SCENE_ID_STAGE3: csv.Load("Assets/Stage/Stage3.csv");break;
     case SCENE_ID_STAGE4: csv.Load("Assets/Stage/Stage4.csv");break;
-
     }
 
 
     //Excelで設定したマスの値
     //縦
-    verticalValu = 23;
+    verticalValu_ = 23;
 
     //横
-    besideValu = 28;
+    besideValu_ = 28;
 
 
 
     //プレイヤーの生成
     //200が入っているマスにプレイヤーが出現する
-    for (int x = 0; x < besideValu; x++)
+    //横
+    for (int x = 0; x < besideValu_; x++)
     {
-        for (int y = 0; y < verticalValu; y++)
+        //縦
+        for (int y = 0; y < verticalValu_; y++)
         {
-            map_[x][y] = csv.GetValue(x, (verticalValu-1) - y); //エクセルだとyの値が逆なので縦軸-1をしてあげる
+            //エクセルだとyの値が逆なので縦軸-1をしてあげる
+            map[x][y] = csv.GetValue(x, (verticalValu_-1) - y); 
 
-            if (map_[x][y] == 200)
+            if (map[x][y] == 200)
             {
                 //プレイヤーの生成
                 //プレイヤーの位置決定
@@ -87,7 +91,8 @@ void Stage::Initialize()
 
 
     //影の生成
-    pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
+    //最初は非表示で影を生成する
+    pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
 }
 
 
@@ -117,7 +122,7 @@ void Stage::Update()
             for (int i = 0; i <= shadowCount_; i++)
             {
                 //表示するフラグ
-                pShadow[i]->Flag();
+                pShadow_[i]->Flag();
             }
 
             if (shadowCount_ <= 4)
@@ -130,7 +135,7 @@ void Stage::Update()
         //影の生成
         if (shadowCount_ <= 5)
         {
-            pShadow[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
+            pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
         }
     }
 
@@ -141,16 +146,18 @@ void Stage::Update()
         for (int i = 0; i <= shadowCount_; i++)
         {
             //解放処理
-            pShadow[i]->killMe();
+            pShadow_[i]->killMe();
         }
         //影の数をリセット
         shadowCount_ = 0;
     }
-    //一定時間ごとにブロックを入れ替える
+
+    //一定時間ごとにブロック切り替える
     Blinking(81, 70);
 
 
-
+    //同時ボタンのギミック
+    //どちらもボタンを押していたら発動する
     if (isdoubleButton1_ && isdoubleButton2_)
     {
         for (int i = 0; i < 9; i++)
@@ -158,6 +165,7 @@ void Stage::Update()
             CheckBlock(151 + i, true);
         }
     }
+    //どちらかが、あるいはどちらも押していなければボタンは元に戻る
     else
     {
         for (int i = 0; i < 9; i++)
@@ -175,29 +183,30 @@ void Stage::Update()
 void Stage::Draw()
 {
     //ブロックの配置
-    for (int x = 0; x < besideValu; x++)
+    for (int x = 0; x < besideValu_; x++)
     {
-        for (int y = 0; y < verticalValu; y++)
+        for (int y = 0; y < verticalValu_; y++)
         {
             //プレイヤーの位置とブロックを置かない位置の場合
-            if (map_[x][y] == 0 || map_[x][y] == 200)
+            if (map[x][y] == 0 || map[x][y] == 200)
             {
                 continue;
             }
 
             //モデル番号の格納
-            int type = map_[x][y] - 1;
+            int type = map[x][y] - 1;
 
             //位置
+            //transの位置情報を決める
             Transform trans;
             trans.position_.x = x;
             trans.position_.y = y;
 
-            //Calclationクラスで位置を変更する
+            //Calclationクラスで移動、回転、拡大行列の処理をする
             trans.Calclation();
 
 
-            //モデルのロード
+            //モデルの表示
             Model::SetTransform(hModel_[type], trans);
             Model::Draw(hModel_[type]);
         }
@@ -208,14 +217,18 @@ void Stage::Draw()
     Transform back;
 
     //横軸の真ん中
-    back.position_.x = besideValu / 2;
+    back.position_.x = besideValu_ / 2;
+
     //縦軸の真ん中
-    back.position_.y = verticalValu / 2 + 1;
+    back.position_.y = verticalValu_ / 2 + 1;
+
     //少し奥に
     back.position_.z = 0.5;
-    //位置の確定
+
+    //Calclationクラスで移動、回転、拡大行列の処理をする
     back.Calclation();
 
+    //モデルの表示
     Model::SetTransform(hModel_[3], back);
     Model::Draw(hModel_[3]);
 }
@@ -242,14 +255,14 @@ bool Stage::isCrash(int x, int y)
     for (int i = 0; i < 9; i++)
     {
         //そこにはブロックはない
-        if (map_[x][y] == 0 + i||
-            map_[x][y] == 3 + i||
-            map_[x][y] == 200 + i||
-            map_[x][y] == 91 + i||
-            map_[x][y] == 101 + i||
-            map_[x][y] == 61 + i||
-            map_[x][y] == 81 + i||
-            map_[x][y] == 161 + i)
+        if (map[x][y] == 0 + i||
+            map[x][y] == 3 + i||
+            map[x][y] == 200 + i||
+            map[x][y] == 91 + i||
+            map[x][y] == 101 + i||
+            map[x][y] == 61 + i||
+            map[x][y] == 81 + i||
+            map[x][y] == 161 + i)
         {
             return false;
         }
@@ -274,11 +287,11 @@ void Stage::DownButton(int x, int y)
     //押している間ボタン
     for (int i = 0; i < 9; i++)
     {
-        if (map_[x][y] == 31 + i)
+        if (map[x][y] == 31 + i)
         {
 
             //モデル変更
-            CheckBlock(map_[x][y], true);
+            CheckBlock(map[x][y], true);
 
 
             //壁を開く処理
@@ -289,14 +302,14 @@ void Stage::DownButton(int x, int y)
     //同時押しボタン
     for (int i = 0; i < 9; i++)
     {
-        if (map_[x][y] == 111 + i)
+        if (map[x][y] == 111 + i)
         {
-            CheckBlock(map_[x][y], true);
+            CheckBlock(map[x][y], true);
             isdoubleButton1_ = true;
         }
-        else if(map_[x][y] == 131 + i)
+        else if(map[x][y] == 131 + i)
         {
-            CheckBlock(map_[x][y], true);
+            CheckBlock(map[x][y], true);
             isdoubleButton2_ = true;
         }
     }
@@ -304,12 +317,12 @@ void Stage::DownButton(int x, int y)
 
     //Playerが離れたら
     //もしくはリセットしたら
-    if (map_[x][y] <= 0||Input::IsKeyDown(DIK_1))
+    if (map[x][y] <= 0||Input::IsKeyDown(DIK_1))
     {
         //押している間だけのボタンのモデルをリセットする
         for (int i = 0; i <= shadowCount_; i++)
         {
-            if (pShadow[i]->isRecording_ == false)
+            if (pShadow_[i]->isRecording_ == false)
             {
                 for (int i = 0; i < 9; i++)
                 {
@@ -344,17 +357,17 @@ void Stage::DownButton(int x, int y)
 //第二引数はプラスかマイナスか
 void Stage::CheckBlock(int find , bool which)
 {
-    for (int x = 0; x < besideValu; x++)
+    for (int x = 0; x < besideValu_; x++)
     {
-        for (int y = 0; y < verticalValu; y++)
+        for (int y = 0; y < verticalValu_; y++)
         {
-            if (map_[x][y] == find && which == false)
+            if (map[x][y] == find && which == false)
             {
-                map_[x][y] = map_[x][y] - 10;
+                map[x][y] = map[x][y] - 10;
             }
-            else if(map_[x][y] == find && which == true)
+            else if(map[x][y] == find && which == true)
             {
-                map_[x][y] = find + 10;
+                map[x][y] = find + 10;
             }
         }
     }
@@ -399,7 +412,7 @@ bool Stage::WarpBlockEnter(int x, int y)
     for (int i = 0; i < 9; i++)
     {
         //そこはワープブロック
-        if (map_[x][y] == 91 + i || map_[x][y] == 101 + i && isWarp_ == true)
+        if (map[x][y] == 91 + i || map[x][y] == 101 + i && isWarp_ == true)
         {
             return true;
         }
@@ -416,8 +429,11 @@ bool Stage::WarpBlockEnter(int x, int y)
 void Stage::GoalCol(int x, int y)
 {
     //そこはゴール
-    if (map_[x][y] == 3)
+    if (map[x][y] == 3)
     {
+        //シーン移動
+        //Find関数でSceneManagerクラスを探して
+        //ChangeScene関数の引数に移動したいシーンのIDを渡す
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_CLEAR);
     }
@@ -429,13 +445,13 @@ void Stage::WarpBlockExit(int getX,int getY)
 {
     for (int i = 0; i < 9; i++)
     {
-        if (map_[getX][getY] == 91 + i && isWarp_ == true)
+        if (map[getX][getY] == 91 + i && isWarp_ == true)
         {
-            for (int x = 0; x < besideValu; x++)
+            for (int x = 0; x < besideValu_; x++)
             {
-                for (int y = 0; y < verticalValu; y++)
+                for (int y = 0; y < verticalValu_; y++)
                 {
-                    if (map_[x][y] == 101 + i)
+                    if (map[x][y] == 101 + i)
                     {
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
@@ -449,13 +465,13 @@ void Stage::WarpBlockExit(int getX,int getY)
 
     for (int i = 0; i < 9; i++)
     {
-        if (map_[getX][getY] == 101 + i && isWarp_ == true)
+        if (map[getX][getY] == 101 + i && isWarp_ == true)
         {
-            for (int x = 0; x < besideValu; x++)
+            for (int x = 0; x < besideValu_; x++)
             {
-                for (int y = 0; y < verticalValu; y++)
+                for (int y = 0; y < verticalValu_; y++)
                 {
-                    if (map_[x][y] == 91 + i)
+                    if (map[x][y] == 91 + i)
                     {
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
@@ -466,7 +482,7 @@ void Stage::WarpBlockExit(int getX,int getY)
         }
     }
 
-    if (map_[getX][getY] == 0)
+    if (map[getX][getY] == 0)
     {
         isWarp_ = true;
     }
@@ -478,10 +494,10 @@ void Stage::ModelLoad()
 {
 
     //ステージを構成するブロック
-    hModel_[0] = Model::Load("Assets/Stage/Block.fbx");
-    hModel_[1] = Model::Load("Assets/Stage/NaturalBlock.fbx");
-    hModel_[2] = Model::Load("Assets/Stage/Goal.fbx");
-    hModel_[3] = Model::Load("Assets/Stage/BackGround.fbx");
+    hModel_[0] = Model::Load("Assets/StageBlock/Block.fbx");
+    hModel_[1] = Model::Load("Assets/StageBlock/NaturalBlock.fbx");
+    hModel_[2] = Model::Load("Assets/StageBlock/Goal.fbx");
+    hModel_[3] = Model::Load("Assets/StageBlock/BackGround.fbx");
     hModel_[4] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[5] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[6] = Model::Load("Assets/GreenBlock.fbx");
