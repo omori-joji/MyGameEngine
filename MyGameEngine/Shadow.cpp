@@ -16,7 +16,8 @@ Shadow::Shadow(GameObject* parent)
 	isRecordCheck_(true),    //プレイヤーが右を向いているか左を向いているか
 	leftModel_(0),           //左のモデル番号
 	rightModel_(0),          //右のモデル番号
-	sMemory(0)
+	hModel_Right_(),
+	hModel_Left_()
 {
 
 }
@@ -49,7 +50,6 @@ void Shadow::Update()
 	//記録中
 	if (isRecording_ == false)
 	{
-
 		//動的配列に毎フレームプレイヤーの位置を記録する
 		recordData_.push_back(pPlayer_->transform_.position_);
 
@@ -93,6 +93,7 @@ void Shadow::Update()
 		//次のフレームへ
 		frameCounter_++;
 
+		//DownButton関数を毎フレームに呼んで下にボタンがないか確かめる
 		pStage_->DownButton(transform_.position_.x, (int)(transform_.position_.y) - 1);
 	}
 
@@ -127,12 +128,14 @@ void Shadow::Draw()
 		//右を向いていたらこっちを実行
 		if (isRecordCheck_)
 		{
+			//記録したPlayerのモデル番号をこっちにも反映させる
 			Model::SetTransform(hModel_Right_[rightModel_], transform_);
 			Model::Draw(hModel_Right_[rightModel_]);
 		}
 		//左を向いていたらこっちを実行
 		else
 		{
+			//記録したPlayerのモデル番号をこっちにも反映させる
 			Model::SetTransform(hModel_Left_[leftModel_], transform_);
 			Model::Draw(hModel_Left_[leftModel_]);
 		}
@@ -145,13 +148,8 @@ void Shadow::Release()
 
 }
 
-void Shadow::Collision()
-{
-
-}
-
 //保存した動きを再生する関数
-void Shadow::Flag()
+void Shadow::ShadowDisplayFlag()
 {
 	//再生開始
 	isRecording_ = true;

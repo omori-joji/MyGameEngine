@@ -13,7 +13,7 @@ Clear::Clear(GameObject* parent)
 void Clear::Initialize()
 {
 	//モデルデータのロード
-	hModel_ = Model::Load("Assets/Clear.fbx");
+	hModel_ = Model::Load("Assets/StageBlock/Clear.fbx");
 	assert(hModel_ >= 0);
 }
 

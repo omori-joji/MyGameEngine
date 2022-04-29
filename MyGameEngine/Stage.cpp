@@ -13,8 +13,8 @@ Stage::Stage(GameObject* parent)
     shadowCount_(0),
     timeCount_(0),
     isBlinking_(true),
-    verticalValu_(0),     //マップ縦軸の値
-    besideValu_(0),       //マップ横軸の値
+    verticalValu_(23),     //マップ縦軸の値
+    besideValu_(28),       //マップ横軸の値
     pSceneManager_(nullptr),
     isWarp_(true),
     isdoubleButton1_(false),
@@ -54,16 +54,6 @@ void Stage::Initialize()
     case SCENE_ID_STAGE3: csv.Load("Assets/Stage/Stage3.csv");break;
     case SCENE_ID_STAGE4: csv.Load("Assets/Stage/Stage4.csv");break;
     }
-
-
-    //Excelで設定したマスの値
-    //縦
-    verticalValu_ = 23;
-
-    //横
-    besideValu_ = 28;
-
-
 
     //プレイヤーの生成
     //200が入っているマスにプレイヤーが出現する
@@ -122,7 +112,7 @@ void Stage::Update()
             for (int i = 0; i <= shadowCount_; i++)
             {
                 //表示するフラグ
-                pShadow_[i]->Flag();
+                pShadow_[i]->ShadowDisplayFlag();
             }
 
             if (shadowCount_ <= 4)
@@ -176,9 +166,6 @@ void Stage::Update()
         }
     }
 }
-
-
-
 
 
 //描画
@@ -545,7 +532,7 @@ void Stage::ModelLoad()
     hModel_[9] = Model::Load("Assets/GreenBlock.fbx");
 
 
-    //押したら発動するbボタン
+    //押したら発動するボタン
     hModel_[10] = Model::Load("Assets/PushButton.fbx");
     hModel_[11] = Model::Load("Assets/PushButton.fbx");
     hModel_[12] = Model::Load("Assets/PushButton.fbx");

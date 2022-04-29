@@ -11,32 +11,33 @@ class SceneManager;
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
-    int hModel_[500]; //モデル番号
-    int shadowCount_; //影の数
-    int timeCount_;   //点滅ブロックの点滅間隔
-    int hSound_;      //サウンドファイル
+    int hModel_[500];  //モデル番号
+    int shadowCount_;  //影の数
+    int timeCount_;    //点滅ブロックの点滅間隔
+    int hSound_;       //サウンドファイル
     int verticalValu_; //ステージの高さ
     int besideValu_;   //ステージの横幅
 
 
 
-    bool isBlinking_; //ブロックが消えたかどうか
-    bool isWarp_;     //ワープしたか塚
-    bool isdoubleButton1_;  //同時ボタンの片方を押した
-    bool isdoubleButton2_;  //同時ボタンのもう片方を押した
+    bool isBlinking_;      //ブロックが消えたかどうか
+    bool isWarp_;          //ワープしたか塚
+    bool isdoubleButton1_; //同時ボタンの片方を押した
+    bool isdoubleButton2_; //同時ボタンのもう片方を押した
 
-    Player* pPlayer_;  //Playerクラスを格納するポインタ
-    SceneManager* pSceneManager_;  //SceneManagerクラスを格納するポインタ
-    Shadow* pShadow_[6];  //Shadowクラスを格納するポインタ型の配列
+
+
+    Player* pPlayer_;             //Playerクラスを格納するポインタ
+    SceneManager* pSceneManager_; //SceneManagerクラスを格納するポインタ
+    Shadow* pShadow_[6];          //Shadowクラスを格納するポインタ型の配列
 
 
 
 
 public:
 
-    int map[28][23];  //ステージのマス情報
-
-    XMFLOAT3 stertPos;  //Playerがリセットした時のリセット位置を記憶する変数
+    int map[28][23];   //ステージのマス情報
+    XMFLOAT3 stertPos; //Playerがリセットした時のリセット位置を記憶する変数
 
 
 

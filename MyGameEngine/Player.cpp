@@ -18,7 +18,7 @@ Player::Player(GameObject* parent)
 	MARGIN(0.11f),//当たり判定の遊び
 	BLOCK_SIZE(1.0f),//ブロックのサイズ
 	MAX_JUMP(3.0f),//ジャンプの上限
-	isJump(false),//ジャンプ中か
+	isJump_(false),//ジャンプ中か
 
 	move_(0.01),//Y軸の移動
 	gravity_(0.01),//重力
@@ -26,7 +26,9 @@ Player::Player(GameObject* parent)
 	pStage_(nullptr),//ステージの情報を入れるポインタ
 	plyerRightMoveCount(0),
 	isDirection(true),
-	plyerLeftMoveCount(0)
+	plyerLeftMoveCount(0),
+	hModel_Left(),
+	hModel_Right()
 {
 
 }
@@ -61,49 +63,60 @@ void Player::Update()
 	
 
 	//左移動
+	//左矢印キーを押していたら
 	if (Input::IsKey(DIK_LEFT))
 	{
-		
 	    transform_.position_.x -= SPEED;
 	}
 
+	//左矢印キーを押した瞬間
 	if (Input::IsKeyDown(DIK_LEFT))
 	{
+		//左を向いているフラグ
 		isDirection = false;
+
+		//モデル番号を変更
 		plyerLeftMoveCount++;
 	}
 
+	//左矢印キーを離したら
 	if (Input::IsKeyUp(DIK_LEFT))
 	{
+		//モデル番号を変更
 		plyerLeftMoveCount--; 
 	}
 
 
 
 	//右移動
+	//右矢印キーを押していたら
 	if (Input::IsKey(DIK_RIGHT))
 	{
 		transform_.position_.x += SPEED;
 	}
 
-	//プレイヤーのモデル切り替え
+	//右矢印キーを押した瞬間
 	if (Input::IsKeyDown(DIK_RIGHT))
 	{
+		//右を向いているフラグ
 		isDirection = true;
+
 		plyerRightMoveCount++;
 	}
 
+	//右矢印キーを離した瞬間
 	if (Input::IsKeyUp(DIK_RIGHT))
 	{
+		//モデル番号を変更
 		plyerRightMoveCount--;
 	}
 
 
 
-	//再生スタート
+	//リセットボタンを押したら
+	//記録した影をすべてまっさらな状態にしたら
 	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
 	{
-
 		//初期位置に戻る
 		transform_.position_ = pStage_->stertPos; 
 	}
@@ -155,9 +168,9 @@ void Player::Update()
 	else
 	{
 		//ジャンプ
-		if (Input::IsKeyDown(DIK_SPACE) && isJump == false)
+		if (Input::IsKeyDown(DIK_SPACE) && isJump_ == false)
 		{
-			isJump = true;//ジャンプしている
+			isJump_ = true;//ジャンプしている
 
 			//gravityの値をマイナスにすることによって今度は上方向に重力がかかるようになる
 			transform_.position_.y += move_;
@@ -174,7 +187,7 @@ void Player::Update()
 
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		isJump = false;//下にブロックがあったら今はジャンプしていない
+		isJump_ = false;//下にブロックがあったら今はジャンプしていない
 
 		move_ = 0;
 
