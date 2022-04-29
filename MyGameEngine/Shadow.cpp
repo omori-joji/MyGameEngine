@@ -93,7 +93,7 @@ void Shadow::Update()
 		//次のフレームへ
 		frameCounter_++;
 
-		pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
+		pStage_->DownButton(transform_.position_.x, (int)(transform_.position_.y) - 1);
 	}
 
 
@@ -106,7 +106,7 @@ void Shadow::Update()
 			pStage_->CheckBlock(41 + i, false);
 
 			//壁のモデルを切り替える
-			pStage_->CheckBlock(60 + i, false);
+			pStage_->CheckBlock(61 + i, false);
 		}
 
 		//非表示

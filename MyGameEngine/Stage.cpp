@@ -1,4 +1,5 @@
 #include "Engine/Model.h"
+#include "Engine/Fbx.h"
 #include "Engine/Input.h"
 #include "Engine/CsvReader.h"
 #include "Engine/SceneManager.h"
@@ -247,7 +248,8 @@ bool Stage::isCrash(int x, int y)
             map_[x][y] == 91 + i||
             map_[x][y] == 101 + i||
             map_[x][y] == 61 + i||
-            map_[x][y] == 81 + i)
+            map_[x][y] == 81 + i||
+            map_[x][y] == 161 + 1)
         {
             return false;
         }
@@ -302,7 +304,7 @@ void Stage::DownButton(int x, int y)
 
     //Playerが離れたら
     //もしくはリセットしたら
-    if (map_[x][y] == 0||Input::IsKeyDown(DIK_1))
+    if (map_[x][y] <= 0||Input::IsKeyDown(DIK_1))
     {
         //押している間だけのボタンのモデルをリセットする
         for (int i = 0; i <= shadowCount_; i++)
@@ -331,6 +333,8 @@ void Stage::DownButton(int x, int y)
 
             CheckBlock(141 + i, false);
         }
+        isdoubleButton1_ = false;
+        isdoubleButton2_ = false;
     }
 }
 
