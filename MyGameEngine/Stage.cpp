@@ -17,7 +17,9 @@ Stage::Stage(GameObject* parent)
     verticalValu(0),     //マップ縦軸の値
     besideValu(0),       //マップ横軸の値
     pSceneManager_(nullptr),
-    isWarp_(true)
+    isWarp_(true),
+    isdoubleButton1_(false),
+    isdoubleButton2_(false)
 {
 
 }
@@ -145,6 +147,23 @@ void Stage::Update()
     }
     //一定時間ごとにブロックを入れ替える
     Blinking(81, 70);
+
+
+
+    if (isdoubleButton1_ && isdoubleButton2_)
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            CheckBlock(151 + i, true);
+        }
+    }
+    else
+    {
+        for (int i = 0; i < 9; i++)
+        {
+            CheckBlock(161 + i, false);
+        }
+    }
 }
 
 
@@ -222,13 +241,13 @@ bool Stage::isCrash(int x, int y)
     for (int i = 0; i < 9; i++)
     {
         //そこにはブロックはない
-        if (map_[x][y] == 0 ||
-            map_[x][y] == 3 ||
-            map_[x][y] == 200 ||
-            map_[x][y] == 91 ||
-            map_[x][y] == 101 ||
-            map_[x][y] == 61 ||
-            map_[x][y] == 81)
+        if (map_[x][y] == 0 + i ||
+            map_[x][y] == 3 + i||
+            map_[x][y] == 200 + i||
+            map_[x][y] == 91 + i||
+            map_[x][y] == 101 + i||
+            map_[x][y] == 61 + i||
+            map_[x][y] == 81 + i)
         {
             return false;
         }
@@ -271,10 +290,12 @@ void Stage::DownButton(int x, int y)
         if (map_[x][y] == 111 + i)
         {
             CheckBlock(map_[x][y], true);
+            isdoubleButton1_ = true;
         }
         else if(map_[x][y] == 131 + i)
         {
             CheckBlock(map_[x][y], true);
+            isdoubleButton2_ = true;
         }
     }
     
@@ -294,7 +315,7 @@ void Stage::DownButton(int x, int y)
                     CheckBlock(41 + i, false);
 
                     //壁のモデルを切り替える
-                    CheckBlock(60 + i, false);
+                    CheckBlock(61 + i, false);
                 }
             }
         }
@@ -304,7 +325,7 @@ void Stage::DownButton(int x, int y)
             CheckBlock(41 + i, false);
 
             //壁のモデルを切り替える
-            CheckBlock(60 + i, false);
+            CheckBlock(61 + i, false);
 
             CheckBlock(121 + i, false);
 
@@ -650,5 +671,31 @@ void Stage::ModelLoad()
     hModel_[147] = Model::Load("Assets/Or.fbx");
     hModel_[148] = Model::Load("Assets/Or.fbx");
     hModel_[149] = Model::Load("Assets/Or.fbx");
+
+
+    //同時ボタンが押されたら開く壁
+    hModel_[150] = Model::Load("Assets/Wall.fbx");
+    hModel_[151] = Model::Load("Assets/Wall.fbx");
+    hModel_[152] = Model::Load("Assets/Wall.fbx");
+    hModel_[153] = Model::Load("Assets/Wall.fbx");
+    hModel_[154] = Model::Load("Assets/Wall.fbx");
+    hModel_[155] = Model::Load("Assets/Wall.fbx");
+    hModel_[156] = Model::Load("Assets/Wall.fbx");
+    hModel_[157] = Model::Load("Assets/Wall.fbx");
+    hModel_[158] = Model::Load("Assets/Wall.fbx");
+    hModel_[159] = Model::Load("Assets/Wall.fbx");
+
+
+    //同時ボタンが離れたら閉じる壁
+    hModel_[160] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[161] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[162] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[163] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[164] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[165] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[166] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[167] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[168] = Model::Load("Assets/AlphaBlock.fbx");
+    hModel_[169] = Model::Load("Assets/AlphaBlock.fbx");
 }
 

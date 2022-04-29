@@ -20,7 +20,8 @@ class Stage : public GameObject
     bool isOpenWall_;
     bool isBlinking_;
     bool isWarp_;
-    
+    bool isdoubleButton1_;
+    bool isdoubleButton2_;
 
     Player* pPlayer_;
     SceneManager* pSceneManager_;
