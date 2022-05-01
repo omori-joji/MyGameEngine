@@ -13,17 +13,17 @@ Clear::Clear(GameObject* parent)
 void Clear::Initialize()
 {
 	//モデルデータのロード
-	hModel_ = Model::Load("Assets/Clear.fbx");
+	hModel_ = Model::Load("Assets/StageBlock/Clear.fbx");
 	assert(hModel_ >= 0);
 }
 
 //更新
 void Clear::Update()
 {
-	if (Input::IsKeyDown(DIK_SPACE))
+	if (Input::IsKeyDown(DIK_1))
 	{
 		SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
-		pSceneManager->ChangeScene(SCENE_ID_STAGE2);
+		pSceneManager->ChangeScene(SCENE_ID_TITLE2);
 	}
 }
 

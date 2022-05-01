@@ -15,7 +15,9 @@ Shadow::Shadow(GameObject* parent)
 	sMARGIN(0.11f),          //当たり判定の遊び
 	isRecordCheck_(true),    //プレイヤーが右を向いているか左を向いているか
 	leftModel_(0),           //左のモデル番号
-	rightModel_(0)           //右のモデル番号
+	rightModel_(0),          //右のモデル番号
+	hModel_Right_(),
+	hModel_Left_()
 {
 
 }
@@ -23,12 +25,12 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	//右を向いているモデル
-	hModel_Right_[0] = Model::Load("Assets/Shadow_Right.fbx");
-	hModel_Right_[1] = Model::Load("Assets/ShadowRun_Right.fbx");
+	hModel_Right_[0] = Model::Load("Assets/Shadow/Shadow_Right.fbx");
+	hModel_Right_[1] = Model::Load("Assets/Shadow/ShadowRun_Right.fbx");
 
 	//左を向いているモデル
-	hModel_Left_[0] = Model::Load("Assets/Shadow_Left.fbx");
-	hModel_Left_[1] = Model::Load("Assets/ShadowRun_Left.fbx");
+	hModel_Left_[0] = Model::Load("Assets/Shadow/Shadow_Left.fbx");
+	hModel_Left_[1] = Model::Load("Assets/Shadow/ShadowRun_Left.fbx");
 }
 
 void Shadow::Update()
@@ -48,7 +50,6 @@ void Shadow::Update()
 	//記録中
 	if (isRecording_ == false)
 	{
-
 		//動的配列に毎フレームプレイヤーの位置を記録する
 		recordData_.push_back(pPlayer_->transform_.position_);
 
@@ -91,15 +92,23 @@ void Shadow::Update()
 
 		//次のフレームへ
 		frameCounter_++;
+
+		//DownButton関数を毎フレームに呼んで下にボタンがないか確かめる
+		pStage_->DownButton(transform_.position_.x, (int)(transform_.position_.y) - 1);
 	}
 
 
-
 	//再生し終わったら
-	if (frameCounter_ >= recordData_.size() - 1)
+	if (frameCounter_ >= recordData_.size() - 1 && isRecording_ == true)
 	{
-		//ボタンを踏んでいる状態で影の再生が終了したときボタンを元に戻す
-		pStage_->CheckBlock(31, false);
+		for (int i = 0; i < 9; i++)
+		{
+			//ボタンのモデルを切り替える
+			pStage_->CheckBlock(41 + i, false);
+
+			//壁のモデルを切り替える
+			pStage_->CheckBlock(61 + i, false);
+		}
 
 		//非表示
 		isRecording_ = false;
@@ -107,25 +116,7 @@ void Shadow::Update()
 		//フレーム数のリセット
 		frameCounter_ = 0;
 	}
-
-
-
-	//下の当たり判定
-	int checkX1, checkX2;
-	int checkY1, checkY2;
-
-	//当たり判定の位置設定
-	checkX1 = (int)(transform_.position_.x + (sWIDTH - sMARGIN));
-	checkX2 = (int)(transform_.position_.x - (sWIDTH - sMARGIN));
-	checkY1 = (int)(transform_.position_.y);
-	checkY2 = (int)(transform_.position_.y);
-
-	//上の行で設定した位置にブロックが配置された配列があるならfalseが返される
-	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
-	{
-		//足元にあるボタンを探す
-		pStage_->DownButton(transform_.position_.x, transform_.position_.y);
-	}
+	
 }
 
 void Shadow::Draw()
@@ -137,12 +128,14 @@ void Shadow::Draw()
 		//右を向いていたらこっちを実行
 		if (isRecordCheck_)
 		{
+			//記録したPlayerのモデル番号をこっちにも反映させる
 			Model::SetTransform(hModel_Right_[rightModel_], transform_);
 			Model::Draw(hModel_Right_[rightModel_]);
 		}
 		//左を向いていたらこっちを実行
 		else
 		{
+			//記録したPlayerのモデル番号をこっちにも反映させる
 			Model::SetTransform(hModel_Left_[leftModel_], transform_);
 			Model::Draw(hModel_Left_[leftModel_]);
 		}
@@ -155,13 +148,8 @@ void Shadow::Release()
 
 }
 
-void Shadow::Collision()
-{
-
-}
-
 //保存した動きを再生する関数
-void Shadow::Flag()
+void Shadow::ShadowDisplayFlag()
 {
 	//再生開始
 	isRecording_ = true;

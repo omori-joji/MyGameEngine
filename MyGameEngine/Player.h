@@ -4,21 +4,22 @@
 #include "Stage.h"
 #include "Shadow.h"
 
+
 class Shadow;
 
 //Playerを管理するクラス
 class Player : public GameObject
 {
     //constは定数宣言で使う
-    const float SPEED;//Playerの移動速度
-    const float WIDTH;//Playerの幅
-    const float HEIGHT;//Playerの高さ
-    const float MARGIN;//当たり判定の遊び
-    const float BLOCK_SIZE;//ブロックのサイズ
-    const float MAX_JUMP;//ジャンプの上限
-    bool isJump; //ジャンプしているか
-    float move_; //Y軸の移動
-    float gravity_; //重力
+    const float SPEED;      //Playerの移動速度
+    const float WIDTH;      //Playerの幅
+    const float HEIGHT;     //Playerの高さ
+    const float MARGIN;     //当たり判定の遊び
+    const float BLOCK_SIZE; //ブロックのサイズ
+    const float MAX_JUMP;   //ジャンプの上限
+    bool isJump_;            //ジャンプしているか
+    float move_;            //Y軸の移動
+    float gravity_;         //重力
    
 
 
@@ -30,7 +31,6 @@ class Player : public GameObject
 
 
 public:
-
     int plyerRightMoveCount;
     int plyerLeftMoveCount;
     bool isDirection;
