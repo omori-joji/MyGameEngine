@@ -20,9 +20,9 @@ class Shadow : public GameObject
 	int hModel_Left_[2];  //左を向いているモデル
 	int leftModel_;       //左のモデル番号
 	int rightModel_;      //右のモデル番号
-	bool isRecordCheck_; //プレイヤーが右を向いているか左を向いているか
-	const float sWIDTH;  //影の幅
-	const float sMARGIN; //当たり判定の遊び
+	bool isRecordCheck_;  //プレイヤーが右を向いているか左を向いているか
+	const float sWIDTH;   //影の幅
+	const float sMARGIN;  //当たり判定の遊び
 
 
 	DWORD frameCounter_;               //フレーム数

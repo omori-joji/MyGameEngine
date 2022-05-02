@@ -15,8 +15,12 @@ class Stage : public GameObject
     int shadowCount_;  //影の数
     int timeCount_;    //点滅ブロックの点滅間隔
     int hSound_;       //サウンドファイル
-    int verticalValu_; //ステージの高さ
-    int besideValu_;   //ステージの横幅
+    const int VERTICAL_VALU_; //ステージの高さ
+    const int BESIDE_VALU_;   //ステージの横幅
+    const int PLAYER_GENERAT_POS;  //Playerのリスポーン地点
+    const int SHADOW_NAMBER_; //影の数
+    const int OLL_GIMMICKS_; //ギミックのモデル番号を調べる繰り返し文のための定数
+    const int RESET_VALU_; //初期化用の値
 
 
 
