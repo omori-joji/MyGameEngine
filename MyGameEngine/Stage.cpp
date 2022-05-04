@@ -15,11 +15,18 @@ Stage::Stage(GameObject* parent)
     SHADOW_NAMBER_(5),
     OLL_GIMMICKS_(9),
     RESET_VALU_(0),
+    CHENGE_POSITIVE_GIMMICKS_(10),
+    BRINKING_BLOCKS_(81),
+    FRAME_TIME_(60),
+    DOBLE_BLOCKS_(151),
+    BACK_GROUND_(3),
+    TWO_BLOCKS_(161),
+    MEANTIME_WALL_(51),
     shadowCount_(0),
     timeCount_(0),
     pPlayer_(nullptr),
-    isBlinking_(true),
     pSceneManager_(nullptr),
+    isBlinking_(true),
     isWarp_(true),
     isdoubleButton1_(false),
     isdoubleButton2_(false)
@@ -105,7 +112,7 @@ void Stage::Update()
     if (Input::IsKeyDown(DIK_1))
     {
         //点滅ブロックの情報をリセット
-        timeCount_ = 0;
+        timeCount_ = RESET_VALU_;
         isBlinking_ = true;
 
 
@@ -147,7 +154,7 @@ void Stage::Update()
     }
 
     //一定時間ごとにブロック切り替える
-    Blinking(81, 70);
+    Blinking(BRINKING_BLOCKS_, FRAME_TIME_);
 
 
     //同時ボタンのギミック
@@ -182,7 +189,7 @@ void Stage::Draw()
         {
             //プレイヤーの位置とブロックを置かない位置
             //その場合はそれ以降の処理はしない
-            if (map[x][y] == RESET_VALU_ || map[x][y] == 200)
+            if (map[x][y] == RESET_VALU_ || map[x][y] == PLAYER_GENERAT_POS)
             {
                 continue;
             }
@@ -223,8 +230,8 @@ void Stage::Draw()
     back.Calclation();
 
     //モデルの表示
-    Model::SetTransform(hModel_[3], back);
-    Model::Draw(hModel_[3]);
+    Model::SetTransform(hModel_[BACK_GROUND_], back);
+    Model::Draw(hModel_[BACK_GROUND_]);
 }
 
 
@@ -243,7 +250,7 @@ bool Stage::isCrash(int x, int y)
     {
         //そこにはブロックはない
         if (map[x][y] == 0 + i||
-            map[x][y] == 3 + i||
+            map[x][y] == BACK_GROUND_ + i||
             map[x][y] == PLAYER_GENERAT_POS + i||
             map[x][y] == 91 + i||
             map[x][y] == 101 + i||
@@ -278,7 +285,7 @@ void Stage::DownButton(int x, int y)
 
 
             //壁を開く処理
-            CheckBlock(51 + i, true);
+            CheckBlock(MEANTIME_WALL_ + i, true);
         }
     }
     
@@ -361,14 +368,14 @@ void Stage::CheckBlock(int find , bool which)
             //第二引数がfalseでモデル番号-10のモデルに切り替える
             if (map[x][y] == find && which == false)
             {
-                map[x][y] = find - 10;
+                map[x][y] = find - CHENGE_POSITIVE_GIMMICKS_;
             }
 
             //そこが引数で受け取ったブロックだったら
             //第二引数がtrueでモデル番号+10のモデルに切り替える
             else if(map[x][y] == find && which == true)
             {
-                map[x][y] = find + 10;
+                map[x][y] = find + CHENGE_POSITIVE_GIMMICKS_;
             }
         }
     }
@@ -400,7 +407,7 @@ void Stage::Blinking(int blockNum, int time)
     {
         //モデルを切り替える関数
         //引数に渡された値の-10のモデル番号を変える
-        CheckBlock(blockNum - 10, true);
+        CheckBlock(blockNum - CHENGE_POSITIVE_GIMMICKS_, true);
 
         //フラグをtrueにする
         isBlinking_ = true;
