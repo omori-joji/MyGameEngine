@@ -249,9 +249,9 @@ bool Stage::isCrash(int x, int y)
     for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
     {
         //そこにはブロックはない
-        if (map[x][y] == 0 + i||
-            map[x][y] == BACK_GROUND_ + i||
-            map[x][y] == PLAYER_GENERAT_POS + i||
+        if (map[x][y] == 0||
+            map[x][y] == BACK_GROUND_||
+            map[x][y] == PLAYER_GENERAT_POS||
             map[x][y] == 91 + i||
             map[x][y] == 101 + i||
             map[x][y] == 61 + i||
@@ -288,6 +288,8 @@ void Stage::DownButton(int x, int y)
             CheckBlock(MEANTIME_WALL_ + i, true);
         }
     }
+
+
     
     //同時押しボタン
     for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
@@ -310,6 +312,7 @@ void Stage::DownButton(int x, int y)
         }
     }
     
+
 
     //Playerが離れたら
     //もしくはリセットしたら
