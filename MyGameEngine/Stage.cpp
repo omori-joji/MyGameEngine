@@ -9,7 +9,7 @@
 //コンストラクタ
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"), hSound_(-1),
-    PLAYER_GENERAT_POS(200),
+    PLAYER_GENERAT_POS_(200),
     VERTICAL_VALU_(23),     //マップ縦軸の値
     BESIDE_VALU_(28),       //マップ横軸の値
     SHADOW_NAMBER_(5),
@@ -22,10 +22,22 @@ Stage::Stage(GameObject* parent)
     BACK_GROUND_(3),
     TWO_BLOCKS_(161),
     MEANTIME_WALL_(51),
+    MEANTIME_BUTTON_UP_(31),
+    MEANTIME_BUTTON_DOWN_(41),
+    MEANTIME_BLOCK_ALPHA_(61),
+    WARP_BLOCK_ENTRANS_(91),
+    WARP_BLOCK_EXIT_(101),
+    GOAL_BLOCK_(3),
+
+
     shadowCount_(0),
     timeCount_(0),
+
+
     pPlayer_(nullptr),
     pSceneManager_(nullptr),
+
+
     isBlinking_(true),
     isWarp_(true),
     isdoubleButton1_(false),
@@ -75,9 +87,9 @@ void Stage::Initialize()
         for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
         {
             //エクセルだとyの値が逆なので縦軸-1をしてあげる
-            map[x][y] = csv.GetValue(x, (VERTICAL_VALU_-1) - y); 
+            map_[x][y] = csv.GetValue(x, (VERTICAL_VALU_-1) - y); 
 
-            if (map[x][y] == PLAYER_GENERAT_POS)
+            if (map_[x][y] == PLAYER_GENERAT_POS_)
             {
                 //プレイヤーの生成
                 //プレイヤーの位置決定
@@ -189,13 +201,13 @@ void Stage::Draw()
         {
             //プレイヤーの位置とブロックを置かない位置
             //その場合はそれ以降の処理はしない
-            if (map[x][y] == RESET_VALU_ || map[x][y] == PLAYER_GENERAT_POS)
+            if (map_[x][y] == RESET_VALU_ || map_[x][y] == PLAYER_GENERAT_POS_)
             {
                 continue;
             }
 
             //モデル番号の格納
-            int type = map[x][y] - 1;
+            int type = map_[x][y] - 1;
 
             //位置
             //transの位置情報を決める
@@ -246,25 +258,23 @@ void Stage::Release()
 //戻り値、何かあるtrue,何もないfalse
 bool Stage::isCrash(int x, int y)
 {
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    //そこにはブロックはない
+    if (map_[x][y] == 0 ||
+        map_[x][y] == BACK_GROUND_ ||
+        map_[x][y] == PLAYER_GENERAT_POS_ ||
+        map_[x][y] == 91||
+        map_[x][y] == 101||
+        map_[x][y] == MEANTIME_BLOCK_ALPHA_ ||
+        map_[x][y] == 62||
+        map_[x][y] == 81||
+        map_[x][y] == 161)
     {
-        //そこにはブロックはない
-        if (map[x][y] == 0||
-            map[x][y] == BACK_GROUND_||
-            map[x][y] == PLAYER_GENERAT_POS||
-            map[x][y] == 91 + i||
-            map[x][y] == 101 + i||
-            map[x][y] == 61 + i||
-            map[x][y] == 81 + i||
-            map[x][y] == 161 + i)
-        {
-            return false;
-        }
-        //そこにはブロックがあるから通れない
-        else
-        {
-            return true;
-        }
+        return false;
+    }
+    //そこにはブロックがあるから通れない
+    else
+    {
+        return true;
     }
 }
 
@@ -277,11 +287,11 @@ void Stage::DownButton(int x, int y)
     //押している間ボタン
     for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
     {
-        if (map[x][y] == 31 + i)
+        if (map_[x][y] == MEANTIME_BUTTON_UP_ + i)
         {
 
             //モデル変更
-            CheckBlock(map[x][y], true);
+            CheckBlock(map_[x][y], true);
 
 
             //壁を開く処理
@@ -294,18 +304,18 @@ void Stage::DownButton(int x, int y)
     //同時押しボタン
     for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
     {
-        if (map[x][y] == 111 + i)
+        if (map_[x][y] == 111 + i)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(map[x][y], true);
+            CheckBlock(map_[x][y], true);
 
             //フラグをtrueにする
             isdoubleButton1_ = true;
         }
-        else if(map[x][y] == 131 + i)
+        else if(map_[x][y] == 131 + i)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(map[x][y], true);
+            CheckBlock(map_[x][y], true);
 
             //フラグをtrueにする
             isdoubleButton2_ = true;
@@ -316,7 +326,7 @@ void Stage::DownButton(int x, int y)
 
     //Playerが離れたら
     //もしくはリセットしたら
-    if (map[x][y] <= RESET_VALU_ ||Input::IsKeyDown(DIK_1))
+    if (map_[x][y] <= RESET_VALU_ ||Input::IsKeyDown(DIK_1))
     {
         //押している間だけのボタンのモデルをリセットする
         for (int i = RESET_VALU_; i <= shadowCount_; i++)
@@ -326,20 +336,20 @@ void Stage::DownButton(int x, int y)
                 for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
                 {
                     //ボタンのモデルを切り替える
-                    CheckBlock(41 + i, false);
+                    CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
 
                     //壁のモデルを切り替える
-                    CheckBlock(61 + i, false);
+                    CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
                 }
             }
         }
         for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(41 + i, false);
+            CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
 
             //壁のモデルを切り替える
-            CheckBlock(61 + i, false);
+            CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
 
             //押した後のボタンを切り替える
             CheckBlock(121 + i, false);
@@ -369,16 +379,16 @@ void Stage::CheckBlock(int find , bool which)
 
             //そこが引数で受け取ったブロックだったら
             //第二引数がfalseでモデル番号-10のモデルに切り替える
-            if (map[x][y] == find && which == false)
+            if (map_[x][y] == find && which == false)
             {
-                map[x][y] = find - CHENGE_POSITIVE_GIMMICKS_;
+                map_[x][y] = find - CHENGE_POSITIVE_GIMMICKS_;
             }
 
             //そこが引数で受け取ったブロックだったら
             //第二引数がtrueでモデル番号+10のモデルに切り替える
-            else if(map[x][y] == find && which == true)
+            else if(map_[x][y] == find && which == true)
             {
-                map[x][y] = find + CHENGE_POSITIVE_GIMMICKS_;
+                map_[x][y] = find + CHENGE_POSITIVE_GIMMICKS_;
             }
         }
     }
@@ -427,7 +437,7 @@ bool Stage::WarpBlockEnter(int x, int y)
     for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
     {
         //そこはワープブロック
-        if (map[x][y] == 91 + i || map[x][y] == 101 + i && isWarp_ == true)
+        if (map_[x][y] == WARP_BLOCK_ENTRANS_ + i || map_[x][y] == WARP_BLOCK_EXIT_ + i && isWarp_ == true)
         {
             return true;
         }
@@ -444,7 +454,7 @@ bool Stage::WarpBlockEnter(int x, int y)
 void Stage::GoalCol(int x, int y)
 {
     //そこはゴール
-    if (map[x][y] == 3)
+    if (map_[x][y] == GOAL_BLOCK_)
     {
         //シーン移動
         //Find関数でSceneManagerクラスを探して
@@ -452,7 +462,6 @@ void Stage::GoalCol(int x, int y)
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_CLEAR);
     }
-
 }
 
 //
@@ -463,7 +472,7 @@ void Stage::WarpBlockExit(int getX,int getY)
 
         //PlayerのPositionを引数で受け取る
         //そこがワープブロックだったら
-        if (map[getX][getY] == 91 + i && isWarp_ == true)
+        if (map_[getX][getY] == WARP_BLOCK_ENTRANS_ + i && isWarp_ == true)
         {
             //Stageのサイズ分調べる
             //横
@@ -473,7 +482,7 @@ void Stage::WarpBlockExit(int getX,int getY)
                 for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
                 {
                     //そこがワープブロックの出口だったら
-                    if (map[x][y] == 101 + i)
+                    if (map_[x][y] == WARP_BLOCK_EXIT_ + i)
                     {
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
@@ -493,7 +502,7 @@ void Stage::WarpBlockExit(int getX,int getY)
 
         //PlayerのPositionを引数で受け取る
         //そこがワープブロックだったら
-        if (map[getX][getY] == 101 + i && isWarp_ == true)
+        if (map_[getX][getY] == WARP_BLOCK_EXIT_ + i && isWarp_ == true)
         {
 
             //Stageのサイズ分調べる
@@ -504,7 +513,7 @@ void Stage::WarpBlockExit(int getX,int getY)
                 for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
                 {
                     //そこがワープブロックの出口だったら
-                    if (map[x][y] == 91 + i)
+                    if (map_[x][y] == WARP_BLOCK_ENTRANS_ + i)
                     {
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
@@ -522,7 +531,7 @@ void Stage::WarpBlockExit(int getX,int getY)
     //フラグ処理の初期化
     //引数はPlayerの位置
     //ワープブロックから離れたらフラグを初期化してもう一度入れるようにする
-    if (map[getX][getY] == RESET_VALU_)
+    if (map_[getX][getY] == RESET_VALU_)
     {
         isWarp_ = true;
     }

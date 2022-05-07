@@ -11,6 +11,7 @@ class SceneManager;
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
+    int map_[28][23];   //ステージのマス情報
     int hModel_[500];  //モデル番号
     int shadowCount_;  //影の数
     int timeCount_;    //点滅ブロックの点滅間隔
@@ -19,7 +20,7 @@ class Stage : public GameObject
     const int VERTICAL_VALU_; //ステージの高さ
     const int BESIDE_VALU_;   //ステージの横幅
     const int BACK_GROUND_;
-    const int PLAYER_GENERAT_POS;  //Playerのリスポーン地点
+    const int PLAYER_GENERAT_POS_;  //Playerのリスポーン地点
     const int SHADOW_NAMBER_; //影の数
     const int OLL_GIMMICKS_; //ギミックのモデル番号を調べる繰り返し文のための定数
     const int RESET_VALU_; //初期化用の値
@@ -29,6 +30,12 @@ class Stage : public GameObject
     const int DOBLE_BLOCKS_;
     const int TWO_BLOCKS_;
     const int MEANTIME_WALL_;
+    const int MEANTIME_BUTTON_UP_;
+    const int MEANTIME_BUTTON_DOWN_;
+    const int MEANTIME_BLOCK_ALPHA_;
+    const int WARP_BLOCK_ENTRANS_;
+    const int WARP_BLOCK_EXIT_;
+    const int GOAL_BLOCK_;
 
 
 
@@ -48,10 +55,7 @@ class Stage : public GameObject
 
 public:
 
-    int map[28][23];   //ステージのマス情報
     XMFLOAT3 stertPos; //Playerがリセットした時のリセット位置を記憶する変数
-
-
 
 public:
     //コンストラクタ

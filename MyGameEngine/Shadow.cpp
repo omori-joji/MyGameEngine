@@ -93,6 +93,7 @@ void Shadow::Update()
 		//次のフレームへ
 		frameCounter_++;
 
+
 		//DownButton関数を毎フレームに呼んで下にボタンがないか確かめる
 		pStage_->DownButton(transform_.position_.x, (int)(transform_.position_.y) - 1);
 	}
@@ -116,7 +117,6 @@ void Shadow::Update()
 		//フレーム数のリセット
 		frameCounter_ = 0;
 	}
-	
 }
 
 void Shadow::Draw()

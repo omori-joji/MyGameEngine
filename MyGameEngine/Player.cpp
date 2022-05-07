@@ -209,16 +209,15 @@ void Player::Update()
 		}
 	}
 
-	//足元にボタンがあるかないかを判別する関数
+	//足元にボタンがあるかないかを判別する関数を呼ぶ
 	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)-1);
 
+
+	//ゴールに触れたかどうかを判別する関数を呼ぶ
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
 
-	if (pStage_->WarpBlockEnter((int)transform_.position_.x, (int)transform_.position_.y))
-	{
-		pStage_->WarpBlockExit((int)transform_.position_.x, (int)(transform_.position_.y));
-	}
 
+	//ワープブロックに触れたかを判別する関数を呼ぶ
 	pStage_->WarpBlockExit((int)transform_.position_.x, (int)(transform_.position_.y));
 }
 
