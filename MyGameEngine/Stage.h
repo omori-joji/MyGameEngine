@@ -51,11 +51,8 @@ class Stage : public GameObject
     Shadow* pShadow_[6];          //Shadowクラスを格納するポインタ型の配列
 
 
-
-
-public:
-
     XMFLOAT3 stertPos; //Playerがリセットした時のリセット位置を記憶する変数
+
 
 public:
     //コンストラクタ
@@ -86,13 +83,11 @@ public:
     void DownButton(int x, int y);
 
 
-
     //モデルを切り替える関数
     //第一引数は切り替えたいモデル番号
     //第二引数はtrueが第一引数に+10されたモデル番号に切り替える
     //falseが第一引数に-10されたモデル番号に切り替える
     void CheckBlock(int find , bool which);
-
 
 
     //点滅ブロックのギミックをまとめた関数
@@ -101,11 +96,9 @@ public:
     void Blinking(int blockNum, int time);
 
 
-
     //ワープブロックの入口のギミックをまとめた関数
     //引数はプレイヤーの位置
     bool WarpBlockEnter(int x, int y);
-
 
 
     //ゴールを判定する関数
@@ -113,9 +106,10 @@ public:
     void GoalCol(int x, int y);
 
 
-
     //ワープブロックの出口のギミックをまとめた関数
     //引数はプレイヤーの位置
     void WarpBlockExit(int getX, int getY);
+
+    XMFLOAT3 GetStartPosition();
 };
 

@@ -17,9 +17,18 @@ class Player : public GameObject
     const float MARGIN;     //当たり判定の遊び
     const float BLOCK_SIZE; //ブロックのサイズ
     const float MAX_JUMP;   //ジャンプの上限
+    const float BACK_POSITION_LEFT_;
+    const float BACK_POSITION_RIGHT_;
+    const float BACK_POSITION_UP_;
+    const float BACK_POSITION_DOWN_;
+    const float GRAVITY_;
+    const float DROP_DOWN_;
+    const int RESET_VALU_;
+    const int PLAYER_FOOT_;
+
+
     bool isJump_;            //ジャンプしているか
     float move_;            //Y軸の移動
-    float gravity_;         //重力
    
 
 
@@ -55,4 +64,12 @@ public:
     //開放
     void Release() override;
 
+    //Find処理をすべてまとめる関数
+    void AllFind();
+
+    //Playerの操作をまとめる関数
+    void PlayerMove();
+
+    //Playyerの当たり判定をまとめる関数
+    void PlayerCollision();
 };

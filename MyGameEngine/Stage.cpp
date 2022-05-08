@@ -537,6 +537,11 @@ void Stage::WarpBlockExit(int getX,int getY)
     }
 }
 
+XMFLOAT3 Stage::GetStartPosition()
+{
+    return stertPos;
+}
+
 
 
 void Stage::ModelLoad()
