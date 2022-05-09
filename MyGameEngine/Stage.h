@@ -12,10 +12,10 @@ class SceneManager;
 class Stage : public GameObject
 {
     int map_[28][23];   //ステージのマス情報
-    int hModel_[500];  //モデル番号
-    int shadowCount_;  //影の数
-    int timeCount_;    //点滅ブロックの点滅間隔
-    int hSound_;       //サウンドファイル
+    int hModel_[500];   //モデル番号
+    int shadowCount_;   //影の数
+    int timeCount_;     //点滅ブロックの点滅間隔
+    int hSound_;        //サウンドファイル
 
     const int VERTICAL_VALU_; //ステージの高さ
     const int BESIDE_VALU_;   //ステージの横幅
@@ -53,6 +53,10 @@ class Stage : public GameObject
 
     XMFLOAT3 stertPos; //Playerがリセットした時のリセット位置を記憶する変数
 
+public:
+    int steppingNumber;//何人踏んでいるか
+    bool isOnButton;
+
 
 public:
     //コンストラクタ
@@ -80,7 +84,7 @@ public:
     bool isCrash(int x , int y);
 
     //すべてのボタンを管理する関数
-    void DownButton(int x, int y);
+    bool DownButton(int x, int y);
 
 
     //モデルを切り替える関数
@@ -111,5 +115,9 @@ public:
     void WarpBlockExit(int getX, int getY);
 
     XMFLOAT3 GetStartPosition();
+
+    void Reset(int x, int y);
+
+    void ChengeButton();
 };
 

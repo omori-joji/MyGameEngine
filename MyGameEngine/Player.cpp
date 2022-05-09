@@ -35,7 +35,8 @@ Player::Player(GameObject* parent)
 	isDirection(true),
 	plyerLeftMoveCount(0),
 	hModel_Left(),
-	hModel_Right()
+	hModel_Right(),
+	isPastButton(false)
 {
 
 }
@@ -77,9 +78,12 @@ void Player::Update()
 
 
 
-	//足元にボタンがあるかないかを判別する関数を呼ぶ
-	pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y)- PLAYER_FOOT_);
 
+
+
+
+
+	
 
 	//ゴールに触れたかどうかを判別する関数を呼ぶ
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
@@ -87,7 +91,42 @@ void Player::Update()
 
 	//ワープブロックに触れたかを判別する関数を呼ぶ
 	pStage_->WarpBlockExit((int)transform_.position_.x, (int)(transform_.position_.y));
+
+
+
+
+
+	bool nowButton;
+	nowButton = pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+	
+
+		
+    //過去は踏んでいない今は踏んでいる
+    if (!isPastButton)
+	{
+	   //今は踏んでいる
+	   if (nowButton)
+	   {
+		   pStage_->steppingNumber++;
+	   }
+	}
+	//過去は踏んでいる今は踏んでいない
+	else if (isPastButton)
+	{
+	   if (!nowButton)
+	   {
+		   pStage_->steppingNumber--;
+	   }
+	}	
+	isPastButton = nowButton;
+	
 }
+
+
+
+
+
+
 
 void Player::Draw()
 {
@@ -96,7 +135,7 @@ void Player::Draw()
 		Model::SetTransform(hModel_Right[plyerRightMoveCount], transform_);
 		Model::Draw(hModel_Right[plyerRightMoveCount]);
 	}
-	else if(!isDirection)
+	else
 	{
 		Model::SetTransform(hModel_Left[plyerLeftMoveCount], transform_);
 		Model::Draw(hModel_Left[plyerLeftMoveCount]);

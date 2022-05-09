@@ -95,7 +95,7 @@ void Shadow::Update()
 
 
 		//DownButton関数を毎フレームに呼んで下にボタンがないか確かめる
-		pStage_->DownButton(transform_.position_.x, (int)(transform_.position_.y) - 1);
+		//pStage_->DownButton(transform_.position_.x, (int)(transform_.position_.y) - 1);
 	}
 
 

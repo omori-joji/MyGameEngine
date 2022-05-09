@@ -41,7 +41,10 @@ Stage::Stage(GameObject* parent)
     isBlinking_(true),
     isWarp_(true),
     isdoubleButton1_(false),
-    isdoubleButton2_(false)
+    isdoubleButton2_(false),
+
+    steppingNumber(0),
+    isOnButton(false)
 {
 
 }
@@ -188,6 +191,7 @@ void Stage::Update()
             CheckBlock(161 + i, false);
         }
     }
+    ChengeButton();
 }
 
 
@@ -279,23 +283,18 @@ bool Stage::isCrash(int x, int y)
 }
 
 
-//ボタンがPlayerの足元にあるかどうかを判断する関数
+//ボタンがPlayerの足元にあるかどうかを判断する関数 
 //ボタンが入っている配列はmap_[x][y] == 4が入っている
 //この関数はPlayerクラスで常に呼ばれている
-void Stage::DownButton(int x, int y)
+bool Stage::DownButton(int x, int y)
 {
     //押している間ボタン
     for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
     {
-        if (map_[x][y] == MEANTIME_BUTTON_UP_ + i)
+        if (map_[x][y] == MEANTIME_BUTTON_UP_ + i || map_[x][y] == MEANTIME_BUTTON_DOWN_ + i)
         {
 
-            //モデル変更
-            CheckBlock(map_[x][y], true);
-
-
-            //壁を開く処理
-            CheckBlock(MEANTIME_WALL_ + i, true);
+            return true;
         }
     }
 
@@ -318,6 +317,7 @@ void Stage::DownButton(int x, int y)
             CheckBlock(map_[x][y], true);
 
             //フラグをtrueにする
+
             isdoubleButton2_ = true;
         }
     }
@@ -326,7 +326,7 @@ void Stage::DownButton(int x, int y)
 
     //Playerが離れたら
     //もしくはリセットしたら
-    if (map_[x][y] <= RESET_VALU_ ||Input::IsKeyDown(DIK_1))
+    if (steppingNumber == 0)
     {
         //押している間だけのボタンのモデルをリセットする
         for (int i = RESET_VALU_; i <= shadowCount_; i++)
@@ -343,6 +343,8 @@ void Stage::DownButton(int x, int y)
                 }
             }
         }
+
+
         for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
         {
             //ボタンのモデルを切り替える
@@ -362,6 +364,7 @@ void Stage::DownButton(int x, int y)
         isdoubleButton1_ = false;
         isdoubleButton2_ = false;
     }
+    return false;
 }
 
 
@@ -539,7 +542,29 @@ void Stage::WarpBlockExit(int getX,int getY)
 
 XMFLOAT3 Stage::GetStartPosition()
 {
+    steppingNumber = 0;
     return stertPos;
+}
+
+void Stage::Reset(int x, int y)
+{
+    if (map_[x][y] <= 2)
+    {
+        isOnButton = false;
+    }
+}
+
+void Stage::ChengeButton()
+{
+    if (steppingNumber != 0)
+    {
+        //モデル変更
+        CheckBlock(MEANTIME_BUTTON_UP_, true);
+
+
+        //壁を開く処理
+        CheckBlock(MEANTIME_WALL_, true);
+    }
 }
 
 

@@ -40,9 +40,16 @@ class Player : public GameObject
 
 
 public:
+    bool isPastButton;       //‚³‚Á‚«“¥‚ñ‚Å‚¢‚é‚©
     int plyerRightMoveCount;
     int plyerLeftMoveCount;
     bool isDirection;
+
+    enum Direction
+    {
+        DIR_LEFT,
+        DIR_RIGHT
+    };
 
 
 public:
