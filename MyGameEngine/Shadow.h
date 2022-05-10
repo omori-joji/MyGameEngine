@@ -14,7 +14,7 @@ class Shadow : public GameObject
 	Player* pPlayer_; //Playerの情報が入る変数
 	Stage* pStage_;   //Stageの情報が入る変数
 
-
+	int hModel_[2][2];
 
 	int hModel_Right_[2]; //右を向いているモデル
 	int hModel_Left_[2];  //左を向いているモデル
@@ -32,6 +32,11 @@ class Shadow : public GameObject
 	std::vector<int> recordLeftMove_;  //左のモデル番号を記録する
 
 
+	std::vector<int> recordDirection_;
+	std::vector<int> recordModelNumber_;
+
+	int shadowDirection_;
+	int shadowModelNumber_;
 
 public:
 	bool isRecording_; //Playerの動きを記録しているか

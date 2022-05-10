@@ -24,13 +24,12 @@ Shadow::Shadow(GameObject* parent)
 
 void Shadow::Initialize()
 {
-	//右を向いているモデル
-	hModel_Right_[0] = Model::Load("Assets/Shadow/Shadow_Right.fbx");
-	hModel_Right_[1] = Model::Load("Assets/Shadow/ShadowRun_Right.fbx");
+	hModel_[0][0] = Model::Load("Assets/Shadow/Shadow_Right.fbx");
+	hModel_[0][1] = Model::Load("Assets/Shadow/ShadowRun_Right.fbx");
 
-	//左を向いているモデル
-	hModel_Left_[0] = Model::Load("Assets/Shadow/Shadow_Left.fbx");
-	hModel_Left_[1] = Model::Load("Assets/Shadow/ShadowRun_Left.fbx");
+
+	hModel_[1][0] = Model::Load("Assets/Shadow/Shadow_Left.fbx");
+	hModel_[1][1] = Model::Load("Assets/Shadow/ShadowRun_Left.fbx");
 }
 
 void Shadow::Update()
@@ -55,15 +54,9 @@ void Shadow::Update()
 
 
 		//動的配列にプレイヤーの向いている方向を記録する
-		recordCheck_.push_back(pPlayer_->isDirection);
+		recordDirection_.push_back(pPlayer_->GetDirection());
 
-
-		//動的配列に現在のプレイヤーのモデル番号を記録する
-		recordLeftMove_.push_back(pPlayer_->plyerLeftMoveCount);
-
-
-		//動的配列に現在のプレイヤーのモデル番号を記録する
-		recordRightMove_.push_back(pPlayer_->plyerRightMoveCount);
+		recordModelNumber_.push_back(pPlayer_->GetModelNumber());
 
 	}
 
@@ -78,24 +71,12 @@ void Shadow::Update()
 		transform_.position_.z += 0.1f;
 
 
-		//毎フレームプレイヤーの向いている方向を格納する
-		isRecordCheck_ = recordCheck_[frameCounter_];
-
-
-		//毎フレームプレイヤーのモデル番号を格納する
-		leftModel_ = recordLeftMove_[frameCounter_];
-
-
-		//毎フレームプレイヤーのモデル番号を格納する
-		rightModel_ = recordRightMove_[frameCounter_];
+		shadowModelNumber_ = recordModelNumber_[frameCounter_];
+		shadowDirection_ = recordDirection_[frameCounter_];
 
 
 		//次のフレームへ
 		frameCounter_++;
-
-
-		//DownButton関数を毎フレームに呼んで下にボタンがないか確かめる
-		//pStage_->DownButton(transform_.position_.x, (int)(transform_.position_.y) - 1);
 	}
 
 
@@ -125,20 +106,8 @@ void Shadow::Draw()
 	//再生中であれば処理を行う
 	if (isRecording_)
 	{
-		//右を向いていたらこっちを実行
-		if (isRecordCheck_)
-		{
-			//記録したPlayerのモデル番号をこっちにも反映させる
-			Model::SetTransform(hModel_Right_[rightModel_], transform_);
-			Model::Draw(hModel_Right_[rightModel_]);
-		}
-		//左を向いていたらこっちを実行
-		else
-		{
-			//記録したPlayerのモデル番号をこっちにも反映させる
-			Model::SetTransform(hModel_Left_[leftModel_], transform_);
-			Model::Draw(hModel_Left_[leftModel_]);
-		}
+		Model::SetTransform(hModel_[shadowDirection_][shadowModelNumber_], transform_);
+		Model::Draw(hModel_[shadowDirection_][shadowModelNumber_]);
 	}
 
 }

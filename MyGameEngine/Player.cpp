@@ -10,33 +10,32 @@
 Player::Player(GameObject* parent)
 	: GameObject(parent, "Player"),
 
-	//移動速度
-	SPEED(0.1f),
+	
+	SPEED_(0.1f),					//移動速度
+	WIDTH_(0.3f),					//Playerの幅
+	HEIGHT_(0.6f),					//Playerの高さ
+	MARGIN_(0.11f),					//当たり判定の遊び
+	BLOCK_SIZE_(1.0f),				//ブロックのサイズ
+	MAX_JUMP_(3.0f),					//ジャンプの上限
+	BACK_POSITION_LEFT_(1.3f),		//触れていたら位置を戻す値
+	BACK_POSITION_RIGHT_(0.3f),		//触れていたら位置を戻す値
+	BACK_POSITION_UP_(0.6f),		//触れていたら位置を戻す値
+	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
+	RESET_VALU_(0),					//初期化用の定数
+	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
+	GRAVITY_(0.01f),				//重力の値
+	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
+	RUN_MODEL_(1),
+	STANDING_MODEL_(0),
 
-	WIDTH(0.3f),//Playerの幅
-	HEIGHT(0.6f),//Playerの高さ
-	MARGIN(0.11f),//当たり判定の遊び
-	BLOCK_SIZE(1.0f),//ブロックのサイズ
-	MAX_JUMP(3.0f),//ジャンプの上限
-	BACK_POSITION_LEFT_(1.3f),
-	BACK_POSITION_RIGHT_(0.3f),
-	BACK_POSITION_UP_(0.6f),
-	BACK_POSITION_DOWN_(1.0f),
-	RESET_VALU_(0),
-	PLAYER_FOOT_(1),
-	GRAVITY_(0.01f),
-	DROP_DOWN_(-0.2f),
-	isJump_(false),//ジャンプ中か
+	move_(0.01f),					//Y軸の移動
+	direction_(0),
+	modelNumber_(0),
 
-	move_(0.01f),//Y軸の移動
- 
-	pStage_(nullptr),//ステージの情報を入れるポインタ
-	plyerRightMoveCount(0),
-	isDirection(true),
-	plyerLeftMoveCount(0),
-	hModel_Left(),
-	hModel_Right(),
-	isPastButton(false)
+	isJump_(false),					//ジャンプ中か
+	isPastButton(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
+
+	pStage_(nullptr)				//ステージの情報を入れるポインタ
 {
 
 }
@@ -48,11 +47,11 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_Right[0] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
-	hModel_Right[1] = Model::Load("Assets/Player/PlayerRightRun.fbx");
+	hModel_[0][0] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
+	hModel_[0][1] = Model::Load("Assets/Player/PlayerRightRun.fbx");
 
-	hModel_Left[0] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
-	hModel_Left[1] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
+	hModel_[1][0] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
+	hModel_[1][1] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
 }
 
 void Player::Update()
@@ -76,72 +75,25 @@ void Player::Update()
 		transform_.position_ = pStage_->GetStartPosition();
 	}
 
-
-
-
-
-
-
-
-	
+	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数
+	FootButtonCheck();
 
 	//ゴールに触れたかどうかを判別する関数を呼ぶ
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
 
-
 	//ワープブロックに触れたかを判別する関数を呼ぶ
 	pStage_->WarpBlockExit((int)transform_.position_.x, (int)(transform_.position_.y));
-
-
-
-
-
-	bool nowButton;
-	nowButton = pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
-	
-
-		
-    //過去は踏んでいない今は踏んでいる
-    if (!isPastButton)
-	{
-	   //今は踏んでいる
-	   if (nowButton)
-	   {
-		   pStage_->steppingNumber++;
-	   }
-	}
-	//過去は踏んでいる今は踏んでいない
-	else if (isPastButton)
-	{
-	   if (!nowButton)
-	   {
-		   pStage_->steppingNumber--;
-	   }
-	}	
-	isPastButton = nowButton;
 	
 }
-
-
-
-
-
 
 
 void Player::Draw()
 {
-	if (isDirection)
-	{
-		Model::SetTransform(hModel_Right[plyerRightMoveCount], transform_);
-		Model::Draw(hModel_Right[plyerRightMoveCount]);
-	}
-	else
-	{
-		Model::SetTransform(hModel_Left[plyerLeftMoveCount], transform_);
-		Model::Draw(hModel_Left[plyerLeftMoveCount]);
-	}
-
+	Model::SetTransform(hModel_[direction_][modelNumber_], transform_);
+	Model::Draw(hModel_[direction_][modelNumber_]);
 }
+
+
 
 void Player::Release()
 {
@@ -151,7 +103,7 @@ void Player::Release()
 void Player::AllFind()
 {
 	//Stageクラスを探す
-//pStage_に探した情報が入る
+	//pStage_に探した情報が入る
 	if (pStage_ == nullptr)
 	{
 		pStage_ = (Stage*)Find("Stage");
@@ -161,27 +113,30 @@ void Player::AllFind()
 void Player::PlayerMove()
 {
 	//左移動
-//左矢印キーを押していたら
+	//左矢印キーを押していたら
 	if (Input::IsKey(DIK_LEFT))
 	{
-		transform_.position_.x -= SPEED;
+		transform_.position_.x -= SPEED_;
+
+		direction_ = DIR_LEFT;
+		modelNumber_ = RUN_MODEL_;
 	}
 
 	//左矢印キーを押した瞬間
 	if (Input::IsKeyDown(DIK_LEFT))
 	{
-		//左を向いているフラグ
-		isDirection = false;
 
-		//モデル番号を変更
-		plyerLeftMoveCount++;
+		direction_ = DIR_LEFT;
+		modelNumber_ = STANDING_MODEL_;
+
 	}
 
 	//左矢印キーを離したら
 	if (Input::IsKeyUp(DIK_LEFT))
 	{
-		//モデル番号を変更
-		plyerLeftMoveCount--;
+
+		modelNumber_ = STANDING_MODEL_;
+
 	}
 
 
@@ -190,23 +145,28 @@ void Player::PlayerMove()
 	//右矢印キーを押していたら
 	if (Input::IsKey(DIK_RIGHT))
 	{
-		transform_.position_.x += SPEED;
+		//右移動
+		transform_.position_.x += SPEED_;
+
+		direction_ = DIR_RIGHT;
+		modelNumber_ = RUN_MODEL_;
 	}
 
 	//右矢印キーを押した瞬間
 	if (Input::IsKeyDown(DIK_RIGHT))
 	{
-		//右を向いているフラグ
-		isDirection = true;
 
-		plyerRightMoveCount++;
+		direction_ = DIR_RIGHT;
+		modelNumber_ = STANDING_MODEL_;
+
 	}
 
 	//右矢印キーを離した瞬間
 	if (Input::IsKeyUp(DIK_RIGHT))
 	{
-		//モデル番号を変更
-		plyerRightMoveCount--;
+
+		modelNumber_ = STANDING_MODEL_;
+
 	}
 }
 
@@ -221,10 +181,10 @@ void Player::PlayerCollision()
 
 
 	//左
-	checkX1 = (int)(transform_.position_.x - WIDTH);
-	checkX2 = (int)(transform_.position_.x - WIDTH);
-	checkY1 = (int)(transform_.position_.y + (HEIGHT - MARGIN));
-	checkY2 = (int)(transform_.position_.y + MARGIN);
+	checkX1 = (int)(transform_.position_.x - WIDTH_);
+	checkX2 = (int)(transform_.position_.x - WIDTH_);
+	checkY1 = (int)(transform_.position_.y + (HEIGHT_ - MARGIN_));
+	checkY2 = (int)(transform_.position_.y + MARGIN_);
 
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
@@ -232,10 +192,10 @@ void Player::PlayerCollision()
 	}
 
 	//右
-	checkX1 = (int)(transform_.position_.x + WIDTH);
-	checkX2 = (int)(transform_.position_.x + WIDTH);
-	checkY1 = (int)(transform_.position_.y + (HEIGHT - MARGIN));
-	checkY2 = (int)(transform_.position_.y + MARGIN);
+	checkX1 = (int)(transform_.position_.x + WIDTH_);
+	checkX2 = (int)(transform_.position_.x + WIDTH_);
+	checkY1 = (int)(transform_.position_.y + (HEIGHT_ - MARGIN_));
+	checkY2 = (int)(transform_.position_.y + MARGIN_);
 
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
@@ -244,10 +204,10 @@ void Player::PlayerCollision()
 
 
 	//上
-	checkX1 = (int)(transform_.position_.x + (WIDTH - MARGIN));
-	checkX2 = (int)(transform_.position_.x - (WIDTH - MARGIN));
-	checkY1 = (int)(transform_.position_.y + HEIGHT);
-	checkY2 = (int)(transform_.position_.y + HEIGHT);
+	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
+	checkX2 = (int)(transform_.position_.x - (WIDTH_ - MARGIN_));
+	checkY1 = (int)(transform_.position_.y + HEIGHT_);
+	checkY2 = (int)(transform_.position_.y + HEIGHT_);
 
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
@@ -268,8 +228,8 @@ void Player::PlayerCollision()
 
 
 	//下
-	checkX1 = (int)(transform_.position_.x + (WIDTH - MARGIN));
-	checkX2 = (int)(transform_.position_.x - (WIDTH - MARGIN));
+	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
+	checkX2 = (int)(transform_.position_.x - (WIDTH_ - MARGIN_));
 	checkY1 = (int)(transform_.position_.y);
 	checkY2 = (int)(transform_.position_.y);
 
@@ -291,9 +251,52 @@ void Player::PlayerCollision()
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
 		//ブロックの直系よりは大きくならないようにする
 		//gravityの値は0.01
-		if (move_ < BLOCK_SIZE)
+		if (move_ < BLOCK_SIZE_)
 		{
 			move_ += GRAVITY_;
 		}
 	}
+}
+
+void Player::FootButtonCheck()
+{
+	//変数を作成
+	bool nowButton;
+
+	//ボタンを踏んでいればtrue踏んでいなければfalseが返される
+	nowButton = pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+
+	//1フレーム前は踏んでいない
+	if (!isPastButton)
+	{
+		//今は踏んでいる
+		if (nowButton)
+		{
+			//カウントアップ
+			pStage_->StepNumberCountUp();
+		}
+	}
+	//1フレーム前は踏んでいる
+	else if (isPastButton)
+	{
+		//今は踏んでいない
+		if (!nowButton)
+		{
+			//カウントダウン
+			pStage_->StepNumberCountDown();
+		}
+	}
+
+	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
+	isPastButton = nowButton;
+}
+
+int Player::GetModelNumber()
+{
+	return modelNumber_;
+}
+
+int Player::GetDirection()
+{
+	return direction_;
 }
