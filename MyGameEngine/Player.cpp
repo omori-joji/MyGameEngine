@@ -16,7 +16,7 @@ Player::Player(GameObject* parent)
 	HEIGHT_(0.6f),					//Playerの高さ
 	MARGIN_(0.11f),					//当たり判定の遊び
 	BLOCK_SIZE_(1.0f),				//ブロックのサイズ
-	MAX_JUMP_(3.0f),					//ジャンプの上限
+	MAX_JUMP_(3.0f),				//ジャンプの上限
 	BACK_POSITION_LEFT_(1.3f),		//触れていたら位置を戻す値
 	BACK_POSITION_RIGHT_(0.3f),		//触れていたら位置を戻す値
 	BACK_POSITION_UP_(0.6f),		//触れていたら位置を戻す値
