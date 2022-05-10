@@ -29,8 +29,8 @@ Player::Player(GameObject* parent)
 	STANDING_MODEL_(0),
 
 	move_(0.01f),					//Y軸の移動
-	direction_(0),
-	modelNumber_(0),
+	direction_(0),					//Playerの向きのモデル番号
+	modelNumber_(0),				//Playerの走っているモデル番号
 
 	isJump_(false),					//ジャンプ中か
 	isPastButton(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
@@ -64,8 +64,6 @@ void Player::Update()
 	
 	//Playerの当たり判定をまとめる関数
 	PlayerCollision();
-
-
 
 	//リセットボタンを押したら
 	//記録した影をすべてまっさらな状態にしたら
@@ -119,14 +117,15 @@ void Player::PlayerMove()
 		transform_.position_.x -= SPEED_;
 
 		direction_ = DIR_LEFT;
+
 		modelNumber_ = RUN_MODEL_;
 	}
 
 	//左矢印キーを押した瞬間
 	if (Input::IsKeyDown(DIK_LEFT))
 	{
-
 		direction_ = DIR_LEFT;
+
 		modelNumber_ = STANDING_MODEL_;
 
 	}
@@ -134,9 +133,7 @@ void Player::PlayerMove()
 	//左矢印キーを離したら
 	if (Input::IsKeyUp(DIK_LEFT))
 	{
-
 		modelNumber_ = STANDING_MODEL_;
-
 	}
 
 

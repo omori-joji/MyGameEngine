@@ -11,35 +11,25 @@ class Stage;
 //Shadowを管理するクラス
 class Shadow : public GameObject
 {
-	Player* pPlayer_; //Playerの情報が入る変数
-	Stage* pStage_;   //Stageの情報が入る変数
-
-	int hModel_[2][2];
-
-	int hModel_Right_[2]; //右を向いているモデル
-	int hModel_Left_[2];  //左を向いているモデル
-	int leftModel_;       //左のモデル番号
-	int rightModel_;      //右のモデル番号
-	bool isRecordCheck_;  //プレイヤーが右を向いているか左を向いているか
-	const float sWIDTH;   //影の幅
-	const float sMARGIN;  //当たり判定の遊び
+	int hModel_[2][2];							//影のモデルを格納する多次元配列
+	int shadowDirection_;						//影の向き
+	int shadowModelNumber_;						//走っているモデル番号
 
 
-	DWORD frameCounter_;               //フレーム数
-	std::vector<XMFLOAT3> recordData_; //プレイヤーの位置を記録する可変長配列
-	std::vector<bool> recordCheck_;    //記録されているフレーム数の時プレイヤーはどっちに向いているか
-	std::vector<int> recordRightMove_; //右のモデル番号を記録する
-	std::vector<int> recordLeftMove_;  //左のモデル番号を記録する
+	DWORD frameCounter_;						//フレーム数
 
 
-	std::vector<int> recordDirection_;
-	std::vector<int> recordModelNumber_;
+	std::vector<XMFLOAT3> recordData_;			//プレイヤーの位置を記録する可変長配列
+	std::vector<int> recordDirection_;			//Playerの向きを記録する動的配列
+	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列
 
-	int shadowDirection_;
-	int shadowModelNumber_;
+
+	Player* pPlayer_;							//Playerの情報が入る変数
+	Stage* pStage_;								//Stageの情報が入る変数
+
 
 public:
-	bool isRecording_; //Playerの動きを記録しているか
+	bool isRecording_;							//記録中かどうか
 
 public:
 	//コンストラクタ
@@ -57,6 +47,13 @@ public:
 
 	//開放
 	void Release() override;
+
+	//Find処理をまとめる関数
+	void AllFind();
+
+	//Playerの動きを記録と再生する関数
+	void RecordingandPlayBack();
+
 
 	//影の表示非表示を管理する関数
 	//そのほかにも再生中か記録中かを判断する処理も行う
