@@ -136,8 +136,6 @@ void Player::PlayerMove()
 		modelNumber_ = STANDING_MODEL_;
 	}
 
-
-
 	//右移動
 	//右矢印キーを押していたら
 	if (Input::IsKey(DIK_RIGHT))
