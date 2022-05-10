@@ -4,7 +4,6 @@
 #include "FbxParts.h"
 #include "Texture.h"
 #include<string>
-#include<vector>
 
 namespace Model
 {
