@@ -119,5 +119,8 @@ public:
     void Reset(int x, int y);
 
     void ChengeButton();
+
+    void StepNumberCountUp();
+    void StepNumberCountDown();
 };
 

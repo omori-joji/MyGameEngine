@@ -567,6 +567,16 @@ void Stage::ChengeButton()
     }
 }
 
+void Stage::StepNumberCountUp()
+{
+    steppingNumber++;
+}
+
+void Stage::StepNumberCountDown()
+{
+    steppingNumber--;
+}
+
 
 
 void Stage::ModelLoad()
