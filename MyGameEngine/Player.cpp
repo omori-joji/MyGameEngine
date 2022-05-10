@@ -25,8 +25,8 @@ Player::Player(GameObject* parent)
 	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
 	GRAVITY_(0.01f),				//重力の値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
-	RUN_MODEL_(1),
-	STANDING_MODEL_(0),
+	RUN_MODEL_(1),					//Playerの走っているモデル番号
+	STANDING_MODEL_(0),				//Playerの立っているモデル番号
 
 	move_(0.01f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
