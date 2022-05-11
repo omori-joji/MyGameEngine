@@ -11,7 +11,16 @@ class Stage;
 //Shadowを管理するクラス
 class Shadow : public GameObject
 {
-	int hModel_[2][2];							//影のモデルを格納する多次元配列
+	const int RESET_VALU_;
+	const int ALL_GIMICKS_;
+	const float BACK_DRAW_;
+	const int MEANTIME_BUTTON_DOWN_;
+	const int MEANTIME_BLOCK_ALPHA_;
+	const int MATCH_VALU_;
+	const int RUN_MODEL_;
+	const int STANDING_MODEL_;
+
+	
 	int shadowDirection_;						//影の向き
 	int shadowModelNumber_;						//走っているモデル番号
 
@@ -27,6 +36,13 @@ class Shadow : public GameObject
 	Player* pPlayer_;							//Playerの情報が入る変数
 	Stage* pStage_;								//Stageの情報が入る変数
 
+	enum ShadowDirection
+	{
+		SDIR_RIGHT,
+		SDIR_LEFT,
+		SDIR_MAX,
+	};
+	int hModel_[SDIR_MAX][SDIR_MAX];							//影のモデルを格納する多次元配列
 
 public:
 	bool isRecording_;							//記録中かどうか

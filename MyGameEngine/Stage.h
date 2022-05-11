@@ -22,7 +22,7 @@ class Stage : public GameObject
     const int BACK_GROUND_;
     const int PLAYER_GENERAT_POS_;  //Playerのリスポーン地点
     const int SHADOW_NAMBER_; //影の数
-    const int OLL_GIMMICKS_; //ギミックのモデル番号を調べる繰り返し文のための定数
+    const int ALL_GIMMICKS_; //ギミックのモデル番号を調べる繰り返し文のための定数
     const int RESET_VALU_; //初期化用の値
     const int CHENGE_POSITIVE_GIMMICKS_; //+10したモデル番号に変えるための定数
     const int BRINKING_BLOCKS_;

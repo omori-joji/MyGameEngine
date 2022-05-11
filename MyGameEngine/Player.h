@@ -1,8 +1,8 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Engine/Fbx.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
+#include "Engine/Fbx.h"
 #include "Stage.h"
 
 class Player : public GameObject
@@ -21,8 +21,6 @@ class Player : public GameObject
     const float DROP_DOWN_;                 //Playerの下に何もなければ下に落ちるための定数
     const int RESET_VALU_;                  //初期化用の定数
     const int PLAYER_FOOT_;                 //Playerの足元を見るためにY軸を-1する定数
-    const int RUN_MODEL_;                   //走っているモデルの番号
-    const int STANDING_MODEL_;              //立っているモデルの番号
 
     int direction_;                         //プレイヤーの向きの番号
     int modelNumber_;                       //走っているモデルの番号
@@ -38,6 +36,9 @@ class Player : public GameObject
         DIR_RIGHT,                          //右向き
         DIR_LEFT,                           //左向き
         DIR_MAX,                            //配列の最大要素数
+
+        STANDING_MODEL = 0,
+        RUN_MODEL,
     };
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
 
