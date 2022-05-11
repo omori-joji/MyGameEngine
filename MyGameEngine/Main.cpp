@@ -6,6 +6,7 @@
 #include "Engine/Rootjob.h"
 #include "Engine/Model.h"
 #include "Engine/VisualEffect.h"
+#include "Engine/Audio.h"
 #include <stdlib.h>
 //#include "Engine/GameObject.h"
 
@@ -76,6 +77,10 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
     Camera::Initialize();
 
     VisualEffect::Initialize();
+
+    Audio::Initialize();
+
+
 
     pRootJob = new Rootjob;
     pRootJob->Initialize();
