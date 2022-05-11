@@ -98,8 +98,10 @@ void Shadow::RecordingandPlayBack()
 	else if (frameCounter_ < recordData_.size() - MATCH_VALU_ && isRecording_ == true)
 	{
 
-		//–ˆƒtƒŒ[ƒ€‰e‚ÌPositon‚É‹L˜^‚µ‚½Playey‚ÌˆÊ’u‚ð”½‰f‚·‚é‚µ‚Ä‚ ‚°‚é
+		//–ˆƒtƒŒ[ƒ€‰e‚ÌPositon‚É‹L˜^‚µ‚½Playey‚ÌˆÊ’u‚ð”½‰f‚·‚é
 		transform_.position_ = recordData_[frameCounter_];
+
+		//Playe‚’
 		transform_.position_.z += BACK_DRAW_;
 
 		shadowModelNumber_ = recordModelNumber_[frameCounter_];
