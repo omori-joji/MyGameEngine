@@ -433,25 +433,6 @@ void Stage::Blinking(int blockNum, int time)
     }
 }
 
-//特定のブロックの位置にワープする関数
-//引数は今プレイヤーのいる位置にあるマス
-bool Stage::WarpBlockEnter(int x, int y)
-{
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
-    {
-        //そこはワープブロック
-        if (map_[x][y] == WARP_BLOCK_ENTRANS_ + i || map_[x][y] == WARP_BLOCK_EXIT_ + i && isWarp_ == true)
-        {
-            return true;
-        }
-        //何もない
-        else
-        {
-            return false;
-        }
-    }
-}
-
 //ゴールの処理をする関数
 //引数は今プレイヤーのいる位置にあるマス
 void Stage::GoalCol(int x, int y)
@@ -468,11 +449,10 @@ void Stage::GoalCol(int x, int y)
 }
 
 //
-void Stage::WarpBlockExit(int getX,int getY)
+void Stage::WarpBlockCollision(int getX,int getY)
 {
     for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
     {
-
         //PlayerのPositionを引数で受け取る
         //そこがワープブロックだったら
         if (map_[getX][getY] == WARP_BLOCK_ENTRANS_ + i && isWarp_ == true)

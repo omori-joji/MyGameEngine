@@ -1,16 +1,9 @@
 #include "Player.h"
-#include "Shadow.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 
-
-
-
-
 Player::Player(GameObject* parent)
 	: GameObject(parent, "Player"),
-
-	
 	SPEED_(0.1f),					//移動速度
 	WIDTH_(0.3f),					//Playerの幅
 	HEIGHT_(0.6f),					//Playerの高さ
@@ -27,31 +20,26 @@ Player::Player(GameObject* parent)
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
 	RUN_MODEL_(1),					//Playerの走っているモデル番号
 	STANDING_MODEL_(0),				//Playerの立っているモデル番号
-
 	move_(0.01f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
-
 	isJump_(false),					//ジャンプ中か
 	isPastButton(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
-
 	pStage_(nullptr)				//ステージの情報を入れるポインタ
 {
-
 }
 
 Player::~Player()
 {
-
 }
 
 void Player::Initialize()
 {
-	hModel_[0][0] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
-	hModel_[0][1] = Model::Load("Assets/Player/PlayerRightRun.fbx");
+	hModel_[DIR_RIGHT][STANDING_MODEL_] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
+	hModel_[DIR_RIGHT][RUN_MODEL_] = Model::Load("Assets/Player/PlayerRightRun.fbx");
 
-	hModel_[1][0] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
-	hModel_[1][1] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
+	hModel_[DIR_LEFT][STANDING_MODEL_] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
+	hModel_[DIR_LEFT][RUN_MODEL_] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
 }
 
 void Player::Update()
@@ -60,7 +48,8 @@ void Player::Update()
 	AllFind();
 
 	//Playerの操作をまとめる関数
-	PlayerMove();
+	PlayerRightMove();
+	PlayerLeftMove();
 	
 	//Playerの当たり判定をまとめる関数
 	PlayerCollision();
@@ -80,10 +69,8 @@ void Player::Update()
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
 
 	//ワープブロックに触れたかを判別する関数を呼ぶ
-	pStage_->WarpBlockExit((int)transform_.position_.x, (int)(transform_.position_.y));
-	
+	pStage_->WarpBlockCollision((int)transform_.position_.x, (int)(transform_.position_.y));
 }
-
 
 void Player::Draw()
 {
@@ -91,11 +78,8 @@ void Player::Draw()
 	Model::Draw(hModel_[direction_][modelNumber_]);
 }
 
-
-
 void Player::Release()
 {
-
 }
 
 void Player::AllFind()
@@ -108,7 +92,34 @@ void Player::AllFind()
 	}
 }
 
-void Player::PlayerMove()
+void Player::PlayerRightMove()
+{
+	//右移動
+	//右矢印キーを押していたら
+	if (Input::IsKey(DIK_RIGHT))
+	{
+		//右移動
+		transform_.position_.x += SPEED_;
+
+		direction_ = DIR_RIGHT;
+		modelNumber_ = RUN_MODEL_;
+	}
+
+	//右矢印キーを押した瞬間
+	if (Input::IsKeyDown(DIK_RIGHT))
+	{
+		direction_ = DIR_RIGHT;
+		modelNumber_ = STANDING_MODEL_;
+	}
+
+	//右矢印キーを離した瞬間
+	if (Input::IsKeyUp(DIK_RIGHT))
+	{
+		modelNumber_ = STANDING_MODEL_;
+	}
+}
+
+void Player::PlayerLeftMove()
 {
 	//左移動
 	//左矢印キーを押していたら
@@ -127,7 +138,6 @@ void Player::PlayerMove()
 		direction_ = DIR_LEFT;
 
 		modelNumber_ = STANDING_MODEL_;
-
 	}
 
 	//左矢印キーを離したら
@@ -136,44 +146,15 @@ void Player::PlayerMove()
 		modelNumber_ = STANDING_MODEL_;
 	}
 
-	//右移動
-	//右矢印キーを押していたら
-	if (Input::IsKey(DIK_RIGHT))
-	{
-		//右移動
-		transform_.position_.x += SPEED_;
-
-		direction_ = DIR_RIGHT;
-		modelNumber_ = RUN_MODEL_;
-	}
-
-	//右矢印キーを押した瞬間
-	if (Input::IsKeyDown(DIK_RIGHT))
-	{
-
-		direction_ = DIR_RIGHT;
-		modelNumber_ = STANDING_MODEL_;
-
-	}
-
-	//右矢印キーを離した瞬間
-	if (Input::IsKeyUp(DIK_RIGHT))
-	{
-
-		modelNumber_ = STANDING_MODEL_;
-
-	}
 }
 
 void Player::PlayerCollision()
 {
 	//プレイヤーの原点は上下で見ると下。左右で見ると真ん中
 	//当たったかどうか
-
 	//当たり判定の変数宣言
 	int checkX1, checkX2;
 	int checkY1, checkY2;
-
 
 	//左
 	checkX1 = (int)(transform_.position_.x - WIDTH_);
@@ -196,7 +177,6 @@ void Player::PlayerCollision()
 	{
 		transform_.position_.x = (float)checkX1 - BACK_POSITION_RIGHT_;
 	}
-
 
 	//上
 	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
@@ -221,7 +201,6 @@ void Player::PlayerCollision()
 		}
 	}
 
-
 	//下
 	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
 	checkX2 = (int)(transform_.position_.x - (WIDTH_ - MARGIN_));
@@ -240,7 +219,6 @@ void Player::PlayerCollision()
 	//下に何もなかったらどんどん下がる
 	else
 	{
-
 		transform_.position_.y -= move_;
 
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
@@ -281,7 +259,6 @@ void Player::FootButtonCheck()
 			pStage_->StepNumberCountDown();
 		}
 	}
-
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
 	isPastButton = nowButton;
 }

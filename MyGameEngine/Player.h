@@ -2,7 +2,6 @@
 #include "Engine/GameObject.h"
 #include "Engine/Fbx.h"
 #include "Stage.h"
-#include "Shadow.h"
 
 
 class Shadow;
@@ -28,7 +27,6 @@ class Player : public GameObject
     const int RUN_MODEL_;                   //走っているモデルの番号
     const int STANDING_MODEL_;              //立っているモデルの番号
 
-    int hModel_[2][2];                      //Playerのモデル番号を格納する多次元配列
     int direction_;                         //プレイヤーの向きの番号
     int modelNumber_;                       //走っているモデルの番号
     float move_;                            //Y軸の移動
@@ -38,49 +36,38 @@ class Player : public GameObject
 
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
-    //Playerの向き
-    enum Direction
+    enum ModelNumber                        //Playerの向き
     {
-        DIR_RIGHT,                          //右
-        DIR_LEFT,                           //左
+        DIR_RIGHT,                          //右向き
+        DIR_LEFT,                           //左向き
+        DIR_MAX,                            //配列の最大要素数
     };
+    int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
 
-public:
+public:    
+    Player(GameObject* parent);             //コンストラクタ
+    
+    ~Player();                              //デストラクタ
+    
+    void Initialize() override;             //初期化
+    
+    void Update() override;                 //更新
+    
+    void Draw() override;                   //描画
+    
+    void Release() override;                //開放
+    
+    int GetModelNumber();                   //Playerの走っているモデル番号を返す関数
+    
+    int GetDirection();                     //Player向きのモデル番号を返す関数
 
-public:
-    //コンストラクタ
-    Player(GameObject* parent);
+    void FootButtonCheck();                 //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
 
-    //デストラクタ
-    ~Player();
+private:    
+    void AllFind();                         //Find処理をすべてまとめる関数
 
-    //初期化
-    void Initialize() override;
+    void PlayerRightMove();                 //Playerの操作をまとめる関数
+    void PlayerLeftMove();
 
-    //更新
-    void Update() override;
-
-    //描画
-    void Draw() override;
-
-    //開放
-    void Release() override;
-
-    //Find処理をすべてまとめる関数
-    void AllFind();
-
-    //Playerの操作をまとめる関数
-    void PlayerMove();
-
-    //Playyerの当たり判定をまとめる関数
-    void PlayerCollision();
-
-    //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
-    void FootButtonCheck();
-
-    //Playerの走っているモデル番号を返す関数
-    int GetModelNumber();
-
-    //Player向きのモデル番号を返す関数
-    int GetDirection();
+    void PlayerCollision();                 //Playyerの当たり判定をまとめる関数
 };

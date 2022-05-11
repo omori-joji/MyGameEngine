@@ -99,12 +99,6 @@ public:
     //第二引数が点滅する時間の間隔(単位はフレーム)
     void Blinking(int blockNum, int time);
 
-
-    //ワープブロックの入口のギミックをまとめた関数
-    //引数はプレイヤーの位置
-    bool WarpBlockEnter(int x, int y);
-
-
     //ゴールを判定する関数
     //引数はプレイヤーの位置
     void GoalCol(int x, int y);
@@ -112,7 +106,7 @@ public:
 
     //ワープブロックの出口のギミックをまとめた関数
     //引数はプレイヤーの位置
-    void WarpBlockExit(int getX, int getY);
+    void WarpBlockCollision(int getX, int getY);
 
     XMFLOAT3 GetStartPosition();
 
