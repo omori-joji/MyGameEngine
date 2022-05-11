@@ -1,16 +1,7 @@
 #include "Player.h"
-#include "Shadow.h"
-#include "Engine/Model.h"
-#include "Engine/Input.h"
-
-
-
-
 
 Player::Player(GameObject* parent)
 	: GameObject(parent, "Player"),
-
-	
 	SPEED_(0.1f),					//移動速度
 	WIDTH_(0.3f),					//Playerの幅
 	HEIGHT_(0.6f),					//Playerの高さ
@@ -25,33 +16,27 @@ Player::Player(GameObject* parent)
 	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
 	GRAVITY_(0.01f),				//重力の値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
-	RUN_MODEL_(1),					//Playerの走っているモデル番号
-	STANDING_MODEL_(0),				//Playerの立っているモデル番号
-
 	move_(0.01f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
-
+	hModel_(),						//モデルをロードするための多次元配列
 	isJump_(false),					//ジャンプ中か
 	isPastButton(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
-
 	pStage_(nullptr)				//ステージの情報を入れるポインタ
 {
-
 }
 
 Player::~Player()
 {
-
 }
 
 void Player::Initialize()
 {
-	hModel_[0][0] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
-	hModel_[0][1] = Model::Load("Assets/Player/PlayerRightRun.fbx");
+	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
+	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load("Assets/Player/PlayerRightRun.fbx");
 
-	hModel_[1][0] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
-	hModel_[1][1] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
+	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
+	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
 }
 
 void Player::Update()
@@ -60,7 +45,8 @@ void Player::Update()
 	AllFind();
 
 	//Playerの操作をまとめる関数
-	PlayerMove();
+	PlayerRightMove();
+	PlayerLeftMove();
 	
 	//Playerの当たり判定をまとめる関数
 	PlayerCollision();
@@ -80,10 +66,8 @@ void Player::Update()
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
 
 	//ワープブロックに触れたかを判別する関数を呼ぶ
-	pStage_->WarpBlockExit((int)transform_.position_.x, (int)(transform_.position_.y));
-	
+	pStage_->WarpBlockCollision((int)transform_.position_.x, (int)(transform_.position_.y));
 }
-
 
 void Player::Draw()
 {
@@ -91,11 +75,8 @@ void Player::Draw()
 	Model::Draw(hModel_[direction_][modelNumber_]);
 }
 
-
-
 void Player::Release()
 {
-
 }
 
 void Player::AllFind()
@@ -108,34 +89,8 @@ void Player::AllFind()
 	}
 }
 
-void Player::PlayerMove()
+void Player::PlayerRightMove()
 {
-	//左移動
-	//左矢印キーを押していたら
-	if (Input::IsKey(DIK_LEFT))
-	{
-		transform_.position_.x -= SPEED_;
-
-		direction_ = DIR_LEFT;
-
-		modelNumber_ = RUN_MODEL_;
-	}
-
-	//左矢印キーを押した瞬間
-	if (Input::IsKeyDown(DIK_LEFT))
-	{
-		direction_ = DIR_LEFT;
-
-		modelNumber_ = STANDING_MODEL_;
-
-	}
-
-	//左矢印キーを離したら
-	if (Input::IsKeyUp(DIK_LEFT))
-	{
-		modelNumber_ = STANDING_MODEL_;
-	}
-
 	//右移動
 	//右矢印キーを押していたら
 	if (Input::IsKey(DIK_RIGHT))
@@ -143,25 +98,53 @@ void Player::PlayerMove()
 		//右移動
 		transform_.position_.x += SPEED_;
 
+		//モデル番号を変更
 		direction_ = DIR_RIGHT;
-		modelNumber_ = RUN_MODEL_;
+		modelNumber_ = RUN_MODEL;
 	}
 
 	//右矢印キーを押した瞬間
 	if (Input::IsKeyDown(DIK_RIGHT))
 	{
-
+		//モデル番号を変更
 		direction_ = DIR_RIGHT;
-		modelNumber_ = STANDING_MODEL_;
-
+		modelNumber_ = STANDING_MODEL;
 	}
 
 	//右矢印キーを離した瞬間
 	if (Input::IsKeyUp(DIK_RIGHT))
 	{
+		//モデル番号を変更
+		modelNumber_ = STANDING_MODEL;
+	}
+}
 
-		modelNumber_ = STANDING_MODEL_;
+void Player::PlayerLeftMove()
+{
+	//左移動
+	//左矢印キーを押していたら
+	if (Input::IsKey(DIK_LEFT))
+	{
+		transform_.position_.x -= SPEED_;
 
+		//モデル番号を変更
+		direction_ = DIR_LEFT;
+		modelNumber_ = RUN_MODEL;
+	}
+
+	//左矢印キーを押した瞬間
+	if (Input::IsKeyDown(DIK_LEFT))
+	{
+		//モデル番号を変更
+		direction_ = DIR_LEFT;
+		modelNumber_ = STANDING_MODEL;
+	}
+
+	//左矢印キーを離したら
+	if (Input::IsKeyUp(DIK_LEFT))
+	{
+		//モデル番号を変更
+		modelNumber_ = STANDING_MODEL;
 	}
 }
 
@@ -169,83 +152,100 @@ void Player::PlayerCollision()
 {
 	//プレイヤーの原点は上下で見ると下。左右で見ると真ん中
 	//当たったかどうか
-
 	//当たり判定の変数宣言
 	int checkX1, checkX2;
 	int checkY1, checkY2;
 
-
-	//左
+	//左の当たり判定
+	//4点に当たり判定を作成
 	checkX1 = (int)(transform_.position_.x - WIDTH_);
 	checkX2 = (int)(transform_.position_.x - WIDTH_);
 	checkY1 = (int)(transform_.position_.y + (HEIGHT_ - MARGIN_));
 	checkY2 = (int)(transform_.position_.y + MARGIN_);
 
+	//移動した先にブロックがあったらがtrueが返ってきて、何もなければfalseが返される
+	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		//位置を戻す
 		transform_.position_.x = (float)checkX1 + BACK_POSITION_LEFT_;
 	}
 
-	//右
+	//右の当たり判定
+	//4点に当たり判定を作成
 	checkX1 = (int)(transform_.position_.x + WIDTH_);
 	checkX2 = (int)(transform_.position_.x + WIDTH_);
 	checkY1 = (int)(transform_.position_.y + (HEIGHT_ - MARGIN_));
 	checkY2 = (int)(transform_.position_.y + MARGIN_);
 
+	//移動した先にブロックがあったらがtrueが返ってきて、何もなければfalseが返される
+	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		//位置を戻す
 		transform_.position_.x = (float)checkX1 - BACK_POSITION_RIGHT_;
 	}
 
-
-	//上
+	//上の当たり判定
+	//4点に当たり判定を作成
 	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
 	checkX2 = (int)(transform_.position_.x - (WIDTH_ - MARGIN_));
 	checkY1 = (int)(transform_.position_.y + HEIGHT_);
 	checkY2 = (int)(transform_.position_.y + HEIGHT_);
 
+	//移動した先にブロックがあったらがtrueが返ってきて、何もなければfalseが返される
+	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		//位置を戻す
 		transform_.position_.y = (float)checkY1 - BACK_POSITION_UP_;
 	}
+	//ブロックがなかったら
 	else
 	{
 		//ジャンプ
 		if (Input::IsKeyDown(DIK_SPACE) && isJump_ == false)
 		{
-			isJump_ = true;//ジャンプしている
+			//ジャンプしている
+			isJump_ = true;
 
-			//gravityの値をマイナスにすることによって今度は上方向に重力がかかるようになる
+			//Y軸の移動
 			transform_.position_.y += move_;
+
+			//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 			move_ = DROP_DOWN_;
 		}
 	}
 
-
-	//下
+	//下の当たり判定
+	//4点に当たり判定を作成
 	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
 	checkX2 = (int)(transform_.position_.x - (WIDTH_ - MARGIN_));
 	checkY1 = (int)(transform_.position_.y);
 	checkY2 = (int)(transform_.position_.y);
 
+	//移動した先にブロックがあったらがtrueが返ってきて、何もなければfalseが返される
+	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		isJump_ = false;//下にブロックがあったら今はジャンプしていない
+		//下にブロックがあったら今はジャンプしていない
+		isJump_ = false;
 
+		//Y軸の移動を初期化する
 		move_ = RESET_VALU_;
 
+		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
 	}
 	//重力
-	//下に何もなかったらどんどん下がる
+	//下に何もなかったら
 	else
 	{
-
+		//下に落ちる
 		transform_.position_.y -= move_;
 
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
 		//ブロックの直系よりは大きくならないようにする
-		//gravityの値は0.01
 		if (move_ < BLOCK_SIZE_)
 		{
 			move_ += GRAVITY_;
@@ -281,7 +281,6 @@ void Player::FootButtonCheck()
 			pStage_->StepNumberCountDown();
 		}
 	}
-
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
 	isPastButton = nowButton;
 }

@@ -15,7 +15,7 @@ Stage::Stage(GameObject* parent)
     VERTICAL_VALU_(23),     //マップ縦軸の値
     BESIDE_VALU_(28),       //マップ横軸の値
     SHADOW_NAMBER_(5),
-    OLL_GIMMICKS_(9),
+    ALL_GIMMICKS_(9),
     RESET_VALU_(0),
     CHENGE_POSITIVE_GIMMICKS_(10),
     BRINKING_BLOCKS_(81),
@@ -206,7 +206,7 @@ void Stage::Update()
     //どちらもボタンを押していたら発動する
     if (isdoubleButton1_ && isdoubleButton2_)
     {
-        for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //モデルを切り替える
             CheckBlock(151 + i, true);
@@ -215,7 +215,7 @@ void Stage::Update()
     //どちらかが、あるいはどちらも押していなければボタンは元に戻る
     else
     {
-        for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //モデルを切り替える
             CheckBlock(161 + i, false);
@@ -319,7 +319,7 @@ bool Stage::isCrash(int x, int y)
 bool Stage::DownButton(int x, int y)
 {
     //押している間ボタン
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         if (map_[x][y] == MEANTIME_BUTTON_UP_ + i || map_[x][y] == MEANTIME_BUTTON_DOWN_ + i)
         {
@@ -331,7 +331,7 @@ bool Stage::DownButton(int x, int y)
 
     
     //同時押しボタン
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         if (map_[x][y] == 111 + i)
         {
@@ -359,23 +359,23 @@ bool Stage::DownButton(int x, int y)
     if (steppingNumber == 0)
     {
         //押している間だけのボタンのモデルをリセットする
-        for (int i = RESET_VALU_; i <= shadowCount_; i++)
-        {
-            if (pShadow_[i]->isRecording_ == false)
-            {
-                for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
-                {
-                    //ボタンのモデルを切り替える
-                    CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
+        //for (int i = RESET_VALU_; i <= shadowCount_; i++)
+        //{
+        //    if (pShadow_[i]->isRecording_ == false)
+        //    {
+        //        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        //        {
+        //            //ボタンのモデルを切り替える
+        //            CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
 
-                    //壁のモデルを切り替える
-                    CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
-                }
-            }
-        }
+        //            //壁のモデルを切り替える
+        //            CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
+        //        }
+        //    }
+        //}
 
 
-        for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //ボタンのモデルを切り替える
             CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
@@ -463,25 +463,6 @@ void Stage::Blinking(int blockNum, int time)
     }
 }
 
-//特定のブロックの位置にワープする関数
-//引数は今プレイヤーのいる位置にあるマス
-bool Stage::WarpBlockEnter(int x, int y)
-{
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
-    {
-        //そこはワープブロック
-        if (map_[x][y] == WARP_BLOCK_ENTRANS_ + i || map_[x][y] == WARP_BLOCK_EXIT_ + i && isWarp_ == true)
-        {
-            return true;
-        }
-        //何もない
-        else
-        {
-            return false;
-        }
-    }
-}
-
 //ゴールの処理をする関数
 //引数は今プレイヤーのいる位置にあるマス
 void Stage::GoalCol(int x, int y)
@@ -498,11 +479,10 @@ void Stage::GoalCol(int x, int y)
 }
 
 //
-void Stage::WarpBlockExit(int getX,int getY)
+void Stage::WarpBlockCollision(int getX,int getY)
 {
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-
         //PlayerのPositionを引数で受け取る
         //そこがワープブロックだったら
         if (map_[getX][getY] == WARP_BLOCK_ENTRANS_ + i && isWarp_ == true)
@@ -530,7 +510,7 @@ void Stage::WarpBlockExit(int getX,int getY)
     }
 
 
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
 
         //PlayerのPositionを引数で受け取る
@@ -590,7 +570,6 @@ void Stage::ChengeButton()
     {
         //モデル変更
         CheckBlock(MEANTIME_BUTTON_UP_, true);
-
 
         //壁を開く処理
         CheckBlock(MEANTIME_WALL_, true);

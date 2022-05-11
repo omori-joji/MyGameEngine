@@ -26,7 +26,7 @@ class Stage : public GameObject
     const int BACK_GROUND_;
     const int PLAYER_GENERAT_POS_;  //Playerのリスポーン地点
     const int SHADOW_NAMBER_; //影の数
-    const int OLL_GIMMICKS_; //ギミックのモデル番号を調べる繰り返し文のための定数
+    const int ALL_GIMMICKS_; //ギミックのモデル番号を調べる繰り返し文のための定数
     const int RESET_VALU_; //初期化用の値
     const int CHENGE_POSITIVE_GIMMICKS_; //+10したモデル番号に変えるための定数
     const int BRINKING_BLOCKS_;
@@ -103,12 +103,6 @@ public:
     //第二引数が点滅する時間の間隔(単位はフレーム)
     void Blinking(int blockNum, int time);
 
-
-    //ワープブロックの入口のギミックをまとめた関数
-    //引数はプレイヤーの位置
-    bool WarpBlockEnter(int x, int y);
-
-
     //ゴールを判定する関数
     //引数はプレイヤーの位置
     void GoalCol(int x, int y);
@@ -116,7 +110,7 @@ public:
 
     //ワープブロックの出口のギミックをまとめた関数
     //引数はプレイヤーの位置
-    void WarpBlockExit(int getX, int getY);
+    void WarpBlockCollision(int getX, int getY);
 
     XMFLOAT3 GetStartPosition();
 
