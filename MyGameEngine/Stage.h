@@ -11,6 +11,10 @@ class SceneManager;
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
+    int hVfxA, hVfxB;
+
+
+
     int map_[28][23];   //ステージのマス情報
     int hModel_[500];   //モデル番号
     int shadowCount_;   //影の数

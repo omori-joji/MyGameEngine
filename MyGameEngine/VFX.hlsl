@@ -33,7 +33,10 @@ VS_OUT VS(float4 pos : POSITION, float2 uv : TEXCOORD)
 {
 	VS_OUT outData;
 	outData.pos = mul(pos, matWVP);
-	outData.uv = uv;
+
+	//アニメーションのためにUV座標をずらす
+	outData.uv.x = uv.x * uvWidth + uvLeft;
+	outData.uv.y = uv.y * uvHeight + uvTop;
 	return outData;
 }
 

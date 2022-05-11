@@ -186,6 +186,7 @@ void Direct3D::InitShader()
 void Direct3D::BeginDraw()
 {
 	//それぞれをデバイスコンテキストにセット
+	//（エフェクトを表示する時に別なシェーダーを使っているので、ここで毎回セットしなおす）
 	pContext->VSSetShader(pVertexShader, NULL, 0);	//頂点シェーダー
 	pContext->PSSetShader(pPixelShader, NULL, 0);	//ピクセルシェーダー
 	pContext->IASetInputLayout(pVertexLayout);		//頂点インプットレイアウト
