@@ -2,6 +2,9 @@
 #include "Camera.h"
 #include "Transform.h"
 
+
+
+
 Quad::Quad() :
 	pVertexBuffer_(nullptr),
 	pIndexBuffer_(nullptr),

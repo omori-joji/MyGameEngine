@@ -5,6 +5,7 @@
 #include "Engine/Input.h"
 #include "Engine/Rootjob.h"
 #include "Engine/Model.h"
+#include "Engine/VisualEffect.h"
 #include <stdlib.h>
 //#include "Engine/GameObject.h"
 
@@ -74,6 +75,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
     Camera::Initialize();
 
+    VisualEffect::Initialize();
+
     pRootJob = new Rootjob;
     pRootJob->Initialize();
 
@@ -141,6 +144,8 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
             pRootJob->UpdateSub();
             Camera::Update();
 
+            VisualEffect::Update();
+
             Direct3D::BeginDraw();
 
             //•`‰æˆ—
@@ -148,12 +153,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
             //pRootJob->UpdateSub();
             //pRootJob->ReleaseSub();
 
+            VisualEffect::Draw();
+
             Direct3D::EndDraw();
 
         }
     }
 
     //‰ð•úˆ—
+    VisualEffect::Release();
     Model::AllRelease();
     pRootJob->ReleaseSub();
     SAFE_DELETE(pRootJob);
