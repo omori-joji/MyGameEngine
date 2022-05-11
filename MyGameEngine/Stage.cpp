@@ -329,20 +329,20 @@ bool Stage::DownButton(int x, int y)
     if (steppingNumber == 0)
     {
         //押している間だけのボタンのモデルをリセットする
-        for (int i = RESET_VALU_; i <= shadowCount_; i++)
-        {
-            if (pShadow_[i]->isRecording_ == false)
-            {
-                for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-                {
-                    //ボタンのモデルを切り替える
-                    CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
+        //for (int i = RESET_VALU_; i <= shadowCount_; i++)
+        //{
+        //    if (pShadow_[i]->isRecording_ == false)
+        //    {
+        //        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        //        {
+        //            //ボタンのモデルを切り替える
+        //            CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
 
-                    //壁のモデルを切り替える
-                    CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
-                }
-            }
-        }
+        //            //壁のモデルを切り替える
+        //            CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
+        //        }
+        //    }
+        //}
 
 
         for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)

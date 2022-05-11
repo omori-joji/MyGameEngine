@@ -24,18 +24,18 @@ Shadow::Shadow(GameObject* parent)
 	MEANTIME_BLOCK_ALPHA_(61),
 	MEANTIME_BUTTON_DOWN_(41),
 	MATCH_VALU_(1),
-	RUN_MODEL_(1),
-	STANDING_MODEL_(0)
+	isShadowPastButton(false),
+	SHADOW_FOOT_(1)
 {
 }
 
 void Shadow::Initialize()
 {
-	hModel_[0][STANDING_MODEL_] = Model::Load("Assets/Shadow/Shadow_Right.fbx");
-	hModel_[0][RUN_MODEL_] = Model::Load("Assets/Shadow/ShadowRun_Right.fbx");
+	hModel_[SDIR_RIGHT][STANDING_MODEL] = Model::Load("Assets/Shadow/Shadow_Right.fbx");
+	hModel_[SDIR_RIGHT][RUN_MODEL] = Model::Load("Assets/Shadow/ShadowRun_Right.fbx");
 
-	hModel_[1][STANDING_MODEL_] = Model::Load("Assets/Shadow/Shadow_Left.fbx");
-	hModel_[1][RUN_MODEL_] = Model::Load("Assets/Shadow/ShadowRun_Left.fbx");
+	hModel_[SDIR_LEFT][STANDING_MODEL] = Model::Load("Assets/Shadow/Shadow_Left.fbx");
+	hModel_[SDIR_LEFT][RUN_MODEL] = Model::Load("Assets/Shadow/ShadowRun_Left.fbx");
 }
 
 void Shadow::Update()
@@ -43,6 +43,8 @@ void Shadow::Update()
 	AllFind();
 
 	RecordingandPlayBack();
+
+	
 }
 
 void Shadow::Draw()
@@ -106,6 +108,8 @@ void Shadow::RecordingandPlayBack()
 
 		//次のフレームへ
 		frameCounter_++;
+
+		ShadowFootButtonCheck();
 	}
 
 	//再生し終わったら
@@ -136,4 +140,36 @@ void Shadow::ShadowDisplayFlag()
 
 	//最初のフレームへ
 	frameCounter_ = RESET_VALU_;
+}
+
+void Shadow::ShadowFootButtonCheck()
+{
+	//変数を作成
+	bool nowButton;
+
+	//ボタンを踏んでいればtrue踏んでいなければfalseが返される
+	nowButton = pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
+
+	//1フレーム前は踏んでいない
+	if (!isShadowPastButton)
+	{
+		//今は踏んでいる
+		if (nowButton)
+		{
+			//カウントアップ
+			pStage_->StepNumberCountUp();
+		}
+	}
+	//1フレーム前は踏んでいる
+	else if (isShadowPastButton)
+	{
+		//今は踏んでいない
+		if (!nowButton)
+		{
+			//カウントダウン
+			pStage_->StepNumberCountDown();
+		}
+	}
+	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
+	isShadowPastButton = nowButton;
 }

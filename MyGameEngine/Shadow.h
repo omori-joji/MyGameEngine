@@ -17,12 +17,13 @@ class Shadow : public GameObject
 	const int MEANTIME_BUTTON_DOWN_;
 	const int MEANTIME_BLOCK_ALPHA_;
 	const int MATCH_VALU_;
-	const int RUN_MODEL_;
-	const int STANDING_MODEL_;
+	const int SHADOW_FOOT_;
 
 	
 	int shadowDirection_;						//影の向き
 	int shadowModelNumber_;						//走っているモデル番号
+
+	bool isShadowPastButton;
 
 
 	DWORD frameCounter_;						//フレーム数
@@ -41,6 +42,9 @@ class Shadow : public GameObject
 		SDIR_RIGHT,
 		SDIR_LEFT,
 		SDIR_MAX,
+
+		STANDING_MODEL = 0,
+		RUN_MODEL,
 	};
 	int hModel_[SDIR_MAX][SDIR_MAX];							//影のモデルを格納する多次元配列
 
@@ -74,5 +78,7 @@ public:
 	//影の表示非表示を管理する関数
 	//そのほかにも再生中か記録中かを判断する処理も行う
 	void ShadowDisplayFlag();
+
+	void ShadowFootButtonCheck();
 };
 

@@ -19,6 +19,7 @@ Player::Player(GameObject* parent)
 	move_(0.01f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
+	hModel_(),						//モデルをロードするための多次元配列
 	isJump_(false),					//ジャンプ中か
 	isPastButton(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
 	pStage_(nullptr)				//ステージの情報を入れるポインタ
