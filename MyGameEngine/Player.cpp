@@ -1,6 +1,4 @@
 #include "Player.h"
-#include "Engine/Model.h"
-#include "Engine/Input.h"
 
 Player::Player(GameObject* parent)
 	: GameObject(parent, "Player"),
@@ -101,6 +99,7 @@ void Player::PlayerRightMove()
 		//右移動
 		transform_.position_.x += SPEED_;
 
+		//モデル番号を変更
 		direction_ = DIR_RIGHT;
 		modelNumber_ = RUN_MODEL_;
 	}
@@ -108,6 +107,7 @@ void Player::PlayerRightMove()
 	//右矢印キーを押した瞬間
 	if (Input::IsKeyDown(DIK_RIGHT))
 	{
+		//モデル番号を変更
 		direction_ = DIR_RIGHT;
 		modelNumber_ = STANDING_MODEL_;
 	}
@@ -115,6 +115,7 @@ void Player::PlayerRightMove()
 	//右矢印キーを離した瞬間
 	if (Input::IsKeyUp(DIK_RIGHT))
 	{
+		//モデル番号を変更
 		modelNumber_ = STANDING_MODEL_;
 	}
 }
@@ -127,25 +128,25 @@ void Player::PlayerLeftMove()
 	{
 		transform_.position_.x -= SPEED_;
 
+		//モデル番号を変更
 		direction_ = DIR_LEFT;
-
 		modelNumber_ = RUN_MODEL_;
 	}
 
 	//左矢印キーを押した瞬間
 	if (Input::IsKeyDown(DIK_LEFT))
 	{
+		//モデル番号を変更
 		direction_ = DIR_LEFT;
-
 		modelNumber_ = STANDING_MODEL_;
 	}
 
 	//左矢印キーを離したら
 	if (Input::IsKeyUp(DIK_LEFT))
 	{
+		//モデル番号を変更
 		modelNumber_ = STANDING_MODEL_;
 	}
-
 }
 
 void Player::PlayerCollision()
@@ -156,52 +157,68 @@ void Player::PlayerCollision()
 	int checkX1, checkX2;
 	int checkY1, checkY2;
 
-	//左
+	//左の当たり判定
+	//4点に当たり判定を作成
 	checkX1 = (int)(transform_.position_.x - WIDTH_);
 	checkX2 = (int)(transform_.position_.x - WIDTH_);
 	checkY1 = (int)(transform_.position_.y + (HEIGHT_ - MARGIN_));
 	checkY2 = (int)(transform_.position_.y + MARGIN_);
 
+	//移動した先にブロックがあったらがtrueが返ってきて、何もなければfalseが返される
+	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		//位置を戻す
 		transform_.position_.x = (float)checkX1 + BACK_POSITION_LEFT_;
 	}
 
-	//右
+	//右の当たり判定
+	//4点に当たり判定を作成
 	checkX1 = (int)(transform_.position_.x + WIDTH_);
 	checkX2 = (int)(transform_.position_.x + WIDTH_);
 	checkY1 = (int)(transform_.position_.y + (HEIGHT_ - MARGIN_));
 	checkY2 = (int)(transform_.position_.y + MARGIN_);
 
+	//移動した先にブロックがあったらがtrueが返ってきて、何もなければfalseが返される
+	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		//位置を戻す
 		transform_.position_.x = (float)checkX1 - BACK_POSITION_RIGHT_;
 	}
 
-	//上
+	//上の当たり判定
+	//4点に当たり判定を作成
 	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
 	checkX2 = (int)(transform_.position_.x - (WIDTH_ - MARGIN_));
 	checkY1 = (int)(transform_.position_.y + HEIGHT_);
 	checkY2 = (int)(transform_.position_.y + HEIGHT_);
 
+	//移動した先にブロックがあったらがtrueが返ってきて、何もなければfalseが返される
+	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		//位置を戻す
 		transform_.position_.y = (float)checkY1 - BACK_POSITION_UP_;
 	}
+	//ブロックがなかったら
 	else
 	{
 		//ジャンプ
 		if (Input::IsKeyDown(DIK_SPACE) && isJump_ == false)
 		{
-			isJump_ = true;//ジャンプしている
+			//ジャンプしている
+			isJump_ = true;
 
-			//gravityの値をマイナスにすることによって今度は上方向に重力がかかるようになる
+			//Y軸の移動
 			transform_.position_.y += move_;
+
+			//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 			move_ = DROP_DOWN_;
 		}
 	}
 
-	//下
+	//下の当たり判定
 	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
 	checkX2 = (int)(transform_.position_.x - (WIDTH_ - MARGIN_));
 	checkY1 = (int)(transform_.position_.y);

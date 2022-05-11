@@ -1,15 +1,12 @@
 #pragma once
 #include "Engine/GameObject.h"
 #include "Engine/Fbx.h"
+#include "Engine/Model.h"
+#include "Engine/Input.h"
 #include "Stage.h"
 
-
-class Shadow;
-
-//Playerを管理するクラス
 class Player : public GameObject
 {
-
     const float SPEED_;                     //Playerの移動速度
     const float WIDTH_;                     //Playerの幅
     const float HEIGHT_;                    //Playerの高さ
@@ -36,7 +33,7 @@ class Player : public GameObject
 
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
-    enum ModelNumber                        //Playerの向き
+    enum Direction                         //Playerの向き
     {
         DIR_RIGHT,                          //右向き
         DIR_LEFT,                           //左向き
@@ -46,28 +43,18 @@ class Player : public GameObject
 
 public:    
     Player(GameObject* parent);             //コンストラクタ
-    
-    ~Player();                              //デストラクタ
-    
+    ~Player();                              //デストラクタ    
     void Initialize() override;             //初期化
-    
     void Update() override;                 //更新
-    
-    void Draw() override;                   //描画
-    
+    void Draw() override;                   //描画  
     void Release() override;                //開放
-    
-    int GetModelNumber();                   //Playerの走っているモデル番号を返す関数
-    
-    int GetDirection();                     //Player向きのモデル番号を返す関数
-
     void FootButtonCheck();                 //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
+    int GetModelNumber();                   //Playerの走っているモデル番号を返す関数
+    int GetDirection();                     //Player向きのモデル番号を返す関数
 
 private:    
     void AllFind();                         //Find処理をすべてまとめる関数
-
     void PlayerRightMove();                 //Playerの操作をまとめる関数
     void PlayerLeftMove();
-
     void PlayerCollision();                 //Playyerの当たり判定をまとめる関数
 };
