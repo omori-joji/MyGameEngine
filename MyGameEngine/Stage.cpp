@@ -5,6 +5,7 @@
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
+#include "Engine/Audio.h"
 
 #include "Engine/VisualEffect.h"
 
@@ -59,6 +60,10 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
+    //サウンドデータのロード
+    hSound_ = Audio::Load("Assets/get1.wav");
+    assert(hSound_ >= 0);
+
     //エフェクトの画像をロード
     //引数は「ファイル名」「横に何個並んでるか」「縦に何個並んでるか」
     //戻り値は画像番号

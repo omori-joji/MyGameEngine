@@ -27,21 +27,20 @@ namespace Audio
 		AudioData() :psoundBuffer(nullptr)
 		{
 		}
-
 	};
 
 
 
 	//初期化
 	//引数：hWnd	ウィンドウハンドル
-	void Initialize(HWND hWnd);
+	void Initialize();
 
 
 	//サウンドファイルをロード
 	//すでに同じ名前のファイルをロード済みの場合は、既存のデータの番号を返す
 	//引数：fileName　ファイル名
 	//戻値：そのサウンドデータに割り当てられた番号
-	int Load(std::string fileName);
+	int Load(std::string fileName, int svNuM);
 
 	//再生
 	//引数：handle	再生したいサウンドの番号
@@ -53,7 +52,7 @@ namespace Audio
 
 	//任意のサウンドを開放
 	//引数：handle	開放したいサウンドの番号
-	void Release(int handle);
+	void Release();
 
 	//全てのサウンドを解放
 	//（シーンが切り替わるときは必ず実行）
