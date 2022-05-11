@@ -1,5 +1,4 @@
-#include <xaudio2.h>
-#include <vector>
+
 #include "Audio.h"
 
 #define SAFE_DELETE_ARRAY(p) if(p){delete[] p; p = nullptr;}
@@ -37,7 +36,6 @@ void Audio::Initialize()
 
 	XAudio2Create(&pXAudio);
 	pXAudio->CreateMasteringVoice(&pMasteringVoice);
-
 }
 
 //サウンドファイル(.wav）をロード

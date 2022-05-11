@@ -61,7 +61,7 @@ Stage::~Stage()
 void Stage::Initialize()
 {
     //サウンドデータのロード
-    hSound_ = Audio::Load("Assets/get1.wav");
+    hSound_ = Audio::Load("Assets/get1.wav",1);
     assert(hSound_ >= 0);
 
     //エフェクトの画像をロード
@@ -193,6 +193,8 @@ void Stage::Update()
     //保存された影の動きをすべてリセットする
     if (Input::IsKeyDown(DIK_2))
     {
+        Audio::Play(hSound_);
+
         //今ある影分
         for (int i = RESET_VALU_; i <= shadowCount_; i++)
         {

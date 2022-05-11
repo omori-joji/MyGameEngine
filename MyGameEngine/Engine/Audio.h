@@ -1,7 +1,8 @@
 #pragma once
 
 #pragma once
-
+#include <xaudio2.h>
+#include <vector>
 #include <vector>
 #include <string>
 #include "Common.h"
@@ -13,21 +14,21 @@
 //-----------------------------------------------------------
 namespace Audio
 {
-	//ひとつのサウンドの情報
-	struct AudioData
-	{
-		//ファイル名
-		std::string fileName;
+	////ひとつのサウンドの情報
+	//struct AudioData
+	//{
+	//	//ファイル名
+	//	std::string fileName;
 
-		//サウンドバッファ（読み込んだサウンドを入れる）
-		LPDIRECTSOUNDBUFFER* 	psoundBuffer;
+	//	//サウンドバッファ（読み込んだサウンドを入れる）
+	//	LPDIRECTSOUNDBUFFER* 	psoundBuffer;
 
 
-		//コンストラクタ
-		AudioData() :psoundBuffer(nullptr)
-		{
-		}
-	};
+	//	//コンストラクタ
+	//	AudioData() :psoundBuffer(nullptr)
+	//	{
+	//	}
+	//};
 
 
 
