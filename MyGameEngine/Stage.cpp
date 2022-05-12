@@ -31,6 +31,7 @@ Stage::Stage(GameObject* parent)
     WARP_BLOCK_ENTRANS_(91),
     WARP_BLOCK_EXIT_(101),
     GOAL_BLOCK_(3),
+    downNum_(0),
 
 
     shadowCount_(0),
@@ -169,6 +170,11 @@ void Stage::Update()
         timeCount_ = RESET_VALU_;
         isBlinking_ = true;
 
+        for (int i = RESET_VALU_; i <= shadowCount_; i++)
+        {
+            CheckBlock(41 + i, false);
+            CheckBlock(61 + i, false);
+        }
 
         //すでに生成している影を表示し、もう一度再生する
         if (shadowCount_ <= SHADOW_NAMBER_)
@@ -197,7 +203,6 @@ void Stage::Update()
     //保存された影の動きをすべてリセットする
     if (Input::IsKeyDown(DIK_2))
     {
-        
         //今ある影分
         for (int i = RESET_VALU_; i <= shadowCount_; i++)
         {
@@ -238,7 +243,6 @@ void Stage::Update()
 //描画
 void Stage::Draw()
 {
-    int a = 0;
     //ブロックの配置
     for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
     {
@@ -334,7 +338,6 @@ bool Stage::DownButton(int x, int y)
     {
         if (map_[x][y] == MEANTIME_BUTTON_UP_ + i || map_[x][y] == MEANTIME_BUTTON_DOWN_ + i)
         {
-
             return true;
         }
     }
@@ -367,23 +370,23 @@ bool Stage::DownButton(int x, int y)
 
     //Playerが離れたら
     //もしくはリセットしたら
-    if (steppingNumber == 0)
+    if (steppingNumber == downNum_)
     {
         //押している間だけのボタンのモデルをリセットする
-        //for (int i = RESET_VALU_; i <= shadowCount_; i++)
-        //{
-        //    if (pShadow_[i]->isRecording_ == false)
-        //    {
-        //        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-        //        {
-        //            //ボタンのモデルを切り替える
-        //            CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
+        for (int i = RESET_VALU_; i <= shadowCount_; i++)
+        {
+            if (pShadow_[i]->isRecording_ == false)
+            {
+                for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+                {
+                    //ボタンのモデルを切り替える
+                    CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
 
-        //            //壁のモデルを切り替える
-        //            CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
-        //        }
-        //    }
-        //}
+                    //壁のモデルを切り替える
+                    CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
+                }
+            }
+        }
 
 
         for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
@@ -404,6 +407,7 @@ bool Stage::DownButton(int x, int y)
         //同時ボタンのフラグ処理を初期化
         isdoubleButton1_ = false;
         isdoubleButton2_ = false;
+
     }
     return false;
 }
@@ -489,7 +493,13 @@ void Stage::GoalCol(int x, int y)
     }
 }
 
-//
+int Stage::NawBox(int x, int y)
+{
+
+
+    return 0;
+}
+
 void Stage::WarpBlockCollision(int getX,int getY)
 {
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
@@ -577,7 +587,7 @@ void Stage::Reset(int x, int y)
 
 void Stage::ChengeButton()
 {
-    if (steppingNumber != 0)
+    if (steppingNumber != downNum_)
     {
         //モデル変更
         CheckBlock(MEANTIME_BUTTON_UP_, true);
@@ -595,6 +605,18 @@ void Stage::StepNumberCountUp()
 void Stage::StepNumberCountDown()
 {
     steppingNumber--;
+}
+
+void Stage::SetDownNum(bool which)
+{
+    if (which)
+    {
+        downNum_++;
+    }
+    else
+    {
+        downNum_--;
+    }
 }
 
 

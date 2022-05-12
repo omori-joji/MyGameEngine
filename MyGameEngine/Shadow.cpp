@@ -126,6 +126,8 @@ void Shadow::RecordingandPlayBack()
 			pStage_->CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
 		}
 
+		pStage_->SetDownNum(true);
+
 		//非表示
 		isRecording_ = false;
 
@@ -139,6 +141,8 @@ void Shadow::ShadowDisplayFlag()
 {
 	//再生開始
 	isRecording_ = true;
+
+	pStage_->SetDownNum(false);
 
 	//最初のフレームへ
 	frameCounter_ = RESET_VALU_;

@@ -32,7 +32,6 @@ class Shadow : public GameObject
 	std::vector<XMFLOAT3> recordData_;			//プレイヤーの位置を記録する可変長配列
 	std::vector<int> recordDirection_;			//Playerの向きを記録する動的配列
 	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列
-	bool isRecording_;							//記録中かどうか
 
 
 	Player* pPlayer_;							//Playerの情報が入る変数
@@ -50,6 +49,7 @@ class Shadow : public GameObject
 	int hModel_[SDIR_MAX][SDIR_MAX];							//影のモデルを格納する多次元配列
 
 public:
+	bool isRecording_;							//記録中かどうか
 
 public:
 	//コンストラクタ

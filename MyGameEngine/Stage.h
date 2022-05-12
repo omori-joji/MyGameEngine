@@ -20,6 +20,7 @@ class Stage : public GameObject
     int shadowCount_;   //影の数
     int timeCount_;     //点滅ブロックの点滅間隔
     int hSound_;        //サウンドファイル
+    int downNum_;
 
     const int VERTICAL_VALU_; //ステージの高さ
     const int BESIDE_VALU_;   //ステージの横幅
@@ -107,6 +108,8 @@ public:
     //引数はプレイヤーの位置
     void GoalCol(int x, int y);
 
+    int NawBox(int x, int y);
+
 
     //ワープブロックの出口のギミックをまとめた関数
     //引数はプレイヤーの位置
@@ -120,5 +123,6 @@ public:
 
     void StepNumberCountUp();
     void StepNumberCountDown();
+    void SetDownNum(bool which);
 };
 
