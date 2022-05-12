@@ -183,7 +183,7 @@ void Stage::Update()
             for (int i = RESET_VALU_; i <= shadowCount_; i++)
             {
                 //表示するフラグ
-                pShadow_[i]->ShadowDisplayFlag();
+                pShadow_[i]->ShadowIsPlayFlag();
             }
 
             if (shadowCount_ <= SHADOW_NAMBER_ -1)
@@ -375,7 +375,7 @@ bool Stage::DownButton(int x, int y)
         //押している間だけのボタンのモデルをリセットする
         for (int i = RESET_VALU_; i <= shadowCount_; i++)
         {
-            if (pShadow_[i]->isRecording_ == false)
+            if (pShadow_[i]->GetIsRecording() == false)
             {
                 for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
                 {

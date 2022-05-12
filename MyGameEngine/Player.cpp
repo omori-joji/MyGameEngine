@@ -8,13 +8,13 @@ Player::Player(GameObject* parent)
 	MARGIN_(0.11f),					//当たり判定の遊び
 	BLOCK_SIZE_(1.0f),				//ブロックのサイズ
 	MAX_JUMP_(3.0f),				//ジャンプの上限
+	GRAVITY_(0.01f),				//重力の値
+	RESET_VALU_(0),					//初期化用の定数
+	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
 	BACK_POSITION_LEFT_(1.3f),		//触れていたら位置を戻す値
 	BACK_POSITION_RIGHT_(0.3f),		//触れていたら位置を戻す値
 	BACK_POSITION_UP_(0.6f),		//触れていたら位置を戻す値
 	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
-	RESET_VALU_(0),					//初期化用の定数
-	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
-	GRAVITY_(0.01f),				//重力の値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
 	move_(0.01f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
@@ -32,9 +32,11 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	//右方向を向いているモデルのロード
 	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
 	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load("Assets/Player/PlayerRightRun.fbx");
 
+	//左方向を向いているモデルのロード
 	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
 	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
 }
@@ -71,6 +73,7 @@ void Player::Update()
 
 void Player::Draw()
 {
+	//描画
 	Model::SetTransform(hModel_[direction_][modelNumber_], transform_);
 	Model::Draw(hModel_[direction_][modelNumber_]);
 }

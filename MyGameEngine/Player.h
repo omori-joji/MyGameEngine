@@ -37,8 +37,8 @@ class Player : public GameObject
         DIR_LEFT,                           //左向き
         DIR_MAX,                            //配列の最大要素数
 
-        STANDING_MODEL = 0,
-        RUN_MODEL,
+        STANDING_MODEL = 0,                 //立っているモデル番号
+        RUN_MODEL,                          //走っているモデル番号
     };
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
 
