@@ -54,11 +54,4 @@ namespace Audio
 	//任意のサウンドを開放
 	//引数：handle	開放したいサウンドの番号
 	void Release();
-
-	//全てのサウンドを解放
-	//（シーンが切り替わるときは必ず実行）
-	void AllRelease();
-
-	//ゲーム終了時に行う処理
-	void ReleaseDirectSound();
 }

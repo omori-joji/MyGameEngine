@@ -60,6 +60,8 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
+    int a = 0;
+
     //サウンドデータのロード
     hSound_ = Audio::Load("Assets/get1.wav",1);
     assert(hSound_ >= 0);
@@ -161,6 +163,8 @@ void Stage::Update()
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
     {
+        Audio::Play(hSound_);
+
         //点滅ブロックの情報をリセット
         timeCount_ = RESET_VALU_;
         isBlinking_ = true;
@@ -193,8 +197,7 @@ void Stage::Update()
     //保存された影の動きをすべてリセットする
     if (Input::IsKeyDown(DIK_2))
     {
-        Audio::Play(hSound_);
-
+        
         //今ある影分
         for (int i = RESET_VALU_; i <= shadowCount_; i++)
         {
@@ -235,6 +238,7 @@ void Stage::Update()
 //描画
 void Stage::Draw()
 {
+    int a = 0;
     //ブロックの配置
     for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
     {

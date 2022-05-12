@@ -32,7 +32,7 @@ namespace Audio
 //‰Šú‰»
 void Audio::Initialize()
 {
-	CoInitializeEx(nullptr, COINIT_MULTITHREADED);
+	//CoInitializeEx(nullptr, COINIT_MULTITHREADED);
 
 	XAudio2Create(&pXAudio);
 	pXAudio->CreateMasteringVoice(&pMasteringVoice);
