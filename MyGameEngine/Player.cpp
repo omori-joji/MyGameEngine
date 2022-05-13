@@ -8,19 +8,18 @@ Player::Player(GameObject* parent)
 	MARGIN_(0.11f),					//当たり判定の遊び
 	BLOCK_SIZE_(1.0f),				//ブロックのサイズ
 	MAX_JUMP_(3.0f),				//ジャンプの上限
+	GRAVITY_(0.01f),				//重力の値
+	RESET_VALU_(0),					//初期化用の定数
+	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
 	BACK_POSITION_LEFT_(1.3f),		//触れていたら位置を戻す値
 	BACK_POSITION_RIGHT_(0.3f),		//触れていたら位置を戻す値
 	BACK_POSITION_UP_(0.6f),		//触れていたら位置を戻す値
 	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
-	RESET_VALU_(0),					//初期化用の定数
-	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
-	GRAVITY_(0.01f),				//重力の値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
-	RUN_MODEL_(1),					//Playerの走っているモデル番号
-	STANDING_MODEL_(0),				//Playerの立っているモデル番号
 	move_(0.01f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
+	hModel_(),						//モデルをロードするための多次元配列
 	isJump_(false),					//ジャンプ中か
 	isPastButton(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
 	pStage_(nullptr)				//ステージの情報を入れるポインタ
@@ -33,11 +32,13 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	hModel_[DIR_RIGHT][STANDING_MODEL_] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
-	hModel_[DIR_RIGHT][RUN_MODEL_] = Model::Load("Assets/Player/PlayerRightRun.fbx");
+	//右方向を向いているモデルのロード
+	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
+	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load("Assets/Player/PlayerRightRun.fbx");
 
-	hModel_[DIR_LEFT][STANDING_MODEL_] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
-	hModel_[DIR_LEFT][RUN_MODEL_] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
+	//左方向を向いているモデルのロード
+	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
+	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
 }
 
 void Player::Update()
@@ -72,6 +73,7 @@ void Player::Update()
 
 void Player::Draw()
 {
+	//描画
 	Model::SetTransform(hModel_[direction_][modelNumber_], transform_);
 	Model::Draw(hModel_[direction_][modelNumber_]);
 }
@@ -101,7 +103,7 @@ void Player::PlayerRightMove()
 
 		//モデル番号を変更
 		direction_ = DIR_RIGHT;
-		modelNumber_ = RUN_MODEL_;
+		modelNumber_ = RUN_MODEL;
 	}
 
 	//右矢印キーを押した瞬間
@@ -109,14 +111,14 @@ void Player::PlayerRightMove()
 	{
 		//モデル番号を変更
 		direction_ = DIR_RIGHT;
-		modelNumber_ = STANDING_MODEL_;
+		modelNumber_ = STANDING_MODEL;
 	}
 
 	//右矢印キーを離した瞬間
 	if (Input::IsKeyUp(DIK_RIGHT))
 	{
 		//モデル番号を変更
-		modelNumber_ = STANDING_MODEL_;
+		modelNumber_ = STANDING_MODEL;
 	}
 }
 
@@ -130,7 +132,7 @@ void Player::PlayerLeftMove()
 
 		//モデル番号を変更
 		direction_ = DIR_LEFT;
-		modelNumber_ = RUN_MODEL_;
+		modelNumber_ = RUN_MODEL;
 	}
 
 	//左矢印キーを押した瞬間
@@ -138,14 +140,14 @@ void Player::PlayerLeftMove()
 	{
 		//モデル番号を変更
 		direction_ = DIR_LEFT;
-		modelNumber_ = STANDING_MODEL_;
+		modelNumber_ = STANDING_MODEL;
 	}
 
 	//左矢印キーを離したら
 	if (Input::IsKeyUp(DIK_LEFT))
 	{
 		//モデル番号を変更
-		modelNumber_ = STANDING_MODEL_;
+		modelNumber_ = STANDING_MODEL;
 	}
 }
 
@@ -219,28 +221,34 @@ void Player::PlayerCollision()
 	}
 
 	//下の当たり判定
+	//4点に当たり判定を作成
 	checkX1 = (int)(transform_.position_.x + (WIDTH_ - MARGIN_));
 	checkX2 = (int)(transform_.position_.x - (WIDTH_ - MARGIN_));
 	checkY1 = (int)(transform_.position_.y);
 	checkY2 = (int)(transform_.position_.y);
 
+	//移動した先にブロックがあったらがtrueが返ってきて、何もなければfalseが返される
+	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		isJump_ = false;//下にブロックがあったら今はジャンプしていない
+		//下にブロックがあったら今はジャンプしていない
+		isJump_ = false;
 
+		//Y軸の移動を初期化する
 		move_ = RESET_VALU_;
 
+		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
 	}
 	//重力
-	//下に何もなかったらどんどん下がる
+	//下に何もなかったら
 	else
 	{
+		//下に落ちる
 		transform_.position_.y -= move_;
 
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
 		//ブロックの直系よりは大きくならないようにする
-		//gravityの値は0.01
 		if (move_ < BLOCK_SIZE_)
 		{
 			move_ += GRAVITY_;

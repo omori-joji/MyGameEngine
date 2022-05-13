@@ -5,6 +5,9 @@
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
+#include "Engine/Audio.h"
+
+#include "Engine/VisualEffect.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
@@ -13,7 +16,7 @@ Stage::Stage(GameObject* parent)
     VERTICAL_VALU_(23),     //マップ縦軸の値
     BESIDE_VALU_(28),       //マップ横軸の値
     SHADOW_NAMBER_(5),
-    OLL_GIMMICKS_(9),
+    ALL_GIMMICKS_(9),
     RESET_VALU_(0),
     CHENGE_POSITIVE_GIMMICKS_(10),
     BRINKING_BLOCKS_(81),
@@ -28,6 +31,7 @@ Stage::Stage(GameObject* parent)
     WARP_BLOCK_ENTRANS_(91),
     WARP_BLOCK_EXIT_(101),
     GOAL_BLOCK_(3),
+    downNum_(0),
 
 
     shadowCount_(0),
@@ -57,6 +61,28 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
+    int a = 0;
+
+    //サウンドデータのロード
+    hSound_ = Audio::Load("Assets/get1.wav",1);
+    assert(hSound_ >= 0);
+
+    //エフェクトの画像をロード
+    //引数は「ファイル名」「横に何個並んでるか」「縦に何個並んでるか」
+    //戻り値は画像番号
+    hVfxA = VisualEffect::Load("Assets/SampleEffectA.png", 7, 7);
+    hVfxB = VisualEffect::Load("Assets/SampleEffectB.png", 6, 5);
+
+
+    //1個エフェクトを出す
+    Transform transform;
+    transform.position_ = XMFLOAT3(6, 7, -1);       //位置
+    transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
+    VisualEffect::Add(hVfxA, transform, 0.5f, true);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
+
+
+
+
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
@@ -116,6 +142,18 @@ void Stage::Initialize()
 //更新
 void Stage::Update()
 {
+    if (Input::IsKeyDown(DIK_SPACE))
+    {
+        //1個エフェクトを出す
+        Transform transform;
+        transform.position_ = XMFLOAT3(15, 15, -1);       //位置
+        transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
+        VisualEffect::Add(hVfxB, transform, 0.5f, false);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
+    }
+
+
+
+
     //Player情報の格納
     if (pPlayer_ == nullptr)
     {
@@ -126,10 +164,17 @@ void Stage::Update()
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
     {
+        Audio::Play(hSound_);
+
         //点滅ブロックの情報をリセット
         timeCount_ = RESET_VALU_;
         isBlinking_ = true;
 
+        for (int i = RESET_VALU_; i <= shadowCount_; i++)
+        {
+            CheckBlock(41 + i, false);
+            CheckBlock(61 + i, false);
+        }
 
         //すでに生成している影を表示し、もう一度再生する
         if (shadowCount_ <= SHADOW_NAMBER_)
@@ -138,7 +183,7 @@ void Stage::Update()
             for (int i = RESET_VALU_; i <= shadowCount_; i++)
             {
                 //表示するフラグ
-                pShadow_[i]->ShadowDisplayFlag();
+                pShadow_[i]->ShadowIsPlayFlag();
             }
 
             if (shadowCount_ <= SHADOW_NAMBER_ -1)
@@ -176,7 +221,7 @@ void Stage::Update()
     //どちらもボタンを押していたら発動する
     if (isdoubleButton1_ && isdoubleButton2_)
     {
-        for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //モデルを切り替える
             CheckBlock(151 + i, true);
@@ -185,7 +230,7 @@ void Stage::Update()
     //どちらかが、あるいはどちらも押していなければボタンは元に戻る
     else
     {
-        for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //モデルを切り替える
             CheckBlock(161 + i, false);
@@ -289,11 +334,10 @@ bool Stage::isCrash(int x, int y)
 bool Stage::DownButton(int x, int y)
 {
     //押している間ボタン
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         if (map_[x][y] == MEANTIME_BUTTON_UP_ + i || map_[x][y] == MEANTIME_BUTTON_DOWN_ + i)
         {
-
             return true;
         }
     }
@@ -301,7 +345,7 @@ bool Stage::DownButton(int x, int y)
 
     
     //同時押しボタン
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         if (map_[x][y] == 111 + i)
         {
@@ -326,14 +370,14 @@ bool Stage::DownButton(int x, int y)
 
     //Playerが離れたら
     //もしくはリセットしたら
-    if (steppingNumber == 0)
+    if (steppingNumber == downNum_)
     {
         //押している間だけのボタンのモデルをリセットする
         for (int i = RESET_VALU_; i <= shadowCount_; i++)
         {
-            if (pShadow_[i]->isRecording_ == false)
+            if (pShadow_[i]->GetIsRecording() == false)
             {
-                for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+                for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
                 {
                     //ボタンのモデルを切り替える
                     CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
@@ -345,7 +389,7 @@ bool Stage::DownButton(int x, int y)
         }
 
 
-        for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //ボタンのモデルを切り替える
             CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
@@ -363,6 +407,7 @@ bool Stage::DownButton(int x, int y)
         //同時ボタンのフラグ処理を初期化
         isdoubleButton1_ = false;
         isdoubleButton2_ = false;
+
     }
     return false;
 }
@@ -448,10 +493,16 @@ void Stage::GoalCol(int x, int y)
     }
 }
 
-//
+int Stage::NawBox(int x, int y)
+{
+
+
+    return 0;
+}
+
 void Stage::WarpBlockCollision(int getX,int getY)
 {
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //PlayerのPositionを引数で受け取る
         //そこがワープブロックだったら
@@ -480,7 +531,7 @@ void Stage::WarpBlockCollision(int getX,int getY)
     }
 
 
-    for (int i = RESET_VALU_; i < OLL_GIMMICKS_; i++)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
 
         //PlayerのPositionを引数で受け取る
@@ -536,11 +587,10 @@ void Stage::Reset(int x, int y)
 
 void Stage::ChengeButton()
 {
-    if (steppingNumber != 0)
+    if (steppingNumber != downNum_)
     {
         //モデル変更
         CheckBlock(MEANTIME_BUTTON_UP_, true);
-
 
         //壁を開く処理
         CheckBlock(MEANTIME_WALL_, true);
@@ -555,6 +605,18 @@ void Stage::StepNumberCountUp()
 void Stage::StepNumberCountDown()
 {
     steppingNumber--;
+}
+
+void Stage::SetDownNum(bool which)
+{
+    if (which)
+    {
+        downNum_++;
+    }
+    else
+    {
+        downNum_--;
+    }
 }
 
 

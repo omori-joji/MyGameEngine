@@ -11,18 +11,23 @@ class SceneManager;
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
+    int hVfxA, hVfxB;
+
+
+
     int map_[28][23];   //ステージのマス情報
     int hModel_[500];   //モデル番号
     int shadowCount_;   //影の数
     int timeCount_;     //点滅ブロックの点滅間隔
     int hSound_;        //サウンドファイル
+    int downNum_;
 
     const int VERTICAL_VALU_; //ステージの高さ
     const int BESIDE_VALU_;   //ステージの横幅
     const int BACK_GROUND_;
     const int PLAYER_GENERAT_POS_;  //Playerのリスポーン地点
     const int SHADOW_NAMBER_; //影の数
-    const int OLL_GIMMICKS_; //ギミックのモデル番号を調べる繰り返し文のための定数
+    const int ALL_GIMMICKS_; //ギミックのモデル番号を調べる繰り返し文のための定数
     const int RESET_VALU_; //初期化用の値
     const int CHENGE_POSITIVE_GIMMICKS_; //+10したモデル番号に変えるための定数
     const int BRINKING_BLOCKS_;
@@ -103,6 +108,8 @@ public:
     //引数はプレイヤーの位置
     void GoalCol(int x, int y);
 
+    int NawBox(int x, int y);
+
 
     //ワープブロックの出口のギミックをまとめた関数
     //引数はプレイヤーの位置
@@ -116,5 +123,6 @@ public:
 
     void StepNumberCountUp();
     void StepNumberCountDown();
+    void SetDownNum(bool which);
 };
 

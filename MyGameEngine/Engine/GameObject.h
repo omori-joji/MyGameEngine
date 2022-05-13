@@ -69,9 +69,7 @@ public:
 		T* p;
 		p = new T(parent);
 		p->Initialize();
-		childList_.push_front(p);
+		childList_.push_back(p);
 		return p;
 	}
-
-	int DeltaTime();
 };
