@@ -20,6 +20,7 @@ Player::Player(GameObject* parent)
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
+	filePas_("Assets/Player/"),
 	isJump_(false),					//ジャンプ中か
 	isPastButton_(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
 	pStage_(nullptr)				//ステージの情報を入れるポインタ
@@ -33,12 +34,12 @@ Player::~Player()
 void Player::Initialize()
 {
 	//右方向を向いているモデルのロード
-	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load("Assets/Player/PlayerRightStanding.fbx");
-	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load("Assets/Player/PlayerRightRun.fbx");
+	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load(filePas_ + "PlayerRightStanding.fbx");
+	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load(filePas_ + "PlayerRightRun.fbx");
 
 	//左方向を向いているモデルのロード
-	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load("Assets/Player/PlayerLeftStanding.fbx");
-	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load("Assets/Player/PlayerLeftRun.fbx");
+	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load(filePas_ + "PlayerLeftStanding.fbx");
+	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load(filePas_ + "PlayerLeftRun.fbx");
 }
 
 void Player::Update()

@@ -14,6 +14,7 @@ Shadow::Shadow(GameObject* parent)
 	MATCH_VALU_(1),						//配列の要素数を合わせるための値
 	SHADOW_FOOT_(1),					//影の足元を見るための値
 	hModel_(),							//影のモデルを格納する多次元配列
+	filePas_("Assets/Shadow/"),			//Shadowのファイルパス
 	isRecording_(false),				//Playerの動きを記録しているか
 	isShadowPastButton_(false),			//ボタンを踏んでいるか
 	pPlayer_(nullptr),					//プレイヤーの情報を入れる関数
@@ -24,12 +25,12 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	//右方向を向いているモデルのロード
-	hModel_[SDIR_RIGHT][STANDING_MODEL] = Model::Load("Assets/Shadow/Shadow_Right.fbx");
-	hModel_[SDIR_RIGHT][RUN_MODEL] = Model::Load("Assets/Shadow/ShadowRun_Right.fbx");
+	hModel_[SDIR_RIGHT][STANDING_MODEL] = Model::Load(filePas_  + "Shadow_Right.fbx");
+	hModel_[SDIR_RIGHT][RUN_MODEL] = Model::Load(filePas_ + "ShadowRun_Right.fbx");
 
 	//左方向を向いているモデルのロード
-	hModel_[SDIR_LEFT][STANDING_MODEL] = Model::Load("Assets/Shadow/Shadow_Left.fbx");
-	hModel_[SDIR_LEFT][RUN_MODEL] = Model::Load("Assets/Shadow/ShadowRun_Left.fbx");
+	hModel_[SDIR_LEFT][STANDING_MODEL] = Model::Load(filePas_ + "Shadow_Left.fbx");
+	hModel_[SDIR_LEFT][RUN_MODEL] = Model::Load(filePas_ +"ShadowRun_Left.fbx");
 }
 
 void Shadow::Update()

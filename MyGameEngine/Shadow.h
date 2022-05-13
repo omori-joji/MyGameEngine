@@ -3,6 +3,7 @@
 #include "Engine/Fbx.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
+#include <string>
 #include "Player.h"
 #include "Stage.h"
 
@@ -21,6 +22,7 @@ class Shadow : public GameObject
 	const int MATCH_VALU_;						//配列の要素数を合わせるための値
 	const int SHADOW_FOOT_;						//影の足元を見るための値
 	const float BACK_DRAW_;						//Playerに重ならないように少し奥に描画する
+	const string filePas_;
 
 	int shadowDirection_;						//影の向き
 	int shadowModelNumber_;						//走っているモデル番号

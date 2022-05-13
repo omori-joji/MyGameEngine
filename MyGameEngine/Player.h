@@ -3,6 +3,7 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/Fbx.h"
+#include <string>
 #include "Stage.h"
 
 //Player処理を行うクラス
@@ -23,18 +24,19 @@ class Player : public GameObject
     const float DROP_DOWN_;                 //Playerの下に何もなければ下に落ちるための定数
     const int RESET_VALU_;                  //初期化用の定数
     const int PLAYER_FOOT_;                 //Playerの足元を見るためにY軸を-1する定数
+    const string filePas_;
 
     //変数宣言
     int direction_;                         //プレイヤーの向きの番号
     int modelNumber_;                       //走っているモデルの番号
-    float yMove_;                            //Y軸の移動
+    float yMove_;                           //Y軸の移動
 
     bool isJump_;                           //ジャンプしているか
-    bool isPastButton_;                      //さっき踏んでいるか
+    bool isPastButton_;                     //さっき踏んでいるか
 
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
-    enum Direction                         //Playerの向き
+    enum Direction                          //Playerの向き
     {
         DIR_RIGHT,                          //右向き
         DIR_LEFT,                           //左向き
