@@ -280,11 +280,13 @@ void Player::FootButtonCheck()
 	isPastButton = nowButton;
 }
 
+//
 int Player::GetModelNumber()
 {
 	return modelNumber_;
 }
 
+//
 int Player::GetDirection()
 {
 	return direction_;

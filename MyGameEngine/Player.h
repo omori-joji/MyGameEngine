@@ -5,6 +5,9 @@
 #include "Engine/Input.h"
 #include "Stage.h"
 
+
+
+
 class Player : public GameObject
 {
     const float SPEED_;                     //Player‚ÌˆÚ“®‘¬“x
