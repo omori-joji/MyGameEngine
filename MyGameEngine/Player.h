@@ -5,11 +5,10 @@
 #include "Engine/Fbx.h"
 #include "Stage.h"
 
-
-
-
+//Player処理を行うクラス
 class Player : public GameObject
 {
+    //定数宣言
     const float SPEED_;                     //Playerの移動速度
     const float WIDTH_;                     //Playerの幅
     const float HEIGHT_;                    //Playerの高さ
@@ -25,12 +24,13 @@ class Player : public GameObject
     const int RESET_VALU_;                  //初期化用の定数
     const int PLAYER_FOOT_;                 //Playerの足元を見るためにY軸を-1する定数
 
+    //変数宣言
     int direction_;                         //プレイヤーの向きの番号
     int modelNumber_;                       //走っているモデルの番号
-    float move_;                            //Y軸の移動
+    float yMove_;                            //Y軸の移動
 
     bool isJump_;                           //ジャンプしているか
-    bool isPastButton;                      //さっき踏んでいるか
+    bool isPastButton_;                      //さっき踏んでいるか
 
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
@@ -58,7 +58,8 @@ public:
 
 private:    
     void AllFind();                         //Find処理をすべてまとめる関数
-    void PlayerRightMove();                 //Playerの操作をまとめる関数
-    void PlayerLeftMove();
-    void PlayerCollision();                 //Playyerの当たり判定をまとめる関数
+    void PlayerRightMove();                 //Playerの右操作をまとめる関数
+    void PlayerLeftMove();                  //Playerの左操作をまとめる関数
+    void Collision();                       //Playyerの当たり判定をまとめる関数
+    void Jamp();                            //ジャンプの処理をまとめた関数
 };

@@ -15,7 +15,7 @@ Shadow::Shadow(GameObject* parent)
 	SHADOW_FOOT_(1),					//影の足元を見るための値
 	hModel_(),							//影のモデルを格納する多次元配列
 	isRecording_(false),				//Playerの動きを記録しているか
-	isShadowPastButton(false),			//ボタンを踏んでいるか
+	isShadowPastButton_(false),			//ボタンを踏んでいるか
 	pPlayer_(nullptr),					//プレイヤーの情報を入れる関数
 	pStage_(nullptr)					//ステージの情報を入れる関数
 {
@@ -155,7 +155,7 @@ void Shadow::ShadowFootButtonCheck()
 	nowButton = pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
 
 	//1フレーム前は踏んでいない
-	if (!isShadowPastButton)
+	if (!isShadowPastButton_)
 	{
 		//今は踏んでいる
 		if (nowButton)
@@ -165,7 +165,7 @@ void Shadow::ShadowFootButtonCheck()
 		}
 	}
 	//1フレーム前は踏んでいる
-	else if (isShadowPastButton)
+	else if (isShadowPastButton_)
 	{
 		//今は踏んでいない
 		if (!nowButton)
@@ -175,5 +175,5 @@ void Shadow::ShadowFootButtonCheck()
 		}
 	}
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
-	isShadowPastButton = nowButton;
+	isShadowPastButton_ = nowButton;
 }

@@ -16,12 +16,12 @@ Player::Player(GameObject* parent)
 	BACK_POSITION_UP_(0.6f),		//触れていたら位置を戻す値
 	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
-	move_(0.01f),					//Y軸の移動
+	yMove_(0.01f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
 	isJump_(false),					//ジャンプ中か
-	isPastButton(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
+	isPastButton_(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
 	pStage_(nullptr)				//ステージの情報を入れるポインタ
 {
 }
@@ -49,9 +49,12 @@ void Player::Update()
 	//Playerの操作をまとめる関数
 	PlayerRightMove();
 	PlayerLeftMove();
+
+	//ジャンプ
+	Jamp();
 	
 	//Playerの当たり判定をまとめる関数
-	PlayerCollision();
+	Collision();
 
 	//リセットボタンを押したら
 	//記録した影をすべてまっさらな状態にしたら
@@ -78,10 +81,40 @@ void Player::Draw()
 	Model::Draw(hModel_[direction_][modelNumber_]);
 }
 
+//ジャンプの処理をまとめた関数
+void Player::Jamp()
+{
+	//ジャンプ
+	if (Input::IsKeyDown(DIK_SPACE) && !isJump_)
+	{
+		//ジャンプしている
+		isJump_ = true;
+
+		//Y軸の移動
+		transform_.position_.y += yMove_;
+
+		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
+		yMove_ = DROP_DOWN_;
+	}
+	else if(isJump_)
+	{
+		//下に落ちる
+		transform_.position_.y -= yMove_;
+
+		//ブロックの直径より値が大きくなるとすり抜けてしまうので
+		//ブロックの直系よりは大きくならないようにする
+		if (yMove_ < BLOCK_SIZE_)
+		{
+			yMove_ += GRAVITY_;
+		}
+	}
+}
+
 void Player::Release()
 {
 }
 
+//Find処理をまとめた関数
 void Player::AllFind()
 {
 	//Stageクラスを探す
@@ -92,6 +125,7 @@ void Player::AllFind()
 	}
 }
 
+//右移動の処理
 void Player::PlayerRightMove()
 {
 	//右移動
@@ -105,23 +139,15 @@ void Player::PlayerRightMove()
 		direction_ = DIR_RIGHT;
 		modelNumber_ = RUN_MODEL;
 	}
-
-	//右矢印キーを押した瞬間
-	if (Input::IsKeyDown(DIK_RIGHT))
-	{
-		//モデル番号を変更
-		direction_ = DIR_RIGHT;
-		modelNumber_ = STANDING_MODEL;
-	}
-
 	//右矢印キーを離した瞬間
-	if (Input::IsKeyUp(DIK_RIGHT))
+	else if(Input::IsKeyUp(DIK_RIGHT))
 	{
 		//モデル番号を変更
 		modelNumber_ = STANDING_MODEL;
 	}
 }
 
+//左移動の処理
 void Player::PlayerLeftMove()
 {
 	//左移動
@@ -134,24 +160,16 @@ void Player::PlayerLeftMove()
 		direction_ = DIR_LEFT;
 		modelNumber_ = RUN_MODEL;
 	}
-
-	//左矢印キーを押した瞬間
-	if (Input::IsKeyDown(DIK_LEFT))
-	{
-		//モデル番号を変更
-		direction_ = DIR_LEFT;
-		modelNumber_ = STANDING_MODEL;
-	}
-
 	//左矢印キーを離したら
-	if (Input::IsKeyUp(DIK_LEFT))
+	else if (Input::IsKeyUp(DIK_LEFT))
 	{
 		//モデル番号を変更
 		modelNumber_ = STANDING_MODEL;
 	}
 }
 
-void Player::PlayerCollision()
+//Playerの当たり判定の処理をまとめた関数
+void Player::Collision()
 {
 	//プレイヤーの原点は上下で見ると下。左右で見ると真ん中
 	//当たったかどうか
@@ -203,22 +221,6 @@ void Player::PlayerCollision()
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 - BACK_POSITION_UP_;
 	}
-	//ブロックがなかったら
-	else
-	{
-		//ジャンプ
-		if (Input::IsKeyDown(DIK_SPACE) && isJump_ == false)
-		{
-			//ジャンプしている
-			isJump_ = true;
-
-			//Y軸の移動
-			transform_.position_.y += move_;
-
-			//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
-			move_ = DROP_DOWN_;
-		}
-	}
 
 	//下の当たり判定
 	//4点に当たり判定を作成
@@ -235,27 +237,14 @@ void Player::PlayerCollision()
 		isJump_ = false;
 
 		//Y軸の移動を初期化する
-		move_ = RESET_VALU_;
+		yMove_ = 0;
 
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
 	}
-	//重力
-	//下に何もなかったら
-	else
-	{
-		//下に落ちる
-		transform_.position_.y -= move_;
-
-		//ブロックの直径より値が大きくなるとすり抜けてしまうので
-		//ブロックの直系よりは大きくならないようにする
-		if (move_ < BLOCK_SIZE_)
-		{
-			move_ += GRAVITY_;
-		}
-	}
 }
 
+//ボタンを踏んだ瞬間か離れた瞬間の処理を行う関数
 void Player::FootButtonCheck()
 {
 	//変数を作成
@@ -265,7 +254,7 @@ void Player::FootButtonCheck()
 	nowButton = pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 
 	//1フレーム前は踏んでいない
-	if (!isPastButton)
+	if (!isPastButton_)
 	{
 		//今は踏んでいる
 		if (nowButton)
@@ -275,7 +264,7 @@ void Player::FootButtonCheck()
 		}
 	}
 	//1フレーム前は踏んでいる
-	else if (isPastButton)
+	else if (isPastButton_)
 	{
 		//今は踏んでいない
 		if (!nowButton)
@@ -285,16 +274,16 @@ void Player::FootButtonCheck()
 		}
 	}
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
-	isPastButton = nowButton;
+	isPastButton_ = nowButton;
 }
 
-//
+//モデル番号を返す
 int Player::GetModelNumber()
 {
 	return modelNumber_;
 }
 
-//
+//毎フレーム向いている方向を返す
 int Player::GetDirection()
 {
 	return direction_;
