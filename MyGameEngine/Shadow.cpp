@@ -40,6 +40,8 @@ void Shadow::Update()
 
 	//Player‚Ì“®‚«‚ğ‹L˜^AÄ¶‚·‚éŠÖ”
 	RecordingandPlayBack();
+
+	ShadowFootButtonCheck();
 }
 
 void Shadow::Draw()

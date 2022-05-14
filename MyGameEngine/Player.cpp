@@ -86,18 +86,15 @@ void Player::Draw()
 void Player::Jamp()
 {
 	//ジャンプ
-	if (Input::IsKeyDown(DIK_SPACE) && !isJump_)
+	if (Input::IsKeyDown(DIK_SPACE))
 	{
-		//ジャンプしている
-		isJump_ = true;
-
 		//Y軸の移動
 		transform_.position_.y += yMove_;
 
 		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 		yMove_ = DROP_DOWN_;
 	}
-	else if(isJump_)
+	if(isJump_)
 	{
 		//下に落ちる
 		transform_.position_.y -= yMove_;
@@ -242,6 +239,11 @@ void Player::Collision()
 
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
+	}
+	else
+	{
+		//今はジャンプしている
+		isJump_ = true;
 	}
 }
 

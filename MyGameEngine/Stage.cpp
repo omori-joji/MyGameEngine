@@ -6,7 +6,6 @@
 #include "Player.h"
 #include "Shadow.h"
 #include "Engine/Audio.h"
-
 #include "Engine/VisualEffect.h"
 
 //コンストラクタ
@@ -80,9 +79,6 @@ void Stage::Initialize()
     transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
     VisualEffect::Add(hVfxA, transform, 0.5f, true);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
 
-
-
-
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
@@ -150,9 +146,6 @@ void Stage::Update()
         transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
         VisualEffect::Add(hVfxB, transform, 0.5f, false);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
     }
-
-
-
 
     //Player情報の格納
     if (pPlayer_ == nullptr)
@@ -361,34 +354,14 @@ bool Stage::DownButton(int x, int y)
             CheckBlock(map_[x][y], true);
 
             //フラグをtrueにする
-
             isdoubleButton2_ = true;
         }
     }
     
-
-
     //Playerが離れたら
     //もしくはリセットしたら
-    if (steppingNumber == downNum_)
+    if (steppingNumber == 0)
     {
-        //押している間だけのボタンのモデルをリセットする
-        for (int i = RESET_VALU_; i <= shadowCount_; i++)
-        {
-            if (pShadow_[i]->GetIsRecording() == false)
-            {
-                for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-                {
-                    //ボタンのモデルを切り替える
-                    CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
-
-                    //壁のモデルを切り替える
-                    CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
-                }
-            }
-        }
-
-
         for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //ボタンのモデルを切り替える
