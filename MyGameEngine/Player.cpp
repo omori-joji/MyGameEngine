@@ -57,21 +57,15 @@ void Player::Update()
 	//Playerの当たり判定をまとめる関数
 	Collision();
 
-	//リセットボタンを押したら
-	//記録した影をすべてまっさらな状態にしたら
-	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
-	{
-		//初期位置に戻る
-		transform_.position_ = pStage_->GetStartPosition();
-
-	}
+	//初期位置に戻る処理をまとめた関数
+	Reset();
 
 	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数
 	FootButtonCheck();
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
-	pStage_->ChengeButton((int)transform_.position_.x, (int)transform_.position_.y - PLAYER_FOOT_);
+	pStage_->ChengeButtonAndWall((int)transform_.position_.x, (int)transform_.position_.y - PLAYER_FOOT_);
 
 	//ゴールに触れたかどうかを判別する関数を呼ぶ
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
@@ -112,6 +106,19 @@ void Player::Jamp()
 		{
 			yMove_ += GRAVITY_;
 		}
+	}
+}
+
+//初期位置に戻る処理をまとめた関数
+void Player::Reset()
+{
+	//リセットボタンを押したら
+	//記録した影をすべてまっさらな状態にしたら
+	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
+	{
+		//初期位置に戻る
+		transform_.position_ = pStage_->GetStartPosition();
+
 	}
 }
 

@@ -64,4 +64,5 @@ private:
     void PlayerLeftMove();                  //Player‚Ì¶‘€ì‚ğ‚Ü‚Æ‚ß‚éŠÖ”
     void Collision();                       //Playyer‚Ì“–‚½‚è”»’è‚ğ‚Ü‚Æ‚ß‚éŠÖ”
     void Jamp();                            //ƒWƒƒƒ“ƒv‚Ìˆ—‚ğ‚Ü‚Æ‚ß‚½ŠÖ”
+    void Reset();                           //‰ŠúˆÊ’u‚É–ß‚éˆ—‚ğ‚Ü‚Æ‚ß‚½ŠÖ”
 };

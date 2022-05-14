@@ -44,6 +44,8 @@ void Shadow::Update()
 	//ボタンを踏んだか離れたかを処理する関数
 	ShadowFootButtonCheck();
 
+	//ボタンと壁のモデルを切り替える関数
+　　//引数に足元のブロックの情報を渡してあげる
 	pStage_->ChengeButton((int)transform_.position_.x, (int)transform_.position_.y - SHADOW_FOOT_);
 }
 

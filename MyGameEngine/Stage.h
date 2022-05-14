@@ -109,20 +109,20 @@ public:
     //引数はプレイヤーの位置
     void GoalCol(int x, int y);
 
-    int NawBox(int x, int y);
-
-
     //ワープブロックの出口のギミックをまとめた関数
     //引数はプレイヤーの位置
     void WarpBlockCollision(int getX, int getY);
 
+    //初期スポーン地点を返すゲッター
     XMFLOAT3 GetStartPosition();
 
+    //壁のモデルとボタンのモデルを切り替える関数
+    void ChengeButtonAndWall(int x, int y);
 
-
-    void ChengeButton(int x, int y);
-
+    //ボタンに乗っている人数をカウントアップする関数
     void StepNumberCountUp();
+
+    //ボタンに乗っている人数をカウントアップする関数
     void StepNumberCountDown();
 };
 

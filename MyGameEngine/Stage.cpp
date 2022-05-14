@@ -545,7 +545,7 @@ XMFLOAT3 Stage::GetStartPosition()
 
 //ボタンのモデルと壁のモデルを変更する関数
 //引数は影とPlayerの1ブロック下の位置
-void Stage::ChengeButton(int x, int y)
+void Stage::ChengeButtonAndWall(int x, int y)
 {
     //誰かがボタンに乗っていたら
     if (steppingNumber != 0)
