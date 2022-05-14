@@ -46,7 +46,7 @@ Stage::Stage(GameObject* parent)
     isdoubleButton1_(false),
     isdoubleButton2_(false),
 
-    steppingNumber(0),
+    steppingNumber(),
     isOnButton(false),
     isButtonMenberFlg()
 {
@@ -325,7 +325,7 @@ bool Stage::isCrash(int x, int y)
 //ボタンがPlayerの足元にあるかどうかを判断する関数 
 //ボタンが入っている配列はmap_[x][y] == 4が入っている
 //この関数はPlayerクラスで常に呼ばれている
-bool Stage::DownButton(int x, int y)
+bool Stage::MeanTimeButton(int x, int y)
 {
     //押している間ボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
@@ -336,33 +336,33 @@ bool Stage::DownButton(int x, int y)
             return true;
         }
     }
+    CollisionExit();
+    return false;
+}
 
-
-    
+bool Stage::DoubleButton(int x, int y)
+{
     //同時押しボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        if (map_[x][y] == 111 + i)
+        if (map_[x][y] == 111 + i || map_[x][y] == 121 + i)
         {
-            //ボタンのモデルを切り替える
-            CheckBlock(map_[x][y], true);
-
-            //フラグをtrueにする
-            isdoubleButton1_ = true;
+            return true;
         }
-        else if(map_[x][y] == 131 + i)
+        else if (map_[x][y] == 131 + i || map_[x][y] == 141 + i)
         {
-            //ボタンのモデルを切り替える
-            CheckBlock(map_[x][y], true);
-
-            //フラグをtrueにする
-            isdoubleButton2_ = true;
+            return true;
         }
     }
-    
+    CollisionExit();
+    return false;
+}
+
+void Stage::CollisionExit()
+{
     //Playerが離れたら
     //もしくはリセットしたら
-    if (steppingNumber == 0)
+    if (steppingNumber[0] == 0)
     {
         for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
@@ -371,20 +371,21 @@ bool Stage::DownButton(int x, int y)
 
             //壁のモデルを切り替える
             CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
-
-            //押した後のボタンを切り替える
-            CheckBlock(121 + i, false);
-
-            //開いた壁を元に戻す
-            CheckBlock(141 + i, false);
         }
-
-        //同時ボタンのフラグ処理を初期化
-        isdoubleButton1_ = false;
-        isdoubleButton2_ = false;
-
     }
-    return false;
+
+
+    if (steppingNumber[1] == 0)
+    {
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        {
+            //ボタンのモデルを切り替える
+            CheckBlock(141 + i, false);
+
+            //壁のモデルを切り替える
+            CheckBlock(161 + i, false);
+        }
+    }
 }
 
 
@@ -548,7 +549,25 @@ XMFLOAT3 Stage::GetStartPosition()
 void Stage::ChengeButtonAndWall(int x, int y)
 {
     //誰かがボタンに乗っていたら
-    if (steppingNumber != 0)
+    if (steppingNumber[0] != 0)
+    {
+        //すべてのギミックを調べる
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        {
+            //目的のボタンを見つけたら
+            if (map_[x][y] == MEANTIME_BUTTON_UP_ + i)
+            {
+                //モデル変更
+                //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
+                CheckBlock(map_[x][y] + 20, true);
+                //ボタンのモデル
+                CheckBlock(map_[x][y], true);
+            }
+        }
+    }
+
+    //誰かがボタンに乗っていたら
+    if (steppingNumber[1] != 0)
     {
         //すべてのギミックを調べる
         for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
@@ -566,14 +585,24 @@ void Stage::ChengeButtonAndWall(int x, int y)
     }
 }
 
-void Stage::StepNumberCountUp()
+void Stage::SetMeanTimeStepNumberCountUp()
 {
-    steppingNumber++;
+    steppingNumber[0]++;
 }
 
-void Stage::StepNumberCountDown()
+void Stage::SetMeanTimeStepNumberCountDown()
 {
-    steppingNumber--;
+    steppingNumber[0]--;
+}
+
+void Stage::SetDoubleStepNumberCountUp()
+{
+    steppingNumber[1]++;
+}
+
+void Stage::SetDoubleStepNumberCountDown()
+{
+    steppingNumber[1]--;
 }
 
 void Stage::ModelLoad()

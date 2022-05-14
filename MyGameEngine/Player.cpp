@@ -22,7 +22,8 @@ Player::Player(GameObject* parent)
 	hModel_(),						//モデルをロードするための多次元配列
 	filePas_("Assets/Player/"),
 	isJump_(false),					//ジャンプ中か
-	isPastButton_(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
+	isPastMeanTimeButton_(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
+	isPastDoubleButton_(false),
 	pStage_(nullptr)				//ステージの情報を入れるポインタ
 {
 }
@@ -61,7 +62,7 @@ void Player::Update()
 	Reset();
 
 	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数
-	FootButtonCheck();
+	MeanTimeButtonCheck();
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
@@ -262,36 +263,59 @@ void Player::Collision()
 }
 
 //ボタンを踏んだ瞬間か離れた瞬間の処理を行う関数
-void Player::FootButtonCheck()
+void Player::MeanTimeButtonCheck()
 {
 	//変数を作成
-	bool nowButton;
+	bool nowMeanTimeButton;
 
 	//ボタンを踏んでいればtrue踏んでいなければfalseが返される
-	nowButton = pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+	nowMeanTimeButton = pStage_->MeanTimeButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 
 	//1フレーム前は踏んでいない
-	if (!isPastButton_)
+	if (!isPastMeanTimeButton_)
 	{
 		//今は踏んでいる
-		if (nowButton)
+		if (nowMeanTimeButton)
 		{
 			//カウントアップ
-			pStage_->StepNumberCountUp();
+			pStage_->SetMeanTimeStepNumberCountUp();
 		}
 	}
 	//1フレーム前は踏んでいる
-	else if (isPastButton_)
+	else if (isPastMeanTimeButton_)
 	{
 		//今は踏んでいない
-		if (!nowButton)
+		if (!nowMeanTimeButton)
 		{
 			//カウントダウン
-			pStage_->StepNumberCountDown();
+			pStage_->SetMeanTimeStepNumberCountDown();
 		}
 	}
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
-	isPastButton_ = nowButton;
+	isPastMeanTimeButton_ = nowMeanTimeButton;
+}
+
+void Player::DoubleButtonCheck()
+{
+	bool doubleButton;
+
+	doubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+
+	if (!isPastDoubleButton_)
+	{
+		if (doubleButton)
+		{
+			pStage_->SetDoubleStepNumberCountUp();
+		}
+	}
+	else if(isPastDoubleButton_)
+	{
+		if (!doubleButton)
+		{
+			pStage_->SetDoubleStepNumberCountDown();
+		}
+	}
+	isPastDoubleButton_ = doubleButton;
 }
 
 //モデル番号を返す

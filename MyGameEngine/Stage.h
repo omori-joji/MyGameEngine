@@ -60,7 +60,7 @@ class Stage : public GameObject
     XMFLOAT3 stertPos; //Playerがリセットした時のリセット位置を記憶する変数
 
 public:
-    int steppingNumber;//何人踏んでいるか
+    int steppingNumber[2];//何人踏んでいるか
     bool isOnButton;
 
 
@@ -90,7 +90,11 @@ public:
     bool isCrash(int x , int y);
 
     //すべてのボタンを管理する関数
-    bool DownButton(int x, int y);
+    bool MeanTimeButton(int x, int y);
+
+    bool DoubleButton(int x, int y);
+
+    void CollisionExit();
 
 
     //モデルを切り替える関数
@@ -120,9 +124,11 @@ public:
     void ChengeButtonAndWall(int x, int y);
 
     //ボタンに乗っている人数をカウントアップする関数
-    void StepNumberCountUp();
+    void SetMeanTimeStepNumberCountUp();
 
     //ボタンに乗っている人数をカウントアップする関数
-    void StepNumberCountDown();
-};
+    void SetMeanTimeStepNumberCountDown();
 
+    void SetDoubleStepNumberCountUp();
+    void SetDoubleStepNumberCountDown();
+};

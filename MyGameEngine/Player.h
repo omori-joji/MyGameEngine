@@ -32,7 +32,8 @@ class Player : public GameObject
     float yMove_;                           //Y軸の移動
 
     bool isJump_;                           //ジャンプしているか
-    bool isPastButton_;                     //さっき踏んでいるか
+    bool isPastMeanTimeButton_;             //さっき踏んでいるか
+    bool isPastDoubleButton_;
 
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
@@ -54,10 +55,10 @@ public:
     void Update() override;                 //更新
     void Draw() override;                   //描画  
     void Release() override;                //開放
-    void FootButtonCheck();                 //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
+    void MeanTimeButtonCheck();             //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
+    void DoubleButtonCheck();
     int GetModelNumber();                   //Playerの走っているモデル番号を返す関数
     int GetDirection();                     //Player向きのモデル番号を返す関数
-
 private:    
     void AllFind();                         //Find処理をすべてまとめる関数
     void PlayerRightMove();                 //Playerの右操作をまとめる関数

@@ -45,8 +45,8 @@ void Shadow::Update()
 	ShadowFootButtonCheck();
 
 	//ボタンと壁のモデルを切り替える関数
-　　//引数に足元のブロックの情報を渡してあげる
-	pStage_->ChengeButton((int)transform_.position_.x, (int)transform_.position_.y - SHADOW_FOOT_);
+	//引数に足元のブロックの情報を渡してあげる
+	pStage_->ChengeButtonAndWall((int)transform_.position_.x, (int)transform_.position_.y - SHADOW_FOOT_);
 }
 
 void Shadow::Draw()
@@ -110,8 +110,6 @@ void Shadow::RecordingandPlayBack()
 		//立っているモデル番号の情報を取得
 		shadowDirection_ = recordDirection_[frameCounter_];
 
-
-
 		//次のフレームへ
 		frameCounter_++;
 	}
@@ -124,6 +122,7 @@ void Shadow::RecordingandPlayBack()
 		//フレーム数のリセット
 		frameCounter_ = RESET_VALU_;
 
+		//位置がそのままだとボタンから離れる時の処理が行われないので影の位置を初期位置に戻す
 		transform_.position_ = pStage_->GetStartPosition();
 	}
 }
@@ -149,7 +148,7 @@ void Shadow::ShadowFootButtonCheck()
 	bool nowButton;
 
 	//ボタンを踏んでいればtrue踏んでいなければfalseが返される
-	nowButton = pStage_->DownButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
+	nowButton = pStage_->MeanTimeButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
 
 	//1フレーム前は踏んでいない
 	if (!isShadowPastButton_)
@@ -158,7 +157,7 @@ void Shadow::ShadowFootButtonCheck()
 		if (nowButton)
 		{
 			//カウントアップ
-			pStage_->StepNumberCountUp();
+			pStage_->SetMeanTimeStepNumberCountUp();
 		}
 	}
 	//1フレーム前は踏んでいる
@@ -168,7 +167,7 @@ void Shadow::ShadowFootButtonCheck()
 		if (!nowButton)
 		{
 			//カウントダウン
-			pStage_->StepNumberCountDown();
+			pStage_->SetMeanTimeStepNumberCountDown();
 		}
 	}
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
