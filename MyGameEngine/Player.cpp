@@ -63,6 +63,7 @@ void Player::Update()
 	{
 		//初期位置に戻る
 		transform_.position_ = pStage_->GetStartPosition();
+
 	}
 
 	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数

@@ -41,6 +41,7 @@ void Shadow::Update()
 	//Playerの動きを記録、再生する関数
 	RecordingandPlayBack();
 
+	//ボタンを踏んだか離れたかを処理する関数
 	ShadowFootButtonCheck();
 }
 
@@ -105,8 +106,7 @@ void Shadow::RecordingandPlayBack()
 		//立っているモデル番号の情報を取得
 		shadowDirection_ = recordDirection_[frameCounter_];
 
-		//ボタンを踏んだか離れたかを処理する関数
-		ShadowFootButtonCheck();
+
 
 		//次のフレームへ
 		frameCounter_++;
@@ -114,16 +114,6 @@ void Shadow::RecordingandPlayBack()
 	//再生し終わったら
 	if (frameCounter_ >= recordData_.size() - MATCH_VALU_ && isRecording_ == true)
 	{
-		for (int i = RESET_VALU_; i < ALL_GIMICKS_; i++)
-		{
-			//ボタンのモデルを切り替える
-			pStage_->CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
-
-			//壁のモデルを切り替える
-			pStage_->CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
-		}
-		pStage_->SetDownNum(true);
-
 		//非表示
 		isRecording_ = false;
 
@@ -137,8 +127,6 @@ void Shadow::ShadowIsPlayFlag()
 {
 	//再生開始
 	isRecording_ = true;
-
-	pStage_->SetDownNum(false);
 
 	//最初のフレームへ
 	frameCounter_ = RESET_VALU_;

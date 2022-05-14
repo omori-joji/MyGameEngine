@@ -466,13 +466,6 @@ void Stage::GoalCol(int x, int y)
     }
 }
 
-int Stage::NawBox(int x, int y)
-{
-
-
-    return 0;
-}
-
 void Stage::WarpBlockCollision(int getX,int getY)
 {
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
@@ -546,21 +539,12 @@ void Stage::WarpBlockCollision(int getX,int getY)
 
 XMFLOAT3 Stage::GetStartPosition()
 {
-    steppingNumber = 0;
     return stertPos;
-}
-
-void Stage::Reset(int x, int y)
-{
-    if (map_[x][y] <= 2)
-    {
-        isOnButton = false;
-    }
 }
 
 void Stage::ChengeButton()
 {
-    if (steppingNumber != downNum_)
+    if (steppingNumber != 0)
     {
         //ƒ‚ƒfƒ‹•ÏX
         CheckBlock(MEANTIME_BUTTON_UP_, true);
@@ -579,20 +563,6 @@ void Stage::StepNumberCountDown()
 {
     steppingNumber--;
 }
-
-void Stage::SetDownNum(bool which)
-{
-    if (which)
-    {
-        downNum_++;
-    }
-    else
-    {
-        downNum_--;
-    }
-}
-
-
 
 void Stage::ModelLoad()
 {
