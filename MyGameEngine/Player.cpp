@@ -69,6 +69,10 @@ void Player::Update()
 	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数
 	FootButtonCheck();
 
+	//ボタンと壁のモデルを切り替える関数
+	//引数に足元のブロックの情報を渡してあげる
+	pStage_->ChengeButton((int)transform_.position_.x, (int)transform_.position_.y - PLAYER_FOOT_);
+
 	//ゴールに触れたかどうかを判別する関数を呼ぶ
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
 
@@ -86,7 +90,7 @@ void Player::Draw()
 //ジャンプの処理をまとめた関数
 void Player::Jamp()
 {
-	//ジャンプ
+	//今ジャンプしていなかったら
 	if (Input::IsKeyDown(DIK_SPACE))
 	{
 		//Y軸の移動
@@ -95,6 +99,8 @@ void Player::Jamp()
 		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 		yMove_ = DROP_DOWN_;
 	}
+
+	//今ジャンプしていたら
 	if(isJump_)
 	{
 		//下に落ちる

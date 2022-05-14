@@ -43,6 +43,8 @@ void Shadow::Update()
 
 	//ボタンを踏んだか離れたかを処理する関数
 	ShadowFootButtonCheck();
+
+	pStage_->ChengeButton((int)transform_.position_.x, (int)transform_.position_.y - SHADOW_FOOT_);
 }
 
 void Shadow::Draw()
@@ -119,6 +121,8 @@ void Shadow::RecordingandPlayBack()
 
 		//フレーム数のリセット
 		frameCounter_ = RESET_VALU_;
+
+		transform_.position_ = pStage_->GetStartPosition();
 	}
 }
 

@@ -47,7 +47,8 @@ Stage::Stage(GameObject* parent)
     isdoubleButton2_(false),
 
     steppingNumber(0),
-    isOnButton(false)
+    isOnButton(false),
+    isButtonMenberFlg()
 {
 
 }
@@ -229,7 +230,7 @@ void Stage::Update()
             CheckBlock(161 + i, false);
         }
     }
-    ChengeButton();
+    //ChengeButton();
 }
 
 
@@ -329,6 +330,7 @@ bool Stage::DownButton(int x, int y)
     //押している間ボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
+        //下にあるボタンが踏んでいる間だけのボタンもしくは踏んだ後のボタンだったら
         if (map_[x][y] == MEANTIME_BUTTON_UP_ + i || map_[x][y] == MEANTIME_BUTTON_DOWN_ + i)
         {
             return true;
@@ -496,15 +498,12 @@ void Stage::WarpBlockCollision(int getX,int getY)
         }
     }
 
-
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-
         //PlayerのPositionを引数で受け取る
         //そこがワープブロックだったら
         if (map_[getX][getY] == WARP_BLOCK_EXIT_ + i && isWarp_ == true)
         {
-
             //Stageのサイズ分調べる
             //横
             for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
@@ -542,15 +541,28 @@ XMFLOAT3 Stage::GetStartPosition()
     return stertPos;
 }
 
-void Stage::ChengeButton()
+
+
+//ボタンのモデルと壁のモデルを変更する関数
+//引数は影とPlayerの1ブロック下の位置
+void Stage::ChengeButton(int x, int y)
 {
+    //誰かがボタンに乗っていたら
     if (steppingNumber != 0)
     {
-        //モデル変更
-        CheckBlock(MEANTIME_BUTTON_UP_, true);
-
-        //壁を開く処理
-        CheckBlock(MEANTIME_WALL_, true);
+        //すべてのギミックを調べる
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        {
+            //目的のボタンを見つけたら
+            if (map_[x][y] == MEANTIME_BUTTON_UP_ + i)
+            {
+                //モデル変更
+                //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
+                CheckBlock(map_[x][y] + 20, true);
+                //ボタンのモデル
+                CheckBlock(map_[x][y], true);
+            }
+        }
     }
 }
 

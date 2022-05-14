@@ -48,6 +48,7 @@ class Stage : public GameObject
     bool isWarp_;          //ワープしたか塚
     bool isdoubleButton1_; //同時ボタンの片方を押した
     bool isdoubleButton2_; //同時ボタンのもう片方を押した
+    bool isButtonMenberFlg[9];
 
 
 
@@ -117,12 +118,11 @@ public:
 
     XMFLOAT3 GetStartPosition();
 
-    void Reset(int x, int y);
 
-    void ChengeButton();
+
+    void ChengeButton(int x, int y);
 
     void StepNumberCountUp();
     void StepNumberCountDown();
-    void SetDownNum(bool which);
 };
 
