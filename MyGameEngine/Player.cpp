@@ -50,8 +50,10 @@ void Player::Update()
 	//Find処理をまとめる関数
 	AllFind();
 
-	//Playerの操作をまとめる関数
+	//Playerの右移動をまとめた関数
 	PlayerRightMove();
+
+	//Playerの左移動をまとめた関数
 	PlayerLeftMove();
 
 	//ジャンプ
@@ -66,6 +68,7 @@ void Player::Update()
 	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数
 	MeanTimeButtonCheck();
 
+	//同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
 	OnDoubleButtonCheck();
 	OrDoubleButtonCheck();
 
@@ -78,112 +81,6 @@ void Player::Update()
 
 	//ワープブロックに触れたかを判別する関数を呼ぶ
 	pStage_->WarpBlockCollision((int)transform_.position_.x, (int)(transform_.position_.y));
-}
-
-void Player::Draw()
-{
-	//描画
-	Model::SetTransform(hModel_[direction_][modelNumber_], transform_);
-	Model::Draw(hModel_[direction_][modelNumber_]);
-}
-
-//ジャンプの処理をまとめた関数
-void Player::Jamp()
-{
-	//今ジャンプしていなかったら
-	if (Input::IsKeyDown(DIK_SPACE))
-	{
-		//Y軸の移動
-		transform_.position_.y += yMove_;
-
-		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
-		yMove_ = DROP_DOWN_;
-	}
-
-	//今ジャンプしていたら
-	if(isJump_)
-	{
-		//下に落ちる
-		transform_.position_.y -= yMove_;
-
-		//ブロックの直径より値が大きくなるとすり抜けてしまうので
-		//ブロックの直系よりは大きくならないようにする
-		if (yMove_ < BLOCK_SIZE_)
-		{
-			yMove_ += GRAVITY_;
-		}
-	}
-}
-
-//初期位置に戻る処理をまとめた関数
-void Player::Reset()
-{
-	//リセットボタンを押したら
-	//記録した影をすべてまっさらな状態にしたら
-	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
-	{
-		//初期位置に戻る
-		transform_.position_ = pStage_->GetStartPosition();
-
-	}
-}
-
-void Player::Release()
-{
-}
-
-//Find処理をまとめた関数
-void Player::AllFind()
-{
-	//Stageクラスを探す
-	//pStage_に探した情報が入る
-	if (pStage_ == nullptr)
-	{
-		pStage_ = (Stage*)Find("Stage");
-	}
-}
-
-//右移動の処理
-void Player::PlayerRightMove()
-{
-	//右移動
-	//右矢印キーを押していたら
-	if (Input::IsKey(DIK_RIGHT))
-	{
-		//右移動
-		transform_.position_.x += SPEED_;
-
-		//モデル番号を変更
-		direction_ = DIR_RIGHT;
-		modelNumber_ = RUN_MODEL;
-	}
-	//右矢印キーを離した瞬間
-	else if(Input::IsKeyUp(DIK_RIGHT))
-	{
-		//モデル番号を変更
-		modelNumber_ = STANDING_MODEL;
-	}
-}
-
-//左移動の処理
-void Player::PlayerLeftMove()
-{
-	//左移動
-	//左矢印キーを押していたら
-	if (Input::IsKey(DIK_LEFT))
-	{
-		transform_.position_.x -= SPEED_;
-
-		//モデル番号を変更
-		direction_ = DIR_LEFT;
-		modelNumber_ = RUN_MODEL;
-	}
-	//左矢印キーを離したら
-	else if (Input::IsKeyUp(DIK_LEFT))
-	{
-		//モデル番号を変更
-		modelNumber_ = STANDING_MODEL;
-	}
 }
 
 //Playerの当たり判定の処理をまとめた関数
@@ -271,6 +168,7 @@ void Player::Collision()
 void Player::MeanTimeButtonCheck()
 {
 	//変数を作成
+	//1フレーム前は踏んでいるかどうか
 	bool nowMeanTimeButton;
 
 	//ボタンを踏んでいればtrue踏んでいなければfalseが返される
@@ -282,8 +180,13 @@ void Player::MeanTimeButtonCheck()
 		//今は踏んでいる
 		if (nowMeanTimeButton)
 		{
+			//踏んだ瞬間の処理
+			//ギミックのモデル番号を調べる
+			//踏んだボタンのモデル番号の1の位が返される
 			meanTimeGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
-			//カウントアップ
+
+			//踏んだボタンに対応する変数をカウントアップ
+			//引数には踏んだモデル番号の1の位を渡す
 			pStage_->SetMeanTimeStepNumberCountUp(meanTimeGimmickNumber_);
 		}
 	}
@@ -293,45 +196,68 @@ void Player::MeanTimeButtonCheck()
 		//今は踏んでいない
 		if (!nowMeanTimeButton)
 		{
-			//カウントダウン
+			//離れた瞬間の処理
+			//離れたボタンに対応する変数をカウントダウン
+			//引数には離れたモデル番号の1の位を渡す
 			pStage_->SetMeanTimeStepNumberCountDown(meanTimeGimmickNumber_);
 		}
 	}
-	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
+	//フレームを１つ進める
 	isPastMeanTimeButton_ = nowMeanTimeButton;
 }
-
+	
+//同時押しボタンの片方
+//押した直後のタイミングと離れた瞬間の処理を行う
 void Player::OnDoubleButtonCheck()
 {
+	//変数宣言
+	//1フレーム前は踏んでいるかどうか
 	bool onDoubleButton;
 
+	//踏んだらtrueが返されて、何もなければfalseが返される
 	onDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 
-	if (!isPastDoubleButton_[0])
+	//1フレーム前は踏んでいない
+	if (!isPastDoubleButton_[ON_DOUBLE_BUTTON])
 	{
+		//今は踏んでいる
 		if (onDoubleButton)
 		{
+			//踏んだ瞬間の処理
+			//ギミックのモデル番号を調べる
+			//踏んだボタンのモデル番号の1の位が返される
 			onGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+
+			//踏んだボタンに対応する変数をカウントアップ
+			//引数には踏んだモデル番号の1の位を渡す
 			pStage_->SetOnDoubleStepNumberCountUp(onGimmickNumber_);
 		}
 	}
-	else if (isPastDoubleButton_[0])
+	//1フレーム前は踏んでいる
+	else if (isPastDoubleButton_[ON_DOUBLE_BUTTON])
 	{
+		//今は踏んでいない
 		if (!onDoubleButton)
 		{
+			//離れた瞬間の処理
+			//離れたボタンに対応する変数をカウントダウン
+			//引数には離れたモデル番号の1の位を渡す
 			pStage_->SetOnDoubleStepNumberCountDown(onGimmickNumber_);
 		}
 	}
-	isPastDoubleButton_[0] = onDoubleButton;
+	//フレームを１つ進める
+	isPastDoubleButton_[ON_DOUBLE_BUTTON] = onDoubleButton;
 }
 
+//同時押しボタンのもう片方の処理
+//内容は同じなのでコメントは省略
 void Player::OrDoubleButtonCheck()
 {
 	bool orDoubleButton;
 
 	orDoubleButton = pStage_->OrDoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 
-	if (!isPastDoubleButton_[1])
+	if (!isPastDoubleButton_[OR_DOUBLE_BUTTON])
 	{
 		if (orDoubleButton)
 		{
@@ -339,17 +265,117 @@ void Player::OrDoubleButtonCheck()
 			pStage_->SetOrDoubleStepNumberCountUp(orGimmickNumber_);
 		}
 	}
-	else if (isPastDoubleButton_[1])
+	else if (isPastDoubleButton_[OR_DOUBLE_BUTTON])
 	{
 		if (!orDoubleButton)
 		{
 			pStage_->SetOrDoubleStepNumberCountDown(orGimmickNumber_);
 		}
 	}
-	isPastDoubleButton_[1] = orDoubleButton;
+	isPastDoubleButton_[OR_DOUBLE_BUTTON] = orDoubleButton;
 }
 
+//初期位置に戻る処理をまとめた関数
+void Player::Reset()
+{
+	//リセットボタンを押したら
+	//記録した影をすべてまっさらな状態にしたら
+	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
+	{
+		//初期位置に戻る
+		transform_.position_ = pStage_->GetStartPosition();
 
+	}
+}
+
+//ジャンプの処理をまとめた関数
+void Player::Jamp()
+{
+	//今ジャンプしていなかったら
+	if (Input::IsKeyDown(DIK_SPACE))
+	{
+		//Y軸の移動
+		transform_.position_.y += yMove_;
+
+		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
+		yMove_ = DROP_DOWN_;
+	}
+
+	//今ジャンプしていたら
+	if (isJump_)
+	{
+		//下に落ちる
+		transform_.position_.y -= yMove_;
+
+		//ブロックの直径より値が大きくなるとすり抜けてしまうので
+		//ブロックの直系よりは大きくならないようにする
+		if (yMove_ < BLOCK_SIZE_)
+		{
+			yMove_ += GRAVITY_;
+		}
+	}
+}
+
+void Player::Draw()
+{
+	//描画
+	Model::SetTransform(hModel_[direction_][modelNumber_], transform_);
+	Model::Draw(hModel_[direction_][modelNumber_]);
+}
+
+//右移動の処理
+void Player::PlayerRightMove()
+{
+	//右移動
+	//右矢印キーを押していたら
+	if (Input::IsKey(DIK_RIGHT))
+	{
+		//右移動
+		transform_.position_.x += SPEED_;
+
+		//モデル番号を変更
+		direction_ = DIR_RIGHT;
+		modelNumber_ = RUN_MODEL;
+	}
+	//右矢印キーを離した瞬間
+	else if (Input::IsKeyUp(DIK_RIGHT))
+	{
+		//モデル番号を変更
+		modelNumber_ = STANDING_MODEL;
+	}
+}
+
+//左移動の処理
+void Player::PlayerLeftMove()
+{
+	//左移動
+	//左矢印キーを押していたら
+	if (Input::IsKey(DIK_LEFT))
+	{
+		transform_.position_.x -= SPEED_;
+
+		//モデル番号を変更
+		direction_ = DIR_LEFT;
+		modelNumber_ = RUN_MODEL;
+	}
+	//左矢印キーを離したら
+	else if (Input::IsKeyUp(DIK_LEFT))
+	{
+		//モデル番号を変更
+		modelNumber_ = STANDING_MODEL;
+	}
+}
+
+//Find処理をまとめた関数
+void Player::AllFind()
+{
+	//Stageクラスを探す
+	//pStage_に探した情報が入る
+	if (pStage_ == nullptr)
+	{
+		pStage_ = (Stage*)Find("Stage");
+	}
+}
 
 //モデル番号を返す
 int Player::GetModelNumber()
@@ -361,4 +387,8 @@ int Player::GetModelNumber()
 int Player::GetDirection()
 {
 	return direction_;
+}
+
+void Player::Release()
+{
 }

@@ -24,20 +24,17 @@ class Player : public GameObject
     const float DROP_DOWN_;                 //Playerの下に何もなければ下に落ちるための定数
     const int RESET_VALU_;                  //初期化用の定数
     const int PLAYER_FOOT_;                 //Playerの足元を見るためにY軸を-1する定数
-    const string filePas_;
+    const string filePas_;                  //モデルが保存されているファイルパス
 
     //変数宣言
     int direction_;                         //プレイヤーの向きの番号
     int modelNumber_;                       //走っているモデルの番号
-    int meanTimeGimmickNumber_;
-    int onGimmickNumber_;
-    int orGimmickNumber_;
+    int meanTimeGimmickNumber_;             //踏んだボタンのモデル番号を格納する変数
+    int onGimmickNumber_;                   //踏んだボタンのモデル番号を格納する変数
+    int orGimmickNumber_;                   //踏んだボタンのモデル番号を格納する変数
     float yMove_;                           //Y軸の移動
-
     bool isJump_;                           //ジャンプしているか
     bool isPastMeanTimeButton_;             //さっき踏んでいるか
-    bool isPastDoubleButton_[2];
-
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
     enum Direction                          //Playerの向き
@@ -48,8 +45,13 @@ class Player : public GameObject
 
         STANDING_MODEL = 0,                 //立っているモデル番号
         RUN_MODEL,                          //走っているモデル番号
+
+        ON_DOUBLE_BUTTON = 0,               //片方の同時押しボタンのフラグ番号
+        OR_DOUBLE_BUTTON,                   //もう片方の同時押しボタンのフラグ番号
+        MAX_DOUBLE_BUTTON = 2,              //isPastDoubleButton_の最大要素数
     };
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
+    bool isPastDoubleButton_[MAX_DOUBLE_BUTTON];//同時ボタンのフラグ
 
 public:    
     Player(GameObject* parent);             //コンストラクタ
@@ -59,8 +61,8 @@ public:
     void Draw() override;                   //描画  
     void Release() override;                //開放
     void MeanTimeButtonCheck();             //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
-    void OnDoubleButtonCheck();
-    void OrDoubleButtonCheck();
+    void OnDoubleButtonCheck();             //片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
+    void OrDoubleButtonCheck();             //もう片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
     int GetModelNumber();                   //Playerの走っているモデル番号を返す関数
     int GetDirection();                     //Player向きのモデル番号を返す関数
 private:    
