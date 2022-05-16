@@ -7,8 +7,8 @@ Shadow::Shadow(GameObject* parent)
 	shadowDirection_(0),				//Playerの向きを記録する動的配列
 	shadowModelNumber_(0),				//走っているモデル番号を記録する動的配列
 	meanTimeShaowGimmickNumber_(0),		//踏んでいる間発動するボタンのモデル番号
-	onShaowGimmickNumber_(0),			//もう片方の同時押しボタンのモデル番号
-	orShaowGimmickNumber_(0),			//片方の同時押しボタンのモデル番号
+	onShaowGimmickNumber_(0),			//片方の同時押しボタンのモデル番号
+	orShaowGimmickNumber_(0),			//もう片方の同時押しボタンのモデル番号
 	RESET_VALU_(0),						//初期化用
 	BACK_DRAW_(0.1f),					//Playerに重ならないように少し奥に描画する
 	ALL_GIMICKS_(9),					//同じ種類のギミックすべてを探すための値

@@ -139,6 +139,6 @@ public:
     void SetOrDoubleStepNumberCountUp(int c);
     void SetOrDoubleStepNumberCountDown(int c);
 
-    void SimultaneousWallOpen(int x, int y);
+    void SimultaneousWallOpen();
     int CheckFootBlock(int x, int y);
 };
