@@ -62,5 +62,7 @@ private:
 	void AllFind();								//Find処理をまとめる関数
 	void RecordingandPlayBack();				//Playerの動きを記録と再生する関数
 	void ShadowFootButtonCheck();				//足元を見てボタンを踏んだ瞬間、離れた瞬間の処理をする関数
+	void ShadowOnDoubleButtonCheck();
+	void ShadowOrDoubleButtonCheck();
 };
 

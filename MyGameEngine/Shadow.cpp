@@ -173,3 +173,13 @@ void Shadow::ShadowFootButtonCheck()
 	//¡“¥‚ñ‚Å‚¢‚é‚©‚Ç‚¤‚©‚Ìî•ñ‚ğ1ƒtƒŒ[ƒ€‘O‚Ìî•ñ‚ÉŠi”[‚·‚é
 	isShadowPastButton_ = nowButton;
 }
+
+void Shadow::ShadowOnDoubleButtonCheck()
+{
+
+}
+
+void Shadow::ShadowOrDoubleButtonCheck()
+{
+
+}
