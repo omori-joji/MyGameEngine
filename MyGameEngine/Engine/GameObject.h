@@ -68,7 +68,7 @@ public:
 		T* p;
 		p = new T(parent);
 		p->Initialize();
-		childList_.push_back(p);
+		childList_.push_front(p);
 		return p;
 	}
 };

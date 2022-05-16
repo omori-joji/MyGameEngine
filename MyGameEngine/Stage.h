@@ -59,8 +59,11 @@ class Stage : public GameObject
     XMFLOAT3 stertPos; //Playerがリセットした時のリセット位置を記憶する変数
 
 public:
-    int steppingNumber[3];//何人踏んでいるか
+    int steppingNumber[10];//何人踏んでいるか
+    int steppingNumber1[10];//何人踏んでいるか
+    int steppingNumber2[10];//何人踏んでいるか
     bool isOnButton;
+    bool buttonNumber[10];
 
 
 public:
@@ -92,6 +95,7 @@ public:
     bool MeanTimeButton(int x, int y);
 
     bool DoubleButton(int x, int y);
+    bool OrDoubleButton(int x, int y);
 
     void CollisionExit();
 
@@ -123,17 +127,18 @@ public:
     void ChengeButtonAndWall(int x, int y);
 
     //ボタンに乗っている人数をカウントアップする関数
-    void SetMeanTimeStepNumberCountUp();
+    void SetMeanTimeStepNumberCountUp(int a);
 
     //ボタンに乗っている人数をカウントアップする関数
-    void SetMeanTimeStepNumberCountDown();
+    void SetMeanTimeStepNumberCountDown(int a);
 
     //同時押しボタンの片方のボタンの乗っている人数をカウントする関数
-    void SetOnDoubleStepNumberCountUp();
-    void SetOnDoubleStepNumberCountDown();
+    void SetOnDoubleStepNumberCountUp(int b);
+    void SetOnDoubleStepNumberCountDown(int b);
 
-    void SetOrDoubleStepNumberCountUp();
-    void SetOrDoubleStepNumberCountDown();
+    void SetOrDoubleStepNumberCountUp(int c);
+    void SetOrDoubleStepNumberCountDown(int c);
 
     void SimultaneousWallOpen(int x, int y);
+    int CheckFootBlock(int x, int y);
 };

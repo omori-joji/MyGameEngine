@@ -19,6 +19,8 @@ Player::Player(GameObject* parent)
 	yMove_(0.01f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
+	onGimmickNumber_(0),
+	orGimmickNumber_(0),
 	hModel_(),						//モデルをロードするための多次元配列
 	filePas_("Assets/Player/"),
 	isJump_(false),					//ジャンプ中か
@@ -280,8 +282,9 @@ void Player::MeanTimeButtonCheck()
 		//今は踏んでいる
 		if (nowMeanTimeButton)
 		{
+			meanTimeGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 			//カウントアップ
-			pStage_->SetMeanTimeStepNumberCountUp();
+			pStage_->SetMeanTimeStepNumberCountUp(meanTimeGimmickNumber_);
 		}
 	}
 	//1フレーム前は踏んでいる
@@ -291,7 +294,7 @@ void Player::MeanTimeButtonCheck()
 		if (!nowMeanTimeButton)
 		{
 			//カウントダウン
-			pStage_->SetMeanTimeStepNumberCountDown();
+			pStage_->SetMeanTimeStepNumberCountDown(meanTimeGimmickNumber_);
 		}
 	}
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
@@ -308,14 +311,15 @@ void Player::OnDoubleButtonCheck()
 	{
 		if (onDoubleButton)
 		{
-			pStage_->SetOnDoubleStepNumberCountUp();
+			onGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+			pStage_->SetOnDoubleStepNumberCountUp(onGimmickNumber_);
 		}
 	}
 	else if (isPastDoubleButton_[0])
 	{
 		if (!onDoubleButton)
 		{
-			pStage_->SetOnDoubleStepNumberCountDown();
+			pStage_->SetOnDoubleStepNumberCountDown(onGimmickNumber_);
 		}
 	}
 	isPastDoubleButton_[0] = onDoubleButton;
@@ -325,20 +329,21 @@ void Player::OrDoubleButtonCheck()
 {
 	bool orDoubleButton;
 
-	orDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+	orDoubleButton = pStage_->OrDoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 
 	if (!isPastDoubleButton_[1])
 	{
 		if (orDoubleButton)
 		{
-			pStage_->SetOrDoubleStepNumberCountUp();
+			orGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+			pStage_->SetOrDoubleStepNumberCountUp(orGimmickNumber_);
 		}
 	}
 	else if (isPastDoubleButton_[1])
 	{
 		if (!orDoubleButton)
 		{
-			pStage_->SetOrDoubleStepNumberCountDown();
+			pStage_->SetOrDoubleStepNumberCountDown(orGimmickNumber_);
 		}
 	}
 	isPastDoubleButton_[1] = orDoubleButton;

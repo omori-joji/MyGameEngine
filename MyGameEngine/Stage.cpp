@@ -15,7 +15,7 @@ Stage::Stage(GameObject* parent)
     VERTICAL_VALU_(23),     //マップ縦軸の値
     BESIDE_VALU_(28),       //マップ横軸の値
     SHADOW_NAMBER_(5),
-    ALL_GIMMICKS_(9),
+    ALL_GIMMICKS_(10),
     RESET_VALU_(0),
     CHENGE_POSITIVE_GIMMICKS_(10),
     BRINKING_BLOCKS_(81),
@@ -44,8 +44,11 @@ Stage::Stage(GameObject* parent)
     isBlinking_(true),
     isWarp_(true),
     isDoubleButton_(),
+    buttonNumber(),
 
     steppingNumber(),
+    steppingNumber1(),
+    steppingNumber2(),
     isOnButton(false),
     isButtonMenberFlg()
 {
@@ -205,7 +208,6 @@ void Stage::Update()
         //影の数をリセット
         shadowCount_ = RESET_VALU_;
     }
-
     //一定時間ごとにブロック切り替える
     Blinking(BRINKING_BLOCKS_, FRAME_TIME_);
 }
@@ -326,7 +328,17 @@ bool Stage::DoubleButton(int x, int y)
         {
             return true;
         }
-        else if (map_[x][y] == 131 + i || map_[x][y] == 141 + i)
+    }
+    CollisionExit();
+    return false;
+}
+
+bool Stage::OrDoubleButton(int x, int y)
+{
+    //同時押しボタン
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    {
+        if (map_[x][y] == 131 + i || map_[x][y] == 141 + i)
         {
             return true;
         }
@@ -335,13 +347,17 @@ bool Stage::DoubleButton(int x, int y)
     return false;
 }
 
+
+
+
 void Stage::CollisionExit()
 {
+
     //Playerが離れたら
     //もしくはリセットしたら
-    if (steppingNumber[0] == 0)
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        if (steppingNumber[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
@@ -350,18 +366,21 @@ void Stage::CollisionExit()
             CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
         }
     }
-    if (steppingNumber[1] == 0)
+
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        if (steppingNumber1[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(121 + i, false);
             isDoubleButton_[0] = false;
         }
     }
-    if (steppingNumber[2] == 0)
+
+
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        if (steppingNumber2[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(141 + i, false);
@@ -369,7 +388,6 @@ void Stage::CollisionExit()
         }
     }
 
-    
 }
 
 
@@ -526,58 +544,44 @@ XMFLOAT3 Stage::GetStartPosition()
     return stertPos;
 }
 
-
-
 //ボタンのモデルと壁のモデルを変更する関数
 //引数は影とPlayerの1ブロック下の位置
 void Stage::ChengeButtonAndWall(int x, int y)
 {
-    //誰かがボタンに乗っていたら
-    if (steppingNumber[0] != 0)
+
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        //すべてのギミックを調べる
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        //誰かがボタンに乗っていたら
+        if (steppingNumber[i] != 0)
         {
-            //目的のボタンを見つけたら
-            if (map_[x][y] == MEANTIME_BUTTON_UP_ + i)
-            {
-                //モデル変更
-                //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
-                CheckBlock(map_[x][y] + 20, true);
-                //ボタンのモデル
-                CheckBlock(map_[x][y], true);
-            }
+            //モデル変更
+            //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
+            CheckBlock((MEANTIME_BUTTON_UP_ + i) + 20, true);
+            //ボタンのモデル
+            CheckBlock(MEANTIME_BUTTON_UP_ + i, true);
         }
     }
 
-    //誰かがボタンに乗っていたら
-    if (steppingNumber[1] != 0)
+    //すべてのギミックを調べる
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        //すべてのギミックを調べる
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        //誰かがボタンに乗っていたら
+        if (steppingNumber1[i] != 0)
         {
-            //目的のボタンを見つけたら
-            if (map_[x][y] == 111 + i)
-            {
-                CheckBlock(map_[x][y], true);
-                isDoubleButton_[0] = true;
-                SimultaneousWallOpen(x, y);
-            }
+            CheckBlock(111 + i, true);
+            isDoubleButton_[0] = true;
+            SimultaneousWallOpen(x, y);
         }
     }
 
-    if (steppingNumber[2] != 0)
+    //すべてのギミックを調べる
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        //すべてのギミックを調べる
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        if (steppingNumber2[i] != 0)
         {
-            //目的のボタンを見つけたら
-            if (map_[x][y] == 131 + i)
-            {
-                CheckBlock(map_[x][y], true);
-                isDoubleButton_[1] = true;
-                SimultaneousWallOpen(x, y);
-            }
+            CheckBlock(131 + i, true);
+            isDoubleButton_[1] = true;
+            SimultaneousWallOpen(x, y);
         }
     }
 }
@@ -590,48 +594,53 @@ void Stage::SimultaneousWallOpen(int x, int y)
     {
         CheckBlock(151, true);
     }
-    //どちらかが、あるいはどちらも押していなければボタンは元に戻る
-    else if(!isDoubleButton_[0] || !isDoubleButton_[1])
+    //それ以外の条件の場合
+    else
     {
         CheckBlock(161, false);
     }
 }
 
-void Stage::SetMeanTimeStepNumberCountUp()
+int Stage::CheckFootBlock(int x, int y)
 {
-    steppingNumber[0]++;
-}
-
-void Stage::SetMeanTimeStepNumberCountDown()
-{
-    steppingNumber[0]--;
-}
-
-void Stage::SetOnDoubleStepNumberCountUp()
-{
-    steppingNumber[1]++;
-}
-
-void Stage::SetOnDoubleStepNumberCountDown()
-{
-    steppingNumber[1]--;
-}
-
-void Stage::SetOrDoubleStepNumberCountUp()
-{
-    steppingNumber[2]++;
-}
-
-void Stage::SetOrDoubleStepNumberCountDown()
-{
-    steppingNumber[2]--;
+    
+    return (map_[x][y] % 10) -1;
 }
 
 
+
+void Stage::SetMeanTimeStepNumberCountUp(int a)
+{
+    steppingNumber[a]++;
+}
+
+void Stage::SetMeanTimeStepNumberCountDown(int a)
+{
+    steppingNumber[a]--;
+}
+
+void Stage::SetOnDoubleStepNumberCountUp(int b)
+{
+    steppingNumber1[b]++;
+}
+
+void Stage::SetOnDoubleStepNumberCountDown(int b)
+{
+    steppingNumber1[b]--;
+}
+
+void Stage::SetOrDoubleStepNumberCountUp(int c)
+{
+    steppingNumber2[c]++;
+}
+
+void Stage::SetOrDoubleStepNumberCountDown(int c)
+{
+    steppingNumber2[c]--;
+}
 
 void Stage::ModelLoad()
 {
-
     //ステージを構成するブロック
     hModel_[0] = Model::Load("Assets/StageBlock/Block.fbx");
     hModel_[1] = Model::Load("Assets/StageBlock/NaturalBlock.fbx");

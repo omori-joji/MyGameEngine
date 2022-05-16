@@ -26,10 +26,14 @@ class Shadow : public GameObject
 
 	int shadowDirection_;						//影の向き
 	int shadowModelNumber_;						//走っているモデル番号
+	int meanTimeShaowGimmickNumber_;
+	int onShaowGimmickNumber_;
+	int orShaowGimmickNumber_;
 	DWORD frameCounter_;						//フレーム数
 
 	bool isRecording_;							//記録中かどうか
 	bool isShadowPastButton_[3];					//ボタンを踏んでいるか
+	bool isShadowMeantimePastButton_;					//ボタンを踏んでいるか
 
 	std::vector<int> recordDirection_;			//Playerの向きを記録する動的配列
 	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列

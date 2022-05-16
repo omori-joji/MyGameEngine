@@ -18,7 +18,11 @@ Shadow::Shadow(GameObject* parent)
 	isRecording_(false),				//Playerの動きを記録しているか
 	isShadowPastButton_(),				//ボタンを踏んでいるか
 	pPlayer_(nullptr),					//プレイヤーの情報を入れる関数
-	pStage_(nullptr)					//ステージの情報を入れる関数
+	pStage_(nullptr),					//ステージの情報を入れる関数
+	isShadowMeantimePastButton_(false),
+	meanTimeShaowGimmickNumber_(0),
+	onShaowGimmickNumber_(0),
+	orShaowGimmickNumber_(0)
 {
 }
 
@@ -151,29 +155,30 @@ void Shadow::ShadowFootButtonCheck()
 
 	//ボタンを踏んでいればtrue踏んでいなければfalseが返される
 	nowButton = pStage_->MeanTimeButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
-
+	
 	//1フレーム前は踏んでいない
-	if (!isShadowPastButton_[0])
+	if (!isShadowMeantimePastButton_)
 	{
 		//今は踏んでいる
 		if (nowButton)
 		{
+			meanTimeShaowGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
 			//カウントアップ
-			pStage_->SetMeanTimeStepNumberCountUp();
+			pStage_->SetMeanTimeStepNumberCountUp(meanTimeShaowGimmickNumber_);
 		}
 	}
 	//1フレーム前は踏んでいる
-	else if (isShadowPastButton_[0])
+	else if (isShadowMeantimePastButton_)
 	{
 		//今は踏んでいない
 		if (!nowButton)
 		{
 			//カウントダウン
-			pStage_->SetMeanTimeStepNumberCountDown();
+			pStage_->SetMeanTimeStepNumberCountDown(meanTimeShaowGimmickNumber_);
 		}
 	}
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
-	isShadowPastButton_[0] = nowButton;
+	isShadowMeantimePastButton_ = nowButton;
 }
 
 void Shadow::ShadowOnDoubleButtonCheck()
@@ -186,14 +191,15 @@ void Shadow::ShadowOnDoubleButtonCheck()
 	{
 		if (onDoubleButton)
 		{
-			pStage_->SetOnDoubleStepNumberCountUp();
+			onShaowGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
+			pStage_->SetOnDoubleStepNumberCountUp(onShaowGimmickNumber_);
 		}
 	}
 	else if (isShadowPastButton_[1])
 	{
 		if (!onDoubleButton)
 		{
-			pStage_->SetOnDoubleStepNumberCountDown();
+			pStage_->SetOnDoubleStepNumberCountDown(onShaowGimmickNumber_);
 		}
 	}
 	isShadowPastButton_[1] = onDoubleButton;
@@ -203,20 +209,21 @@ void Shadow::ShadowOrDoubleButtonCheck()
 {
 	bool orDoubleButton;
 
-	orDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
+	orDoubleButton = pStage_->OrDoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
 
 	if (!isShadowPastButton_[2])
 	{
 		if (orDoubleButton)
 		{
-			pStage_->SetOrDoubleStepNumberCountUp();
+			orShaowGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
+			pStage_->SetOrDoubleStepNumberCountUp(orShaowGimmickNumber_);
 		}
 	}
 	else if (isShadowPastButton_[2])
 	{
 		if (!orDoubleButton)
 		{
-			pStage_->SetOrDoubleStepNumberCountDown();
+			pStage_->SetOrDoubleStepNumberCountDown(orShaowGimmickNumber_);
 		}
 	}
 	isShadowPastButton_[2] = orDoubleButton;

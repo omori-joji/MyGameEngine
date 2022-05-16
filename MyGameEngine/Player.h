@@ -29,6 +29,9 @@ class Player : public GameObject
     //変数宣言
     int direction_;                         //プレイヤーの向きの番号
     int modelNumber_;                       //走っているモデルの番号
+    int meanTimeGimmickNumber_;
+    int onGimmickNumber_;
+    int orGimmickNumber_;
     float yMove_;                           //Y軸の移動
 
     bool isJump_;                           //ジャンプしているか
