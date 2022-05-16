@@ -16,7 +16,7 @@ Shadow::Shadow(GameObject* parent)
 	hModel_(),							//影のモデルを格納する多次元配列
 	filePas_("Assets/Shadow/"),			//Shadowのファイルパス
 	isRecording_(false),				//Playerの動きを記録しているか
-	isShadowPastButton_(false),			//ボタンを踏んでいるか
+	isShadowPastButton_(),				//ボタンを踏んでいるか
 	pPlayer_(nullptr),					//プレイヤーの情報を入れる関数
 	pStage_(nullptr)					//ステージの情報を入れる関数
 {
@@ -43,6 +43,8 @@ void Shadow::Update()
 
 	//ボタンを踏んだか離れたかを処理する関数
 	ShadowFootButtonCheck();
+	ShadowOnDoubleButtonCheck();
+	ShadowOrDoubleButtonCheck();
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
@@ -151,7 +153,7 @@ void Shadow::ShadowFootButtonCheck()
 	nowButton = pStage_->MeanTimeButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
 
 	//1フレーム前は踏んでいない
-	if (!isShadowPastButton_)
+	if (!isShadowPastButton_[0])
 	{
 		//今は踏んでいる
 		if (nowButton)
@@ -161,7 +163,7 @@ void Shadow::ShadowFootButtonCheck()
 		}
 	}
 	//1フレーム前は踏んでいる
-	else if (isShadowPastButton_)
+	else if (isShadowPastButton_[0])
 	{
 		//今は踏んでいない
 		if (!nowButton)
@@ -171,15 +173,51 @@ void Shadow::ShadowFootButtonCheck()
 		}
 	}
 	//今踏んでいるかどうかの情報を1フレーム前の情報に格納する
-	isShadowPastButton_ = nowButton;
+	isShadowPastButton_[0] = nowButton;
 }
 
 void Shadow::ShadowOnDoubleButtonCheck()
 {
+	bool onDoubleButton;
 
+	onDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
+
+	if (!isShadowPastButton_[1])
+	{
+		if (onDoubleButton)
+		{
+			pStage_->SetOnDoubleStepNumberCountUp();
+		}
+	}
+	else if (isShadowPastButton_[1])
+	{
+		if (!onDoubleButton)
+		{
+			pStage_->SetOnDoubleStepNumberCountDown();
+		}
+	}
+	isShadowPastButton_[1] = onDoubleButton;
 }
 
 void Shadow::ShadowOrDoubleButtonCheck()
 {
+	bool orDoubleButton;
 
+	orDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
+
+	if (!isShadowPastButton_[2])
+	{
+		if (orDoubleButton)
+		{
+			pStage_->SetOrDoubleStepNumberCountUp();
+		}
+	}
+	else if (isShadowPastButton_[2])
+	{
+		if (!orDoubleButton)
+		{
+			pStage_->SetOrDoubleStepNumberCountDown();
+		}
+	}
+	isShadowPastButton_[2] = orDoubleButton;
 }

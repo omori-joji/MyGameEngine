@@ -29,7 +29,7 @@ class Shadow : public GameObject
 	DWORD frameCounter_;						//フレーム数
 
 	bool isRecording_;							//記録中かどうか
-	bool isShadowPastButton_;					//ボタンを踏んでいるか
+	bool isShadowPastButton_[3];					//ボタンを踏んでいるか
 
 	std::vector<int> recordDirection_;			//Playerの向きを記録する動的配列
 	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列

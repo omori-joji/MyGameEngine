@@ -350,15 +350,13 @@ void Stage::CollisionExit()
             CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
         }
     }
-
-
     if (steppingNumber[1] == 0)
     {
         for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //ボタンのモデルを切り替える
             CheckBlock(121 + i, false);
-            isDoubleButton_[0] == false;
+            isDoubleButton_[0] = false;
         }
     }
     if (steppingNumber[2] == 0)
@@ -367,7 +365,7 @@ void Stage::CollisionExit()
         {
             //ボタンのモデルを切り替える
             CheckBlock(141 + i, false);
-            isDoubleButton_[1] == false;
+            isDoubleButton_[1] = false;
         }
     }
 
@@ -590,23 +588,12 @@ void Stage::SimultaneousWallOpen(int x, int y)
     //どちらもボタンを押していたら発動する
     if (isDoubleButton_[0] && isDoubleButton_[1])
     {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-        {
-            if (map_[x][y] == 151 + i)
-            {
-                //モデルを切り替える
-                CheckBlock(map_[x][y] + i, true);
-            }
-        }
+        CheckBlock(151, true);
     }
     //どちらかが、あるいはどちらも押していなければボタンは元に戻る
-    else
+    else if(!isDoubleButton_[0] || !isDoubleButton_[1])
     {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-        {
-            //モデルを切り替える
-            CheckBlock(161 + i, false);
-        }
+        CheckBlock(161, false);
     }
 }
 
