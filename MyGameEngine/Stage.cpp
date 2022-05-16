@@ -43,8 +43,7 @@ Stage::Stage(GameObject* parent)
 
     isBlinking_(true),
     isWarp_(true),
-    isdoubleButton1_(false),
-    isdoubleButton2_(false),
+    isDoubleButton_(),
 
     steppingNumber(),
     isOnButton(false),
@@ -209,28 +208,6 @@ void Stage::Update()
 
     //一定時間ごとにブロック切り替える
     Blinking(BRINKING_BLOCKS_, FRAME_TIME_);
-
-
-    //同時ボタンのギミック
-    //どちらもボタンを押していたら発動する
-    if (isdoubleButton1_ && isdoubleButton2_)
-    {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-        {
-            //モデルを切り替える
-            CheckBlock(151 + i, true);
-        }
-    }
-    //どちらかが、あるいはどちらも押していなければボタンは元に戻る
-    else
-    {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-        {
-            //モデルを切り替える
-            CheckBlock(161 + i, false);
-        }
-    }
-    //ChengeButton();
 }
 
 
@@ -380,12 +357,21 @@ void Stage::CollisionExit()
         for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(141 + i, false);
-
-            //壁のモデルを切り替える
-            CheckBlock(161 + i, false);
+            CheckBlock(121 + i, false);
+            isDoubleButton_[0] == false;
         }
     }
+    if (steppingNumber[2] == 0)
+    {
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        {
+            //ボタンのモデルを切り替える
+            CheckBlock(141 + i, false);
+            isDoubleButton_[1] == false;
+        }
+    }
+
+    
 }
 
 
@@ -573,14 +559,53 @@ void Stage::ChengeButtonAndWall(int x, int y)
         for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
         {
             //目的のボタンを見つけたら
-            if (map_[x][y] == MEANTIME_BUTTON_UP_ + i)
+            if (map_[x][y] == 111 + i)
             {
-                //モデル変更
-                //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
-                CheckBlock(map_[x][y] + 20, true);
-                //ボタンのモデル
                 CheckBlock(map_[x][y], true);
+                isDoubleButton_[0] = true;
+                SimultaneousWallOpen(x, y);
             }
+        }
+    }
+
+    if (steppingNumber[2] != 0)
+    {
+        //すべてのギミックを調べる
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        {
+            //目的のボタンを見つけたら
+            if (map_[x][y] == 131 + i)
+            {
+                CheckBlock(map_[x][y], true);
+                isDoubleButton_[1] = true;
+                SimultaneousWallOpen(x, y);
+            }
+        }
+    }
+}
+
+void Stage::SimultaneousWallOpen(int x, int y)
+{
+    //同時ボタンのギミック
+    //どちらもボタンを押していたら発動する
+    if (isDoubleButton_[0] && isDoubleButton_[1])
+    {
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        {
+            if (map_[x][y] == 151 + i)
+            {
+                //モデルを切り替える
+                CheckBlock(map_[x][y] + i, true);
+            }
+        }
+    }
+    //どちらかが、あるいはどちらも押していなければボタンは元に戻る
+    else
+    {
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        {
+            //モデルを切り替える
+            CheckBlock(161 + i, false);
         }
     }
 }
@@ -595,15 +620,27 @@ void Stage::SetMeanTimeStepNumberCountDown()
     steppingNumber[0]--;
 }
 
-void Stage::SetDoubleStepNumberCountUp()
+void Stage::SetOnDoubleStepNumberCountUp()
 {
     steppingNumber[1]++;
 }
 
-void Stage::SetDoubleStepNumberCountDown()
+void Stage::SetOnDoubleStepNumberCountDown()
 {
     steppingNumber[1]--;
 }
+
+void Stage::SetOrDoubleStepNumberCountUp()
+{
+    steppingNumber[2]++;
+}
+
+void Stage::SetOrDoubleStepNumberCountDown()
+{
+    steppingNumber[2]--;
+}
+
+
 
 void Stage::ModelLoad()
 {

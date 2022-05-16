@@ -23,7 +23,7 @@ Player::Player(GameObject* parent)
 	filePas_("Assets/Player/"),
 	isJump_(false),					//ジャンプ中か
 	isPastMeanTimeButton_(false),			//1フレーム前、ボタンを踏んでいるかどうかの情報
-	isPastDoubleButton_(false),
+	isPastDoubleButton_(),
 	pStage_(nullptr)				//ステージの情報を入れるポインタ
 {
 }
@@ -63,6 +63,9 @@ void Player::Update()
 
 	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数
 	MeanTimeButtonCheck();
+
+	OnDoubleButtonCheck();
+	OrDoubleButtonCheck();
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
@@ -295,28 +298,53 @@ void Player::MeanTimeButtonCheck()
 	isPastMeanTimeButton_ = nowMeanTimeButton;
 }
 
-void Player::DoubleButtonCheck()
+void Player::OnDoubleButtonCheck()
 {
-	bool doubleButton;
+	bool onDoubleButton;
 
-	doubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+	onDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 
-	if (!isPastDoubleButton_)
+	if (!isPastDoubleButton_[0])
 	{
-		if (doubleButton)
+		if (onDoubleButton)
 		{
-			pStage_->SetDoubleStepNumberCountUp();
+			pStage_->SetOnDoubleStepNumberCountUp();
 		}
 	}
-	else if(isPastDoubleButton_)
+	else if (isPastDoubleButton_[0])
 	{
-		if (!doubleButton)
+		if (!onDoubleButton)
 		{
-			pStage_->SetDoubleStepNumberCountDown();
+			pStage_->SetOnDoubleStepNumberCountDown();
 		}
 	}
-	isPastDoubleButton_ = doubleButton;
+	isPastDoubleButton_[0] = onDoubleButton;
 }
+
+void Player::OrDoubleButtonCheck()
+{
+	bool orDoubleButton;
+
+	orDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+
+	if (!isPastDoubleButton_[1])
+	{
+		if (orDoubleButton)
+		{
+			pStage_->SetOrDoubleStepNumberCountUp();
+		}
+	}
+	else if (isPastDoubleButton_[1])
+	{
+		if (!orDoubleButton)
+		{
+			pStage_->SetOrDoubleStepNumberCountDown();
+		}
+	}
+	isPastDoubleButton_[1] = orDoubleButton;
+}
+
+
 
 //モデル番号を返す
 int Player::GetModelNumber()

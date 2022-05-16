@@ -33,7 +33,7 @@ class Player : public GameObject
 
     bool isJump_;                           //ジャンプしているか
     bool isPastMeanTimeButton_;             //さっき踏んでいるか
-    bool isPastDoubleButton_;
+    bool isPastDoubleButton_[2];
 
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
@@ -56,7 +56,8 @@ public:
     void Draw() override;                   //描画  
     void Release() override;                //開放
     void MeanTimeButtonCheck();             //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
-    void DoubleButtonCheck();
+    void OnDoubleButtonCheck();
+    void OrDoubleButtonCheck();
     int GetModelNumber();                   //Playerの走っているモデル番号を返す関数
     int GetDirection();                     //Player向きのモデル番号を返す関数
 private:    

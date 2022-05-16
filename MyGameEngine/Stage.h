@@ -46,8 +46,7 @@ class Stage : public GameObject
 
     bool isBlinking_;      //ブロックが消えたかどうか
     bool isWarp_;          //ワープしたか塚
-    bool isdoubleButton1_; //同時ボタンの片方を押した
-    bool isdoubleButton2_; //同時ボタンのもう片方を押した
+    bool isDoubleButton_[2]; //同時ボタンの片方を押した
     bool isButtonMenberFlg[9];
 
 
@@ -60,7 +59,7 @@ class Stage : public GameObject
     XMFLOAT3 stertPos; //Playerがリセットした時のリセット位置を記憶する変数
 
 public:
-    int steppingNumber[2];//何人踏んでいるか
+    int steppingNumber[3];//何人踏んでいるか
     bool isOnButton;
 
 
@@ -129,6 +128,12 @@ public:
     //ボタンに乗っている人数をカウントアップする関数
     void SetMeanTimeStepNumberCountDown();
 
-    void SetDoubleStepNumberCountUp();
-    void SetDoubleStepNumberCountDown();
+    //同時押しボタンの片方のボタンの乗っている人数をカウントする関数
+    void SetOnDoubleStepNumberCountUp();
+    void SetOnDoubleStepNumberCountDown();
+
+    void SetOrDoubleStepNumberCountUp();
+    void SetOrDoubleStepNumberCountDown();
+
+    void SimultaneousWallOpen(int x, int y);
 };
