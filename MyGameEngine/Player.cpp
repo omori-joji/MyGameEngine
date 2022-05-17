@@ -26,7 +26,8 @@ Player::Player(GameObject* parent)
 	isJump_(false),					//ジャンプ中か
 	isPastMeanTimeButton_(false),	//1フレーム前、ボタンを踏んでいるかどうかの情報
 	isPastDoubleButton_(),			//同時押しボタンのフラグ
-	pStage_(nullptr)				//ステージの情報を入れるポインタ
+	pStage_(nullptr),				//ステージの情報を入れるポインタ
+	hSe_()
 {
 }
 
@@ -36,6 +37,11 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	/*hSe_[0] = Audio::Load("Assets/Sound/Jump.wav", 1);
+	hSe_[1] = Audio::Load("Assets/Sound/Reset.wav", 1);
+	hSe_[2] = Audio::Load("Assets/Sound/Jump.wav", 1);
+	hSe_[3] = Audio::Load("Assets/Sound/Jump.wav", 1);*/
+
 	//右方向を向いているモデルのロード
 	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load(filePas_ + "PlayerRightStanding.fbx");
 	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load(filePas_ + "PlayerRightRun.fbx");
@@ -278,13 +284,14 @@ void Player::OrDoubleButtonCheck()
 //初期位置に戻る処理をまとめた関数
 void Player::Reset()
 {
+	//Audio::Play(hSe_[1]);
+
 	//リセットボタンを押したら
 	//記録した影をすべてまっさらな状態にしたら
 	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
 	{
 		//初期位置に戻る
 		transform_.position_ = pStage_->GetStartPosition();
-
 	}
 }
 
@@ -294,6 +301,7 @@ void Player::Jamp()
 	//今ジャンプしていなかったら
 	if (Input::IsKeyDown(DIK_SPACE))
 	{
+		//Audio::Play(hSe_[0]);
 		//Y軸の移動
 		transform_.position_.y += yMove_;
 

@@ -2,7 +2,6 @@
 
 Shadow::Shadow(GameObject* parent)
 	:GameObject(parent, "Shadow"),
-
 	frameCounter_(0),					//毎フレーム動きを記録するためのカウンター
 	shadowDirection_(0),				//Playerの向きを記録する動的配列
 	shadowModelNumber_(0),				//走っているモデル番号を記録する動的配列
@@ -19,10 +18,10 @@ Shadow::Shadow(GameObject* parent)
 	hModel_(),							//影のモデルを格納する多次元配列
 	filePas_("Assets/Shadow/"),			//Shadowのファイルパス
 	isRecording_(false),				//Playerの動きを記録しているか
+	isShadowMeantimePastButton_(false),	//押している間発動するボタンのフラグ
 	isShadowDoublePastButton_(),		//同時ボタンを踏んだ瞬間と離れた瞬間のフラグ
 	pPlayer_(nullptr),					//プレイヤーの情報を入れる関数
-	pStage_(nullptr),					//ステージの情報を入れる関数
-	isShadowMeantimePastButton_(false)	//押している間発動するボタンのフラグ
+	pStage_(nullptr)					//ステージの情報を入れる関数
 {
 }
 

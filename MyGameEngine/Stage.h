@@ -16,10 +16,11 @@ class Stage : public GameObject
 
 
     int map_[28][23];   //ステージのマス情報
-    int hModel_[500];   //モデル番号
+    int hModel_[200];   //モデル番号
     int shadowCount_;   //影の数
     int timeCount_;     //点滅ブロックの点滅間隔
     int hSound_;        //サウンドファイル
+    int hSe_[10];        //サウンドファイル
     int downNum_;
 
     const int VERTICAL_VALU_; //ステージの高さ

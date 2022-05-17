@@ -5,6 +5,7 @@
 #include "Engine/Fbx.h"
 #include <string>
 #include "Stage.h"
+#include "Engine/Audio.h"
 
 //Player処理を行うクラス
 class Player : public GameObject
@@ -48,10 +49,11 @@ class Player : public GameObject
 
         ON_DOUBLE_BUTTON = 0,               //片方の同時押しボタンのフラグ番号
         OR_DOUBLE_BUTTON,                   //もう片方の同時押しボタンのフラグ番号
-        MAX_DOUBLE_BUTTON = 2,              //isPastDoubleButton_の最大要素数
+        MAX_DOUBLE_BUTTON,              //isPastDoubleButton_の最大要素数
     };
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
     bool isPastDoubleButton_[MAX_DOUBLE_BUTTON];//同時ボタンのフラグ
+    int hSe_[10];
 
 public:    
     Player(GameObject* parent);             //コンストラクタ

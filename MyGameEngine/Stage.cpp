@@ -10,7 +10,8 @@
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hSound_(-1),
+    :GameObject(parent, "Stage"), 
+    hSound_(),
     PLAYER_GENERAT_POS_(200),
     VERTICAL_VALU_(23),     //マップ縦軸の値
     BESIDE_VALU_(28),       //マップ横軸の値
@@ -49,7 +50,8 @@ Stage::Stage(GameObject* parent)
     steppingNumber1(),
     steppingNumber2(),
     isOnButton(false),
-    isButtonMenberFlg()
+    isButtonMenberFlg(),
+    hSe_()
 {
 
 }
@@ -63,8 +65,8 @@ Stage::~Stage()
 void Stage::Initialize()
 {
     //サウンドデータのロード
-    hSound_ = Audio::Load("Assets/get1.wav",1);
-    assert(hSound_ >= 0);
+    //hSound_ = Audio::Load("Assets/あ.wav",5);
+    //assert(hSound_ >= 0);
 
     //エフェクトの画像をロード
     //引数は「ファイル名」「横に何個並んでるか」「縦に何個並んでるか」
@@ -134,6 +136,7 @@ void Stage::Initialize()
 //更新
 void Stage::Update()
 {
+
     if (Input::IsKeyDown(DIK_SPACE))
     {
         //1個エフェクトを出す
@@ -141,6 +144,7 @@ void Stage::Update()
         transform.position_ = XMFLOAT3(15, 15, -1);       //位置
         transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
         VisualEffect::Add(hVfxB, transform, 0.5f, false);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
+        //Audio::Play(hSound_);
     }
 
     //Player情報の格納
@@ -149,12 +153,9 @@ void Stage::Update()
         pPlayer_ = (Player*)Find("Player");
     }
 
-
     //再生スタート
     if (Input::IsKeyDown(DIK_1))
     {
-        Audio::Play(hSound_);
-
         //点滅ブロックの情報をリセット
         timeCount_ = RESET_VALU_;
         isBlinking_ = true;
@@ -670,6 +671,9 @@ void Stage::Release()
 
 void Stage::ModelLoad()
 {
+    hSe_[0] = Audio::Load("Assets/あ.wav", 5);
+
+
     //ステージを構成するブロック
     hModel_[0] = Model::Load("Assets/StageBlock/Block.fbx");
     hModel_[1] = Model::Load("Assets/StageBlock/NaturalBlock.fbx");
@@ -681,7 +685,6 @@ void Stage::ModelLoad()
     hModel_[7] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[8] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[9] = Model::Load("Assets/GreenBlock.fbx");
-
 
     //押したら発動するボタン
     hModel_[10] = Model::Load("Assets/PushButton.fbx");
@@ -695,7 +698,6 @@ void Stage::ModelLoad()
     hModel_[18] = Model::Load("Assets/PushButton.fbx");
     hModel_[19] = Model::Load("Assets/PushButton.fbx");
 
-
     //押したら開き続ける壁
     hModel_[20] = Model::Load("Assets/Wall.fbx");
     hModel_[21] = Model::Load("Assets/Wall.fbx");
@@ -707,7 +709,6 @@ void Stage::ModelLoad()
     hModel_[27] = Model::Load("Assets/Wall.fbx");
     hModel_[28] = Model::Load("Assets/Wall.fbx");
     hModel_[29] = Model::Load("Assets/Wall.fbx");
-
 
     //押している間だけ発動するボタン(押す前)
     hModel_[30] = Model::Load("Assets/UpButton.fbx");
@@ -721,7 +722,6 @@ void Stage::ModelLoad()
     hModel_[38] = Model::Load("Assets/UpButton.fbx");
     hModel_[39] = Model::Load("Assets/UpButton.fbx");
 
-
     //押している間だけ発動するボタン(押した後)
     hModel_[40] = Model::Load("Assets/UpButton2.fbx");
     hModel_[41] = Model::Load("Assets/UpButton2.fbx");
@@ -734,7 +734,6 @@ void Stage::ModelLoad()
     hModel_[48] = Model::Load("Assets/UpButton2.fbx");
     hModel_[49] = Model::Load("Assets/UpButton2.fbx");
 
-
     //開く壁
     hModel_[50] = Model::Load("Assets/Wall.fbx");
     hModel_[51] = Model::Load("Assets/Wall.fbx");
@@ -746,7 +745,6 @@ void Stage::ModelLoad()
     hModel_[57] = Model::Load("Assets/Wall.fbx");
     hModel_[58] = Model::Load("Assets/Wall.fbx");
     hModel_[59] = Model::Load("Assets/Wall.fbx");
-
 
     //開いている間の何もないブロック
     hModel_[60] = Model::Load("Assets/AlphaBlock.fbx");
