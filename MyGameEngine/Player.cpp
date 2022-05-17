@@ -37,10 +37,11 @@ Player::~Player()
 
 void Player::Initialize()
 {
-	/*hSe_[0] = Audio::Load("Assets/Sound/Jump.wav", 1);
-	hSe_[1] = Audio::Load("Assets/Sound/Reset.wav", 1);
-	hSe_[2] = Audio::Load("Assets/Sound/Jump.wav", 1);
-	hSe_[3] = Audio::Load("Assets/Sound/Jump.wav", 1);*/
+	hSe_[0] = Audio::Load("Assets/Sound/Jump.wav", 5);
+	hSe_[1] = Audio::Load("Assets/Sound/Reset.wav", 5);
+	hSe_[2] = Audio::Load("Assets/Sound/Warpe.wav", 5);
+	hSe_[3] = Audio::Load("Assets/Sound/OpenWall.wav", 5);
+	hSe_[4] = Audio::Load("Assets/Sound/ButtonDown.wav", 5);
 
 	//右方向を向いているモデルのロード
 	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load(filePas_ + "PlayerRightStanding.fbx");
@@ -284,7 +285,7 @@ void Player::OrDoubleButtonCheck()
 //初期位置に戻る処理をまとめた関数
 void Player::Reset()
 {
-	//Audio::Play(hSe_[1]);
+	
 
 	//リセットボタンを押したら
 	//記録した影をすべてまっさらな状態にしたら
@@ -292,6 +293,7 @@ void Player::Reset()
 	{
 		//初期位置に戻る
 		transform_.position_ = pStage_->GetStartPosition();
+		Audio::Play(hSe_[1]);
 	}
 }
 
@@ -301,7 +303,7 @@ void Player::Jamp()
 	//今ジャンプしていなかったら
 	if (Input::IsKeyDown(DIK_SPACE))
 	{
-		//Audio::Play(hSe_[0]);
+		Audio::Play(hSe_[0]);
 		//Y軸の移動
 		transform_.position_.y += yMove_;
 

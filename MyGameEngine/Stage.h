@@ -19,7 +19,7 @@ class Stage : public GameObject
     int hModel_[200];   //モデル番号
     int shadowCount_;   //影の数
     int timeCount_;     //点滅ブロックの点滅間隔
-    int hSound_;        //サウンドファイル
+    int hSound_[4];        //サウンドファイル
     int hSe_[10];        //サウンドファイル
     int downNum_;
 

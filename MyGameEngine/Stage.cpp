@@ -64,10 +64,6 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
-    //サウンドデータのロード
-    //hSound_ = Audio::Load("Assets/あ.wav",5);
-    //assert(hSound_ >= 0);
-
     //エフェクトの画像をロード
     //引数は「ファイル名」「横に何個並んでるか」「縦に何個並んでるか」
     //戻り値は画像番号
@@ -376,6 +372,8 @@ void Stage::ChengeButtonAndWall(int x, int y)
         //誰かが押している間発動するボタンに乗っていたら
         if (steppingNumber[i] != 0)
         {
+            Audio::Play(hSound_[2]);
+            Audio::Play(hSound_[0]);
             //モデル変更
             //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
             CheckBlock((MEANTIME_BUTTON_UP_ + i) + 20, true);
@@ -503,6 +501,7 @@ void Stage::WarpBlockCollision(int getX, int getY)
                     //そこがワープブロックの出口だったら
                     if (map_[x][y] == WARP_BLOCK_EXIT_ + i)
                     {
+                        Audio::Play(hSound_[3]);
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
@@ -531,6 +530,7 @@ void Stage::WarpBlockCollision(int getX, int getY)
                     //そこがワープブロックの出口だったら
                     if (map_[x][y] == WARP_BLOCK_ENTRANS_ + i)
                     {
+                        Audio::Play(hSound_[3]);
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
@@ -622,6 +622,7 @@ void Stage::CheckBlock(int find, bool which)
 //引数は今プレイヤーのいる位置にあるマス
 void Stage::GoalCol(int x, int y)
 {
+    Audio::Play(hSound_[1]);
     //そこはゴール
     if (map_[x][y] == GOAL_BLOCK_)
     {
@@ -671,8 +672,11 @@ void Stage::Release()
 
 void Stage::ModelLoad()
 {
-    hSe_[0] = Audio::Load("Assets/あ.wav", 5);
-
+    //サウンドデータのロード
+    hSound_[0] = Audio::Load("Assets/Sound/ButtonDown.wav",4);
+    hSound_[1] = Audio::Load("Assets/Sound/Goal.wav",4);
+    hSound_[2] = Audio::Load("Assets/Sound/OpenWall.wav",4);
+    hSound_[3] = Audio::Load("Assets/Sound/Warpe.wav",4);
 
     //ステージを構成するブロック
     hModel_[0] = Model::Load("Assets/StageBlock/Block.fbx");

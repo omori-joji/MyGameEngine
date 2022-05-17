@@ -7,11 +7,6 @@
 #include "Player.h"
 #include "Stage.h"
 
-//クラスの前方宣言
-class Player;
-class Stage;
-
-
 //Shadowを管理するクラス
 class Shadow : public GameObject
 {
