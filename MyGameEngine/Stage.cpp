@@ -120,14 +120,10 @@ void Stage::Initialize()
             }
         }
     }
-
-
     //‰e‚Ì¶¬
     //Å‰‚Í”ñ•\¦‚Å‰e‚ğ¶¬‚·‚é
     pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
 }
-
-
 
 //XV
 void Stage::Update()
