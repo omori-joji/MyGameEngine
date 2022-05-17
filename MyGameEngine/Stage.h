@@ -7,11 +7,10 @@ class Player;
 class Shadow;
 class SceneManager;
 
-
 //◆◆◆を管理するクラス
 class Stage : public GameObject
 {
-    int hVfxA, hVfxB;
+    //int hVfxA, hVfxB;
 
 
 
@@ -21,8 +20,6 @@ class Stage : public GameObject
     int timeCount_;     //点滅ブロックの点滅間隔
     int hSound_[4];        //サウンドファイル
     int hSe_[10];        //サウンドファイル
-    int downNum_;
-
     const int VERTICAL_VALU_; //ステージの高さ
     const int BESIDE_VALU_;   //ステージの横幅
     const int BACK_GROUND_;
@@ -33,24 +30,24 @@ class Stage : public GameObject
     const int CHENGE_POSITIVE_GIMMICKS_; //+10したモデル番号に変えるための定数
     const int BRINKING_BLOCKS_;
     const int FRAME_TIME_;
-    const int DOBLE_BLOCKS_;
-    const int TWO_BLOCKS_;
     const int MEANTIME_WALL_;
     const int MEANTIME_BUTTON_UP_;
     const int MEANTIME_BUTTON_DOWN_;
     const int MEANTIME_BLOCK_ALPHA_;
-    const int WARP_BLOCK_ENTRANS_;
-    const int WARP_BLOCK_EXIT_;
+    const int ON_WARP_BLOCK_;
+    const int OR_WARP_BLOCK_;
     const int GOAL_BLOCK_;
-
-
+    const int ON_DOUBLE_BUTTON_UP_;
+    const int ON_DOUBLE_BUTTON_DOWN_;
+    const int OR_DOUBLE_BUTTON_UP_;
+    const int OR_DOUBLE_BUTTON_DOWN_;
+    const int DOUBLE_BUTTON_WALL_;
+    const int DOUBLE_BUTTON_WALL_ALPHA_;
 
     bool isBlinking_;      //ブロックが消えたかどうか
     bool isWarp_;          //ワープしたか塚
     bool isDoubleButton_[2]; //同時ボタンの片方を押した
     bool isButtonMenberFlg[9];
-
-
 
     Player* pPlayer_;             //Playerクラスを格納するポインタ
     SceneManager* pSceneManager_; //SceneManagerクラスを格納するポインタ
@@ -142,4 +139,7 @@ public:
 
     void SimultaneousWallOpen();
     int CheckFootBlock(int x, int y);
+    void ResetShadow();
+    void PlayRecord();
+    void AllFind();
 };

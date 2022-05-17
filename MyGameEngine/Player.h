@@ -2,10 +2,10 @@
 #include "Engine/GameObject.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
-#include "Engine/Fbx.h"
-#include <string>
-#include "Stage.h"
 #include "Engine/Audio.h"
+#include "Engine/Fbx.h"
+#include "Stage.h"
+#include <string>
 
 //Playerˆ—‚ğs‚¤ƒNƒ‰ƒX
 class Player : public GameObject

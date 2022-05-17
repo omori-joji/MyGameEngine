@@ -37,6 +37,7 @@ Player::~Player()
 
 void Player::Initialize()
 {
+	//サウンドファイルのロード
 	hSe_[0] = Audio::Load("Assets/Sound/Jump.wav", 5);
 	hSe_[1] = Audio::Load("Assets/Sound/Reset.wav", 5);
 	hSe_[2] = Audio::Load("Assets/Sound/Warpe.wav", 5);
