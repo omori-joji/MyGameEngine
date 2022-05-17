@@ -200,6 +200,26 @@ void Stage::Update()
 //描画
 void Stage::Draw()
 {
+    //背景の生成
+    //ど真ん中に出す
+    Transform back;
+
+    //横軸の真ん中
+    back.position_.x = BESIDE_VALU_ / 2;
+
+    //縦軸の真ん中
+    back.position_.y = VERTICAL_VALU_ / 2 + 1;
+
+    //少し奥に
+    back.position_.z = 0.5;
+
+    //Calclationクラスで移動、回転、拡大行列の処理をする
+    back.Calclation();
+
+    //モデルの表示
+    Model::SetTransform(hModel_[BACK_GROUND_], back);
+    Model::Draw(hModel_[BACK_GROUND_]);
+
     //ブロックの配置
     for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
     {
@@ -230,26 +250,6 @@ void Stage::Draw()
             Model::Draw(hModel_[type]);
         }
     }
-
-    //背景の生成
-    //ど真ん中に出す
-    Transform back;
-
-    //横軸の真ん中
-    back.position_.x = BESIDE_VALU_ / 2;
-
-    //縦軸の真ん中
-    back.position_.y = VERTICAL_VALU_ / 2 + 1;
-
-    //少し奥に
-    back.position_.z = 0.5;
-
-    //Calclationクラスで移動、回転、拡大行列の処理をする
-    back.Calclation();
-
-    //モデルの表示
-    Model::SetTransform(hModel_[BACK_GROUND_], back);
-    Model::Draw(hModel_[BACK_GROUND_]);
 }
 
 
@@ -372,8 +372,6 @@ void Stage::ChengeButtonAndWall(int x, int y)
         //誰かが押している間発動するボタンに乗っていたら
         if (steppingNumber[i] != 0)
         {
-            Audio::Play(hSound_[2]);
-            Audio::Play(hSound_[0]);
             //モデル変更
             //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
             CheckBlock((MEANTIME_BUTTON_UP_ + i) + 20, true);
@@ -501,7 +499,6 @@ void Stage::WarpBlockCollision(int getX, int getY)
                     //そこがワープブロックの出口だったら
                     if (map_[x][y] == WARP_BLOCK_EXIT_ + i)
                     {
-                        Audio::Play(hSound_[3]);
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
@@ -530,7 +527,6 @@ void Stage::WarpBlockCollision(int getX, int getY)
                     //そこがワープブロックの出口だったら
                     if (map_[x][y] == WARP_BLOCK_ENTRANS_ + i)
                     {
-                        Audio::Play(hSound_[3]);
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
@@ -622,7 +618,6 @@ void Stage::CheckBlock(int find, bool which)
 //引数は今プレイヤーのいる位置にあるマス
 void Stage::GoalCol(int x, int y)
 {
-    Audio::Play(hSound_[1]);
     //そこはゴール
     if (map_[x][y] == GOAL_BLOCK_)
     {
