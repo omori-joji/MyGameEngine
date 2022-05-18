@@ -82,7 +82,7 @@ void Player::Update()
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
-	pStage_->ChengeButtonAndWall((int)transform_.position_.x, (int)transform_.position_.y - PLAYER_FOOT_);
+	pStage_->ChengeButtonAndWall();
 
 	//ゴールに触れたかどうかを判別する関数を呼ぶ
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
@@ -223,7 +223,7 @@ void Player::OnDoubleButtonCheck()
 	bool onDoubleButton;
 
 	//踏んだらtrueが返されて、何もなければfalseが返される
-	onDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+	onDoubleButton = pStage_->OnDoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 
 	//1フレーム前は踏んでいない
 	if (!isPastDoubleButton_[ON_DOUBLE_BUTTON])

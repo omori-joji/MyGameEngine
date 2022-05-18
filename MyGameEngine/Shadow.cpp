@@ -53,7 +53,7 @@ void Shadow::Update()
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
-	pStage_->ChengeButtonAndWall((int)transform_.position_.x, (int)transform_.position_.y - SHADOW_FOOT_);
+	pStage_->ChengeButtonAndWall();
 }
 
 void Shadow::RecordingandPlayBack()
@@ -155,7 +155,7 @@ void Shadow::ShadowOnDoubleButtonCheck()
 	bool onDoubleButton;
 
 	//ボタンを踏んでいればtrue踏んでいなければfalseが返される
-	onDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
+	onDoubleButton = pStage_->OnDoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - SHADOW_FOOT_);
 
 	//1フレーム前は踏んでいない
 	if (!isShadowDoublePastButton_[ON_DOUBLE_BUTTON])

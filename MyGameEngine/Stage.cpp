@@ -1,12 +1,5 @@
-#include "Engine/Model.h"
-#include "Engine/Input.h"
-#include "Engine/CsvReader.h"
-#include "Engine/SceneManager.h"
+
 #include "Stage.h"
-#include "Player.h"
-#include "Shadow.h"
-#include "Engine/Audio.h"
-#include "Engine/VisualEffect.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
@@ -39,19 +32,15 @@ Stage::Stage(GameObject* parent)
     isBlinking_(true),                      //壁が消えたか消えていないか
     isWarp_(true),                          //ワープしたかしていないか
     isDoubleButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
-    buttonNumber(),
-    steppingNumber(),
-    steppingNumber1(),
-    steppingNumber2(),
-    isOnButton(false),
-    isButtonMenberFlg(),
-    hSe_(),
-    ON_DOUBLE_BUTTON_UP_(111),
-    ON_DOUBLE_BUTTON_DOWN_(121),
-    OR_DOUBLE_BUTTON_UP_(131),
-    OR_DOUBLE_BUTTON_DOWN_(141),
-    DOUBLE_BUTTON_WALL_(151),
-    DOUBLE_BUTTON_WALL_ALPHA_(161)
+    steppingNumberMeanTime(),               //ボタンに乗っている人数を記憶する変数
+    steppingNumber_OnDouble(),              //ボタンに乗っている人数を記憶する変数
+    steppingNumber_OrDouble(),              //ボタンに乗っている人数を記憶する変数
+    ON_DOUBLE_BUTTON_UP_(111),              //同時押しボタンの片方。踏んでいない状態のモデル番号
+    ON_DOUBLE_BUTTON_DOWN_(121),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    OR_DOUBLE_BUTTON_UP_(131),              //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    OR_DOUBLE_BUTTON_DOWN_(141),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    DOUBLE_BUTTON_WALL_(151),               //同時押しボタンに対応した壁。開いてない状態のモデル番号
+    DOUBLE_BUTTON_WALL_ALPHA_(161)          //同時押しボタンに対応した壁。開いている状態のモデル番号
 {
 }
 
@@ -115,7 +104,6 @@ void Stage::Initialize()
             }
         }
     }
-
     //影の生成
     //最初は非表示で影を生成する
     pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
@@ -196,8 +184,6 @@ void Stage::Draw()
     }
 }
 
-
-
 //踏んでいる間発動するボタンがあるかどうかの処理を実行する
 //引数はPlayerもしくは影の足元の値
 //戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
@@ -220,7 +206,7 @@ bool Stage::MeanTimeButton(int x, int y)
 //同時押しボタンの片方があるかどうかの処理を実行する
 //引数はPlayerもしくは影の足元の値
 //戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
-bool Stage::DoubleButton(int x, int y)
+bool Stage::OnDoubleButton(int x, int y)
 {
     //同時押しボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
@@ -263,7 +249,7 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //押している間だけ発動するボタンに乗っている人数が0人だったら
-        if (steppingNumber[i] == 0)
+        if (steppingNumberMeanTime[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
@@ -278,7 +264,7 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //同時押しボタンの片方のボタンに乗っている人数が0人だったら
-        if (steppingNumber1[i] == 0)
+        if (steppingNumber_OnDouble[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(ON_DOUBLE_BUTTON_DOWN_ + i, false);
@@ -293,7 +279,7 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //同時押しボタンのもう片方のボタンに乗っている人数が0人だったら
-        if (steppingNumber2[i] == 0)
+        if (steppingNumber_OrDouble[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(OR_DOUBLE_BUTTON_DOWN_ + i, false);
@@ -307,14 +293,14 @@ void Stage::CollisionExit()
 
 //ボタンのモデルと壁のモデルを変更する関数
 //引数は影とPlayerの1ブロック下の位置
-void Stage::ChengeButtonAndWall(int x, int y)
+void Stage::ChengeButtonAndWall()
 {
     //押している間発動するボタン
     //すべての壁を探す
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //誰かが押している間発動するボタンに乗っていたら
-        if (steppingNumber[i] != 0)
+        if (steppingNumberMeanTime[i] != 0)
         {
             //モデル変更
             //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
@@ -330,7 +316,7 @@ void Stage::ChengeButtonAndWall(int x, int y)
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //誰かが同時ボタンに乗っていたら
-        if (steppingNumber1[i] != 0)
+        if (steppingNumber_OnDouble[i] != 0)
         {
             //モデル変更
             CheckBlock(ON_DOUBLE_BUTTON_UP_ + i, true);
@@ -346,7 +332,7 @@ void Stage::ChengeButtonAndWall(int x, int y)
     //上記と同じ処理なのでコメントは省略
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        if (steppingNumber2[i] != 0)
+        if (steppingNumber_OrDouble[i] != 0)
         {
             CheckBlock(OR_DOUBLE_BUTTON_UP_ + i, true);
             isDoubleButton_[1] = true;
@@ -450,42 +436,42 @@ void Stage::AllFind()
 //引数は対応するギミックの番号
 void Stage::SetMeanTimeStepNumberCountUp(int a)
 {
-    steppingNumber[a]++;
+    steppingNumberMeanTime[a]++;
 }
 
 //押している間発動するボタンに乗っている人数をカウントダウンする関数
 //引数は対応するギミックの番号
 void Stage::SetMeanTimeStepNumberCountDown(int meanTimeNum)
 {
-    steppingNumber[meanTimeNum]--;
+    steppingNumberMeanTime[meanTimeNum]--;
 }
 
 //同時ボタンの片方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
 void Stage::SetOnDoubleStepNumberCountUp(int meanTimeNum)
 {
-    steppingNumber1[meanTimeNum]++;
+    steppingNumber_OnDouble[meanTimeNum]++;
 }
 
 //同時ボタンの片方に乗っている人数をカウントダウンする関数
 //引数は対応するギミックの番号
 void Stage::SetOnDoubleStepNumberCountDown(int onDoubleNum)
 {
-    steppingNumber1[onDoubleNum]--;
+    steppingNumber_OnDouble[onDoubleNum]--;
 }
 
 //同時ボタンのもう方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
 void Stage::SetOrDoubleStepNumberCountUp(int orDunbleNum)
 {
-    steppingNumber2[orDunbleNum]++;
+    steppingNumber_OrDouble[orDunbleNum]++;
 }
 
 //同時ボタンのもう方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
 void Stage::SetOrDoubleStepNumberCountDown(int orDunbleNum)
 {
-    steppingNumber2[orDunbleNum]--;
+    steppingNumber_OrDouble[orDunbleNum]--;
 }
 
 //ワープブロックに入った時の処理を実行する
@@ -605,14 +591,12 @@ void Stage::CheckBlock(int find, bool which)
         //縦
         for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
         {
-
             //そこが引数で受け取ったブロックだったら
             //第二引数がfalseでモデル番号-10のモデルに切り替える
             if (map_[x][y] == find && which == false)
             {
                 map_[x][y] = find - CHENGE_POSITIVE_GIMMICKS_;
             }
-
             //そこが引数で受け取ったブロックだったら
             //第二引数がtrueでモデル番号+10のモデルに切り替える
             else if (map_[x][y] == find && which == true)
@@ -651,8 +635,8 @@ bool Stage::isCrash(int x, int y)
         map_[x][y] == OR_WARP_BLOCK_ ||
         map_[x][y] == MEANTIME_BLOCK_ALPHA_ ||
         map_[x][y] == 62 ||
-        map_[x][y] == 81 ||
-        map_[x][y] == 161)
+        map_[x][y] == BRINKING_BLOCKS_ ||
+        map_[x][y] == DOUBLE_BUTTON_WALL_ALPHA_)
     {
         return false;
     }
