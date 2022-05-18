@@ -20,7 +20,6 @@ public:
 	Transform	 transform_; //位置、角度、拡大
 
 
-
 private:
 	GameObject* FindSub(std::string objectName);
 
@@ -72,6 +71,4 @@ public:
 		childList_.push_front(p);
 		return p;
 	}
-
-	int DeltaTime();
 };

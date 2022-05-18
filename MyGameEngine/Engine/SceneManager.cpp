@@ -5,7 +5,6 @@
 #include "../Stage.h"
 #include "../Clear.h"
 #include "../Title.h"
-#include "../Setumei.h"
 
 
 //コンストラクタ
@@ -47,7 +46,6 @@ void SceneManager::Update()
 		   case SCENE_ID_STAGE4: Instantiate<Stage>(this); break;
 		   case SCENE_ID_CLEAR: Instantiate<Clear>(this); break;
 		   case SCENE_ID_CLEDIT: Instantiate<Clear>(this); break;
-		   case SCENE_ID_SETUMEI: Instantiate<Setumei>(this); break;
 		   case SCENE_ID_TITLE2: Instantiate<Title>(this); break;
 		}
 

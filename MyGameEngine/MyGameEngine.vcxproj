@@ -149,7 +149,6 @@
   <ItemGroup>
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="Collider.cpp" />
-    <ClCompile Include="Enemy.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
     <ClCompile Include="Engine\camera.cpp" />
     <ClCompile Include="Engine\CsvReader.cpp" />
@@ -170,10 +169,8 @@
     <ClCompile Include="Model.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
-    <ClCompile Include="Setumei.cpp" />
     <ClCompile Include="Shadow.cpp" />
     <ClCompile Include="Stage.cpp" />
-    <ClCompile Include="TestScene.cpp" />
     <ClCompile Include="Title.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -195,9 +192,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Bullet.h" />
     <ClInclude Include="Clear.h" />
-    <ClInclude Include="Enemy.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\camera.h" />
     <ClInclude Include="Engine\Collider.h" />
@@ -220,7 +215,6 @@
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
     <ClInclude Include="resource.h" />
-    <ClInclude Include="Setumei.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TestScene.h" />

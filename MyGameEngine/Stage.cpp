@@ -1,55 +1,47 @@
-#include "Engine/Model.h"
-#include "Engine/Input.h"
-#include "Engine/CsvReader.h"
-#include "Engine/SceneManager.h"
+
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
-#include "Engine/Audio.h"
-
-#include "Engine/VisualEffect.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
-    :GameObject(parent, "Stage"), hSound_(-1),
-    PLAYER_GENERAT_POS_(200),
-    VERTICAL_VALU_(23),     //マップ縦軸の値
-    BESIDE_VALU_(28),       //マップ横軸の値
-    SHADOW_NAMBER_(5),
-    ALL_GIMMICKS_(9),
-    RESET_VALU_(0),
-    CHENGE_POSITIVE_GIMMICKS_(10),
-    BRINKING_BLOCKS_(81),
-    FRAME_TIME_(60),
-    DOBLE_BLOCKS_(151),
-    BACK_GROUND_(3),
-    TWO_BLOCKS_(161),
-    MEANTIME_WALL_(51),
-    MEANTIME_BUTTON_UP_(31),
-    MEANTIME_BUTTON_DOWN_(41),
-    MEANTIME_BLOCK_ALPHA_(61),
-    WARP_BLOCK_ENTRANS_(91),
-    WARP_BLOCK_EXIT_(101),
-    GOAL_BLOCK_(3),
-
-
-    shadowCount_(0),
-    timeCount_(0),
-
-
-    pPlayer_(nullptr),
-    pSceneManager_(nullptr),
-
-
-    isBlinking_(true),
-    isWarp_(true),
-    isdoubleButton1_(false),
-    isdoubleButton2_(false),
-
-    steppingNumber(0),
-    isOnButton(false)
+    :GameObject(parent, "Stage"),
+    hModel_(),                              //すべてのステージモデルを格納する変数
+    hSound_(),                              //SEとBGMを格納する変数
+    PLAYER_GENERAT_POS_(200),               //Playerの初期位置
+    SHADOW_NAMBER_(5),                      //影の最大数
+    ALL_GIMMICKS_(10),                      //1種類のギミックを何個あるか調べる値
+    RESET_VALU_(0),                         //初期化用の値
+    CHENGE_POSITIVE_GIMMICKS_(10),          //モデルを変更するための値
+    BRINKING_BLOCKS_(81),                   //点滅するブロック
+    FRAME_TIME_(60),                        //点滅する間隔
+    BACK_GROUND_(3),                        //背景のモデル番号
+    MEANTIME_BUTTON_UP_(31),                //踏んでいる間発動するボタンの踏む前のモデル番号
+    MEANTIME_BUTTON_DOWN_(41),              //踏んでいる間発動するボタンの踏んだあとのモデル番号
+    MEANTIME_WALL_(51),                     //ボタンが踏まれていない間閉じている壁のモデル番号
+    MEANTIME_BLOCK_ALPHA_(61),              //ボタンが踏まれている間開いている壁のモデル番号
+    ON_WARP_BLOCK_(91),                     //片方のワープブロックのモデル番号
+    OR_WARP_BLOCK_(101),                    //もう片方のワープブロックのモデル番号
+    GOAL_BLOCK_(3),                         //ゴールブロックのモデル番号
+    shadowCount_(0),                        //今いる影の数
+    timeCount_(0),                          //秒数を格納する変数
+    pPlayer_(nullptr),                      //Playerクラスを格納するポインタ
+    pShadow_(),                             //Shadowクラスを格納するポインタ
+    pSceneManager_(nullptr),                //SceneManagerクラスを格納するポインタ
+    stertPos(0,0,0),                        //Playerの初期位置を記憶する変数
+    isBlinking_(true),                      //壁が消えたか消えていないか
+    isWarp_(true),                          //ワープしたかしていないか
+    isDoubleButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
+    steppingNumberMeanTime(),               //ボタンに乗っている人数を記憶する変数
+    steppingNumber_OnDouble(),              //ボタンに乗っている人数を記憶する変数
+    steppingNumber_OrDouble(),              //ボタンに乗っている人数を記憶する変数
+    ON_DOUBLE_BUTTON_UP_(111),              //同時押しボタンの片方。踏んでいない状態のモデル番号
+    ON_DOUBLE_BUTTON_DOWN_(121),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    OR_DOUBLE_BUTTON_UP_(131),              //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    OR_DOUBLE_BUTTON_DOWN_(141),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    DOUBLE_BUTTON_WALL_(151),               //同時押しボタンに対応した壁。開いてない状態のモデル番号
+    DOUBLE_BUTTON_WALL_ALPHA_(161)          //同時押しボタンに対応した壁。開いている状態のモデル番号
 {
-
 }
 
 //デストラクタ
@@ -60,60 +52,45 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
-    //サウンドデータのロード
-    hSound_ = Audio::Load("Assets/get1.wav",1);
-    assert(hSound_ >= 0);
-
     //エフェクトの画像をロード
     //引数は「ファイル名」「横に何個並んでるか」「縦に何個並んでるか」
     //戻り値は画像番号
-    hVfxA = VisualEffect::Load("Assets/SampleEffectA.png", 7, 7);
-    hVfxB = VisualEffect::Load("Assets/SampleEffectB.png", 6, 5);
+    //hVfxA = VisualEffect::Load("Assets/SampleEffectA.png", 7, 7);
+    //hVfxB = VisualEffect::Load("Assets/SampleEffectB.png", 6, 5);
 
-
-    //1個エフェクトを出す
-    Transform transform;
-    transform.position_ = XMFLOAT3(6, 7, -1);       //位置
-    transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
-    VisualEffect::Add(hVfxA, transform, 0.5f, true);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
-
-
-
+    ////1個エフェクトを出す
+    //Transform transform;
+    //transform.position_ = XMFLOAT3(6, 7, -1);       //位置
+    //transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
+    //VisualEffect::Add(hVfxA, transform, 0.5f, true);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
 
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
-
-    //SceneManagerクラスの情報を格納する
-    if (pSceneManager_ == nullptr)
-    {
-        pSceneManager_ = (SceneManager*)Find("SceneManager");
-    }
-
+    AllFind();
 
     //Csvファイルの読み込み
     CsvReader csv;
 
-
     //読み込まれたステージIDに対応するCSVファイルを読み込む
-    switch(pSceneManager_->nextSceneID_)
+    switch (pSceneManager_->nextSceneID_)
     {
-    case SCENE_ID_STAGE1: csv.Load("Assets/Stage/Stage1.csv");break;
-    case SCENE_ID_STAGE2: csv.Load("Assets/Stage/Stage2.csv");break;
-    case SCENE_ID_STAGE3: csv.Load("Assets/Stage/Stage3.csv");break;
-    case SCENE_ID_STAGE4: csv.Load("Assets/Stage/Stage4.csv");break;
+    case SCENE_ID_STAGE1: csv.Load("Assets/Stage/Stage1.csv"); break;
+    case SCENE_ID_STAGE2: csv.Load("Assets/Stage/Stage2.csv"); break;
+    case SCENE_ID_STAGE3: csv.Load("Assets/Stage/Stage3.csv"); break;
+    case SCENE_ID_STAGE4: csv.Load("Assets/Stage/Stage4.csv"); break;
     }
 
     //プレイヤーの生成
     //200が入っているマスにプレイヤーが出現する
     //横
-    for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
+    for (int x = RESET_VALU_; x < MAP_BESIDE_; x++)
     {
         //縦
-        for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
+        for (int y = RESET_VALU_; y < MAP_VERTICAL; y++)
         {
             //エクセルだとyの値が逆なので縦軸-1をしてあげる
-            map_[x][y] = csv.GetValue(x, (VERTICAL_VALU_-1) - y); 
+            map_[x][y] = csv.GetValue(x, (MAP_VERTICAL - 1) - y);
 
             if (map_[x][y] == PLAYER_GENERAT_POS_)
             {
@@ -127,125 +104,64 @@ void Stage::Initialize()
             }
         }
     }
-
-
     //影の生成
     //最初は非表示で影を生成する
     pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
 }
 
-
-
 //更新
 void Stage::Update()
 {
-    if (Input::IsKeyDown(DIK_SPACE))
-    {
-        //1個エフェクトを出す
-        Transform transform;
-        transform.position_ = XMFLOAT3(15, 15, -1);       //位置
-        transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
-        VisualEffect::Add(hVfxB, transform, 0.5f, false);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
-    }
+    //if (Input::IsKeyDown(DIK_SPACE))
+    //{
+    //    //1個エフェクトを出す
+    //    Transform transform;
+    //    transform.position_ = XMFLOAT3(15, 15, -1);       //位置
+    //    transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
+    //    VisualEffect::Add(hVfxB, transform, 0.5f, false);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
+    //}
 
+    //影を再生する処理をまとめた関数
+    PlayRecord();
 
-
-
-    //Player情報の格納
-    if (pPlayer_ == nullptr)
-    {
-        pPlayer_ = (Player*)Find("Player");
-    }
-
-
-    //再生スタート
-    if (Input::IsKeyDown(DIK_1))
-    {
-        //点滅ブロックの情報をリセット
-        timeCount_ = RESET_VALU_;
-        isBlinking_ = true;
-
-
-        //すでに生成している影を表示し、もう一度再生する
-        if (shadowCount_ <= SHADOW_NAMBER_)
-        {
-            //すでに生成している影をもう一度1から再生する
-            for (int i = RESET_VALU_; i <= shadowCount_; i++)
-            {
-                //表示するフラグ
-                pShadow_[i]->ShadowDisplayFlag();
-            }
-
-            if (shadowCount_ <= SHADOW_NAMBER_ -1)
-            {
-                //二体目以降の影の番号
-                shadowCount_++;
-            }
-        }
-
-        //影の生成
-        if (shadowCount_ <= SHADOW_NAMBER_)
-        {
-            pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
-        }
-    }
-
-    //保存された影の動きをすべてリセットする
-    if (Input::IsKeyDown(DIK_2))
-    {
-        Audio::Play(hSound_);
-
-        //今ある影分
-        for (int i = RESET_VALU_; i <= shadowCount_; i++)
-        {
-            //解放処理
-            pShadow_[i]->killMe();
-        }
-        //影の数をリセット
-        shadowCount_ = RESET_VALU_;
-    }
+    //記録した影をすべてまっさらにする関数
+    ResetShadow();
 
     //一定時間ごとにブロック切り替える
     Blinking(BRINKING_BLOCKS_, FRAME_TIME_);
-
-
-    //同時ボタンのギミック
-    //どちらもボタンを押していたら発動する
-    if (isdoubleButton1_ && isdoubleButton2_)
-    {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-        {
-            //モデルを切り替える
-            CheckBlock(151 + i, true);
-        }
-    }
-    //どちらかが、あるいはどちらも押していなければボタンは元に戻る
-    else
-    {
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-        {
-            //モデルを切り替える
-            CheckBlock(161 + i, false);
-        }
-    }
-    ChengeButton();
 }
-
 
 //描画
 void Stage::Draw()
 {
+    //背景の生成
+    //ど真ん中に出す
+    Transform back;
+
+    //横軸の真ん中
+    back.position_.x = MAP_BESIDE_ / 2;
+
+    //縦軸の真ん中
+    back.position_.y = MAP_VERTICAL / 2 + 1;
+
+    //少し奥に
+    back.position_.z = 0.5;
+
+    //Calclationクラスで移動、回転、拡大行列の処理をする
+    back.Calclation();
+
+    //モデルの表示
+    Model::SetTransform(hModel_[BACK_GROUND_], back);
+    Model::Draw(hModel_[BACK_GROUND_]);
+
     //ブロックの配置
-    for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
+    for (int x = RESET_VALU_; x < MAP_BESIDE_; x++)
     {
-        for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
+        for (int y = RESET_VALU_; y < MAP_VERTICAL; y++)
         {
             //プレイヤーの位置とブロックを置かない位置
             //その場合はそれ以降の処理はしない
-            if (map_[x][y] == RESET_VALU_ || map_[x][y] == PLAYER_GENERAT_POS_)
-            {
-                continue;
-            }
+            if (map_[x][y] == RESET_VALU_ || map_[x][y] == PLAYER_GENERAT_POS_) continue;
 
             //モデル番号の格納
             int type = map_[x][y] - 1;
@@ -259,179 +175,341 @@ void Stage::Draw()
             //Calclationクラスで移動、回転、拡大行列の処理をする
             trans.Calclation();
 
-
             //モデルの表示
             Model::SetTransform(hModel_[type], trans);
             Model::Draw(hModel_[type]);
         }
     }
-
-    //背景の生成
-    //ど真ん中に出す
-    Transform back;
-
-    //横軸の真ん中
-    back.position_.x = BESIDE_VALU_ / 2;
-
-    //縦軸の真ん中
-    back.position_.y = VERTICAL_VALU_ / 2 + 1;
-
-    //少し奥に
-    back.position_.z = 0.5;
-
-    //Calclationクラスで移動、回転、拡大行列の処理をする
-    back.Calclation();
-
-    //モデルの表示
-    Model::SetTransform(hModel_[BACK_GROUND_], back);
-    Model::Draw(hModel_[BACK_GROUND_]);
 }
 
-
-
-//開放
-void Stage::Release()
-{
-}
-
-
-//そのマスに障害物があるかどうか
-//戻り値、何かあるtrue,何もないfalse
-bool Stage::isCrash(int x, int y)
-{
-    //そこにはブロックはない
-    if (map_[x][y] == 0 ||
-        map_[x][y] == BACK_GROUND_ ||
-        map_[x][y] == PLAYER_GENERAT_POS_ ||
-        map_[x][y] == 91||
-        map_[x][y] == 101||
-        map_[x][y] == MEANTIME_BLOCK_ALPHA_ ||
-        map_[x][y] == 62||
-        map_[x][y] == 81||
-        map_[x][y] == 161)
-    {
-        return false;
-    }
-    //そこにはブロックがあるから通れない
-    else
-    {
-        return true;
-    }
-}
-
-
-//ボタンがPlayerの足元にあるかどうかを判断する関数 
-//ボタンが入っている配列はmap_[x][y] == 4が入っている
-//この関数はPlayerクラスで常に呼ばれている
-bool Stage::DownButton(int x, int y)
+//踏んでいる間発動するボタンがあるかどうかの処理を実行する
+//引数はPlayerもしくは影の足元の値
+//戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
+bool Stage::MeanTimeButton(int x, int y)
 {
     //押している間ボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        if (map_[x][y] == MEANTIME_BUTTON_UP_ + i || map_[x][y] == MEANTIME_BUTTON_DOWN_ + i)
-        {
-
-            return true;
-        }
+        //下にあるボタンが踏んでいる間だけのボタンもしくは踏んだ後のボタンだったら
+        if (map_[x][y] == MEANTIME_BUTTON_UP_ + i || map_[x][y] == MEANTIME_BUTTON_DOWN_ + i) return true;
     }
+    //離れた時の処理
+    CollisionExit();
+    return false;
+}
 
-
-    
+//同時押しボタンの片方があるかどうかの処理を実行する
+//引数はPlayerもしくは影の足元の値
+//戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
+bool Stage::OnDoubleButton(int x, int y)
+{
     //同時押しボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        if (map_[x][y] == 111 + i)
-        {
-            //ボタンのモデルを切り替える
-            CheckBlock(map_[x][y], true);
-
-            //フラグをtrueにする
-            isdoubleButton1_ = true;
-        }
-        else if(map_[x][y] == 131 + i)
-        {
-            //ボタンのモデルを切り替える
-            CheckBlock(map_[x][y], true);
-
-            //フラグをtrueにする
-
-            isdoubleButton2_ = true;
-        }
+        //下にあるボタンが同時押しボタンの押す前、もしくは押した後のモデルだったら
+        if (map_[x][y] == ON_DOUBLE_BUTTON_UP_ + i || map_[x][y] == ON_DOUBLE_BUTTON_DOWN_ + i) return true;
     }
-    
+    //離れた時の処理
+    CollisionExit();
+    return false;
+}
 
-
-    //Playerが離れたら
-    //もしくはリセットしたら
-    if (steppingNumber == 0)
+//同時押しボタンのもう片方があるかどうかの処理を実行する
+//引数はPlayerもしくは影の足元の値
+//戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
+bool Stage::OrDoubleButton(int x, int y)
+{
+    //同時押しボタン
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        //押している間だけのボタンのモデルをリセットする
-        //for (int i = RESET_VALU_; i <= shadowCount_; i++)
-        //{
-        //    if (pShadow_[i]->isRecording_ == false)
-        //    {
-        //        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
-        //        {
-        //            //ボタンのモデルを切り替える
-        //            CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
+        //下にあるボタンが同時押しボタンの押す前、もしくは押した後のモデルだったら
+        if (map_[x][y] == OR_DOUBLE_BUTTON_UP_ + i || map_[x][y] == OR_DOUBLE_BUTTON_DOWN_ + i) return true;
+    }
+    //離れた時の処理
+    CollisionExit();
+    return false;
+}
 
-        //            //壁のモデルを切り替える
-        //            CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
-        //        }
-        //    }
-        //}
-
-
-        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+//ギミックから離れた時の処理を実行する関数
+void Stage::CollisionExit()
+{
+    //押している間だけのボタン
+    //すべてのギミックを調べる
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    {
+        //押している間だけ発動するボタンに乗っている人数が0人だったら
+        if (steppingNumberMeanTime[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
 
             //壁のモデルを切り替える
             CheckBlock(MEANTIME_BLOCK_ALPHA_ + i, false);
-
-            //押した後のボタンを切り替える
-            CheckBlock(121 + i, false);
-
-            //開いた壁を元に戻す
-            CheckBlock(141 + i, false);
         }
-
-        //同時ボタンのフラグ処理を初期化
-        isdoubleButton1_ = false;
-        isdoubleButton2_ = false;
     }
-    return false;
+
+    //同時押しボタンの片方のボタン
+    //すべてのギミックを調べる
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    {
+        //同時押しボタンの片方のボタンに乗っている人数が0人だったら
+        if (steppingNumber_OnDouble[i] == 0)
+        {
+            //ボタンのモデルを切り替える
+            CheckBlock(ON_DOUBLE_BUTTON_DOWN_ + i, false);
+
+            //壁を開くフラグをtrueにする
+            isDoubleButton_[0] = false;
+        }
+    }
+
+    //同時押しボタンのもう片方のボタン
+    //すべてのギミックを調べる
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    {
+        //同時押しボタンのもう片方のボタンに乗っている人数が0人だったら
+        if (steppingNumber_OrDouble[i] == 0)
+        {
+            //ボタンのモデルを切り替える
+            CheckBlock(OR_DOUBLE_BUTTON_DOWN_ + i, false);
+
+            //壁を開くフラグをtrueにする
+            isDoubleButton_[1] = false;
+        }
+    }
+
 }
 
-
-//すべてのブロックを探して、モデルを切り替える関数
-//第一引数は切り替えたいブロックの番号
-//第二引数はプラスかマイナスか
-void Stage::CheckBlock(int find , bool which)
+//ボタンのモデルと壁のモデルを変更する関数
+//引数は影とPlayerの1ブロック下の位置
+void Stage::ChengeButtonAndWall()
 {
-    //横
-    for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
+    //押している間発動するボタン
+    //すべての壁を探す
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        //縦
-        for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
+        //誰かが押している間発動するボタンに乗っていたら
+        if (steppingNumberMeanTime[i] != 0)
         {
+            //モデル変更
+            //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
+            CheckBlock((MEANTIME_BUTTON_UP_ + i) + 20, true);
 
-            //そこが引数で受け取ったブロックだったら
-            //第二引数がfalseでモデル番号-10のモデルに切り替える
-            if (map_[x][y] == find && which == false)
+            //ボタンのモデル
+            CheckBlock(MEANTIME_BUTTON_UP_ + i, true);
+        }
+    }
+
+    //片方の同時押しボタン
+    //すべての壁を調べる
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    {
+        //誰かが同時ボタンに乗っていたら
+        if (steppingNumber_OnDouble[i] != 0)
+        {
+            //モデル変更
+            CheckBlock(ON_DOUBLE_BUTTON_UP_ + i, true);
+
+            //壁を開くフラグをtrueにする
+            isDoubleButton_[0] = true;
+
+            //同時ボタンが2つとも押されていたら壁を開く処理をする関数
+            SimultaneousWallOpen();
+        }
+    }
+
+    //上記と同じ処理なのでコメントは省略
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    {
+        if (steppingNumber_OrDouble[i] != 0)
+        {
+            CheckBlock(OR_DOUBLE_BUTTON_UP_ + i, true);
+            isDoubleButton_[1] = true;
+            SimultaneousWallOpen();
+        }
+    }
+}
+
+//同時ボタンのフラグがどちらもtrueだったら壁を開く関数
+void Stage::SimultaneousWallOpen()
+{
+    //同時ボタンのギミック
+    //どちらもボタンを押していたら壁を開く
+    if (isDoubleButton_[0] && isDoubleButton_[1]) CheckBlock(DOUBLE_BUTTON_WALL_, true);
+
+    //それ以外の条件の場合
+    //壁を閉じる
+    else CheckBlock(DOUBLE_BUTTON_WALL_ALPHA_, false);
+}
+
+//Playerか影が踏んだギミックのモデル番号の1の位を返す関数
+//ボタンに乗っている人数を調べるために使う
+//引数はPlayerか影の足元
+int Stage::CheckFootBlock(int x, int y)
+{
+    //1の位を返す
+    return (map_[x][y] % 10) -1;
+}
+
+//保存された影の動きをすべてリセットする関数
+void Stage::ResetShadow()
+{
+    //保存された影の動きをすべてリセットする
+    if (Input::IsKeyDown(DIK_2))
+    {
+        //今ある影分
+        for (int i = RESET_VALU_; i <= shadowCount_; i++)
+        {
+            //解放処理
+            pShadow_[i]->killMe();
+        }
+        //影の数をリセット
+        shadowCount_ = RESET_VALU_;
+    }
+}
+
+void Stage::PlayRecord()
+{
+    //再生スタート
+    if (Input::IsKeyDown(DIK_1))
+    {
+        //点滅ブロックの情報をリセット
+        timeCount_ = RESET_VALU_;
+        isBlinking_ = true;
+
+        //すでに生成している影を表示し、もう一度再生する
+        if (shadowCount_ <= SHADOW_NAMBER_)
+        {
+            //すでに生成している影をもう一度1から再生する
+            for (int i = RESET_VALU_; i <= shadowCount_; i++)
             {
-                map_[x][y] = find - CHENGE_POSITIVE_GIMMICKS_;
+                //表示するフラグ
+                pShadow_[i]->ShadowIsPlayFlag();
             }
 
-            //そこが引数で受け取ったブロックだったら
-            //第二引数がtrueでモデル番号+10のモデルに切り替える
-            else if(map_[x][y] == find && which == true)
+            //影の数がまだ余っていたら
+            if (shadowCount_ <= SHADOW_NAMBER_ - 1) shadowCount_++;//二体目以降の影の番号
+        }
+        //影の生成
+        if (shadowCount_ <= SHADOW_NAMBER_) pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
+    }
+}
+
+void Stage::AllFind()
+{
+    //Player情報の格納
+    if (pPlayer_ == nullptr) pPlayer_ = (Player*)Find("Player");
+
+    //SceneManagerクラスの情報を格納する
+    if (pSceneManager_ == nullptr) pSceneManager_ = (SceneManager*)Find("SceneManager");
+}
+
+//押している間発動するボタンに乗っている人数をカウントアップする関数
+//引数は対応するギミックの番号
+void Stage::SetMeanTimeStepNumberCountUp(int meanTimeNum)
+{
+    steppingNumberMeanTime[meanTimeNum]++;
+}
+
+//押している間発動するボタンに乗っている人数をカウントダウンする関数
+//引数は対応するギミックの番号
+void Stage::SetMeanTimeStepNumberCountDown(int meanTimeNum)
+{
+    steppingNumberMeanTime[meanTimeNum]--;
+}
+
+//同時ボタンの片方に乗っている人数をカウントアップする関数
+//引数は対応するギミックの番号
+void Stage::SetOnDoubleStepNumberCountUp(int onDoubleNum)
+{
+    steppingNumber_OnDouble[onDoubleNum]++;
+}
+
+//同時ボタンの片方に乗っている人数をカウントダウンする関数
+//引数は対応するギミックの番号
+void Stage::SetOnDoubleStepNumberCountDown(int onDoubleNum)
+{
+    steppingNumber_OnDouble[onDoubleNum]--;
+}
+
+//同時ボタンのもう方に乗っている人数をカウントアップする関数
+//引数は対応するギミックの番号
+void Stage::SetOrDoubleStepNumberCountUp(int orDunbleNum)
+{
+    steppingNumber_OrDouble[orDunbleNum]++;
+}
+
+//同時ボタンのもう方に乗っている人数をカウントアップする関数
+//引数は対応するギミックの番号
+void Stage::SetOrDoubleStepNumberCountDown(int orDunbleNum)
+{
+    steppingNumber_OrDouble[orDunbleNum]--;
+}
+
+//ワープブロックに入った時の処理を実行する
+//引数はPlayerもしくは影の
+void Stage::WarpBlockCollision(int getX, int getY)
+{
+    //すべてのワープブロックを調べる
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    {
+        //そこがワープブロックだったら
+        if (map_[getX][getY] == ON_WARP_BLOCK_ + i && isWarp_ == true)
+        {
+            //Stageのサイズ分調べる
+            //横
+            for (int x = RESET_VALU_; x < MAP_BESIDE_; x++)
             {
-                map_[x][y] = find + CHENGE_POSITIVE_GIMMICKS_;
+                //縦
+                for (int y = RESET_VALU_; y < MAP_VERTICAL; y++)
+                {
+                    //そこがワープブロックの出口だったら
+                    if (map_[x][y] == OR_WARP_BLOCK_ + i)
+                    {
+                        //Playerの位置をそこのワープブロックに反映させる
+                        pPlayer_->transform_.position_.x = x;
+                        pPlayer_->transform_.position_.y = y;
+
+                        //永久ループ防止のためにフラグ処理をしておく
+                        isWarp_ = false;
+                    }
+                }
             }
         }
     }
+
+    //すべてのワープブロックを調べる
+    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    {
+        //そこがワープブロックだったら
+        if (map_[getX][getY] == OR_WARP_BLOCK_ + i && isWarp_ == true)
+        {
+            //Stageのサイズ分調べる
+            //横
+            for (int x = RESET_VALU_; x < MAP_BESIDE_; x++)
+            {
+                //縦
+                for (int y = RESET_VALU_; y < MAP_VERTICAL; y++)
+                {
+                    //そこがワープブロックの出口だったら
+                    if (map_[x][y] == ON_WARP_BLOCK_ + i)
+                    {
+                        //Playerの位置をそこのワープブロックに反映させる
+                        pPlayer_->transform_.position_.x = x;
+                        pPlayer_->transform_.position_.y = y;
+
+                        //永久ループ防止のためにフラグ処理をしておく
+                        isWarp_ = false;
+                    }
+                }
+            }
+        }
+    }
+
+    //フラグ処理の初期化
+    //Playerがワープブロックから離れたら
+    //ワープブロックから離れたらフラグを初期化してもう一度入れるようにする
+    if (map_[getX][getY] == RESET_VALU_) isWarp_ = true;
 }
 
 //点滅ブロック
@@ -447,7 +525,7 @@ void Stage::Blinking(int blockNum, int time)
     if (timeCount_ >= time && isBlinking_ == true)
     {
         //モデルを切り替える関数
-        CheckBlock(blockNum , false);
+        CheckBlock(blockNum, false);
 
         //フラグをfalseにする
         isBlinking_ = false;
@@ -456,7 +534,7 @@ void Stage::Blinking(int blockNum, int time)
         timeCount_ = RESET_VALU_;
     }
     //不透明にする
-    else if(timeCount_ >= time && isBlinking_ == false)
+    else if (timeCount_ >= time && isBlinking_ == false)
     {
         //モデルを切り替える関数
         //引数に渡された値の-10のモデル番号を変える
@@ -467,6 +545,29 @@ void Stage::Blinking(int blockNum, int time)
 
         //計測時間をリセット
         timeCount_ = RESET_VALU_;
+    }
+}
+
+//すべてのブロックを探して、モデルを切り替える関数
+//第一引数は切り替えたいブロックの番号
+//第二引数はプラスかマイナスか
+void Stage::CheckBlock(int find, bool which)
+{
+    //Stageのサイズ分調べる
+    //横
+    for (int x = RESET_VALU_; x < MAP_BESIDE_; x++)
+    {
+        //縦
+        for (int y = RESET_VALU_; y < MAP_VERTICAL; y++)
+        {
+            //そこが引数で受け取ったブロックだったら
+            //第二引数がfalseでモデル番号-10のモデルに切り替える
+            if (map_[x][y] == find && which == false) map_[x][y] = find - CHENGE_POSITIVE_GIMMICKS_;
+
+            //そこが引数で受け取ったブロックだったら
+            //第二引数がtrueでモデル番号+10のモデルに切り替える
+            else if (map_[x][y] == find && which == true) map_[x][y] = find + CHENGE_POSITIVE_GIMMICKS_;
+        }
     }
 }
 
@@ -485,118 +586,49 @@ void Stage::GoalCol(int x, int y)
     }
 }
 
-//
-void Stage::WarpBlockCollision(int getX,int getY)
+//そのマスに障害物があるかどうか
+//戻り値、何かあるtrue,何もないfalse
+//引数はPlayerか影の位置
+bool Stage::isCrash(int x, int y)
 {
-    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    //当たり判定のないブロックを設定する
+    if (map_[x][y] == 0 ||
+        map_[x][y] == BACK_GROUND_ ||
+        map_[x][y] == PLAYER_GENERAT_POS_ ||
+        map_[x][y] == ON_WARP_BLOCK_ ||
+        map_[x][y] == OR_WARP_BLOCK_ ||
+        map_[x][y] == MEANTIME_BLOCK_ALPHA_ ||
+        map_[x][y] == 62 ||
+        map_[x][y] == BRINKING_BLOCKS_ ||
+        map_[x][y] == DOUBLE_BUTTON_WALL_ALPHA_)
     {
-        //PlayerのPositionを引数で受け取る
-        //そこがワープブロックだったら
-        if (map_[getX][getY] == WARP_BLOCK_ENTRANS_ + i && isWarp_ == true)
-        {
-            //Stageのサイズ分調べる
-            //横
-            for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
-            {
-                //縦
-                for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
-                {
-                    //そこがワープブロックの出口だったら
-                    if (map_[x][y] == WARP_BLOCK_EXIT_ + i)
-                    {
-                        //Playerの位置をそこのワープブロックに反映させる
-                        pPlayer_->transform_.position_.x = x;
-                        pPlayer_->transform_.position_.y = y;
-
-                        //永久ループ防止のためにフラグ処理をしておく
-                        isWarp_ = false;
-                    }
-                }
-            }
-        }
+        return false;
     }
-
-
-    for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+    //そこにはブロックがあるから通れない
+    else
     {
-
-        //PlayerのPositionを引数で受け取る
-        //そこがワープブロックだったら
-        if (map_[getX][getY] == WARP_BLOCK_EXIT_ + i && isWarp_ == true)
-        {
-
-            //Stageのサイズ分調べる
-            //横
-            for (int x = RESET_VALU_; x < BESIDE_VALU_; x++)
-            {
-                //縦
-                for (int y = RESET_VALU_; y < VERTICAL_VALU_; y++)
-                {
-                    //そこがワープブロックの出口だったら
-                    if (map_[x][y] == WARP_BLOCK_ENTRANS_ + i)
-                    {
-                        //Playerの位置をそこのワープブロックに反映させる
-                        pPlayer_->transform_.position_.x = x;
-                        pPlayer_->transform_.position_.y = y;
-
-                        //永久ループ防止のためにフラグ処理をしておく
-                        isWarp_ = false;
-                    }
-                }
-            }
-        }
-    }
-
-
-    //フラグ処理の初期化
-    //引数はPlayerの位置
-    //ワープブロックから離れたらフラグを初期化してもう一度入れるようにする
-    if (map_[getX][getY] == RESET_VALU_)
-    {
-        isWarp_ = true;
+        return true;
     }
 }
 
+//スポーン地点を渡す関数
 XMFLOAT3 Stage::GetStartPosition()
 {
-    steppingNumber = 0;
     return stertPos;
 }
 
-void Stage::Reset(int x, int y)
+//開放
+void Stage::Release()
 {
-    if (map_[x][y] <= 2)
-    {
-        isOnButton = false;
-    }
 }
-
-void Stage::ChengeButton()
-{
-    if (steppingNumber != 0)
-    {
-        //モデル変更
-        CheckBlock(MEANTIME_BUTTON_UP_, true);
-
-        //壁を開く処理
-        CheckBlock(MEANTIME_WALL_, true);
-    }
-}
-
-void Stage::StepNumberCountUp()
-{
-    steppingNumber++;
-}
-
-void Stage::StepNumberCountDown()
-{
-    steppingNumber--;
-}
-
-
 
 void Stage::ModelLoad()
 {
+    //サウンドデータのロード
+    hSound_[0] = Audio::Load("Assets/Sound/ButtonDown.wav",4);
+    hSound_[1] = Audio::Load("Assets/Sound/Goal.wav",4);
+    hSound_[2] = Audio::Load("Assets/Sound/OpenWall.wav",4);
+    hSound_[3] = Audio::Load("Assets/Sound/Warpe.wav",4);
 
     //ステージを構成するブロック
     hModel_[0] = Model::Load("Assets/StageBlock/Block.fbx");
@@ -610,7 +642,6 @@ void Stage::ModelLoad()
     hModel_[8] = Model::Load("Assets/GreenBlock.fbx");
     hModel_[9] = Model::Load("Assets/GreenBlock.fbx");
 
-
     //押したら発動するボタン
     hModel_[10] = Model::Load("Assets/PushButton.fbx");
     hModel_[11] = Model::Load("Assets/PushButton.fbx");
@@ -622,7 +653,6 @@ void Stage::ModelLoad()
     hModel_[17] = Model::Load("Assets/PushButton.fbx");
     hModel_[18] = Model::Load("Assets/PushButton.fbx");
     hModel_[19] = Model::Load("Assets/PushButton.fbx");
-
 
     //押したら開き続ける壁
     hModel_[20] = Model::Load("Assets/Wall.fbx");
@@ -636,7 +666,6 @@ void Stage::ModelLoad()
     hModel_[28] = Model::Load("Assets/Wall.fbx");
     hModel_[29] = Model::Load("Assets/Wall.fbx");
 
-
     //押している間だけ発動するボタン(押す前)
     hModel_[30] = Model::Load("Assets/UpButton.fbx");
     hModel_[31] = Model::Load("Assets/UpButton.fbx");
@@ -648,7 +677,6 @@ void Stage::ModelLoad()
     hModel_[37] = Model::Load("Assets/UpButton.fbx");
     hModel_[38] = Model::Load("Assets/UpButton.fbx");
     hModel_[39] = Model::Load("Assets/UpButton.fbx");
-
 
     //押している間だけ発動するボタン(押した後)
     hModel_[40] = Model::Load("Assets/UpButton2.fbx");
@@ -662,7 +690,6 @@ void Stage::ModelLoad()
     hModel_[48] = Model::Load("Assets/UpButton2.fbx");
     hModel_[49] = Model::Load("Assets/UpButton2.fbx");
 
-
     //開く壁
     hModel_[50] = Model::Load("Assets/Wall.fbx");
     hModel_[51] = Model::Load("Assets/Wall.fbx");
@@ -674,7 +701,6 @@ void Stage::ModelLoad()
     hModel_[57] = Model::Load("Assets/Wall.fbx");
     hModel_[58] = Model::Load("Assets/Wall.fbx");
     hModel_[59] = Model::Load("Assets/Wall.fbx");
-
 
     //開いている間の何もないブロック
     hModel_[60] = Model::Load("Assets/AlphaBlock.fbx");
