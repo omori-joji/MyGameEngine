@@ -31,7 +31,7 @@ class Player : public GameObject
 
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
-    enum Direction                         //Playerの向き
+    enum Direction                          //Playerの向き
     {
         DIR_RIGHT,                          //右向き
         DIR_LEFT,                           //左向き
