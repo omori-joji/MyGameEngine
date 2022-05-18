@@ -38,7 +38,7 @@ class Player : public GameObject
     bool isPastMeanTimeButton_;             //さっき踏んでいるか
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
-    enum
+    enum Direction
     {
         DIR_RIGHT,                          //右向き
         DIR_LEFT,                           //左向き

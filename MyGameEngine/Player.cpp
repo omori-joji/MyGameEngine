@@ -165,11 +165,8 @@ void Player::Collision()
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
 	}
-	else
-	{
-		//今はジャンプしている
-		isJump_ = true;
-	}
+	//今はジャンプしている
+	else isJump_ = true;
 }
 
 //ボタンを踏んだ瞬間か離れた瞬間の処理を行う関数
@@ -349,11 +346,8 @@ void Player::PlayerRightMove()
 		modelNumber_ = RUN_MODEL;
 	}
 	//右矢印キーを離した瞬間
-	else if (Input::IsKeyUp(DIK_RIGHT))
-	{
-		//モデル番号を変更
-		modelNumber_ = STANDING_MODEL;
-	}
+	//モデル番号を変更
+	else if (Input::IsKeyUp(DIK_RIGHT)) modelNumber_ = STANDING_MODEL;
 }
 
 //左移動の処理
@@ -370,11 +364,8 @@ void Player::PlayerLeftMove()
 		modelNumber_ = RUN_MODEL;
 	}
 	//左矢印キーを離したら
-	else if (Input::IsKeyUp(DIK_LEFT))
-	{
-		//モデル番号を変更
-		modelNumber_ = STANDING_MODEL;
-	}
+	//モデル番号を変更
+	else if (Input::IsKeyUp(DIK_LEFT)) modelNumber_ = STANDING_MODEL;
 }
 
 //Find処理をまとめた関数
@@ -382,10 +373,7 @@ void Player::AllFind()
 {
 	//Stageクラスを探す
 	//pStage_に探した情報が入る
-	if (pStage_ == nullptr)
-	{
-		pStage_ = (Stage*)Find("Stage");
-	}
+	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
 }
 
 //モデル番号を返す

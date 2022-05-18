@@ -7,8 +7,6 @@
 #include "Engine/Input.h"
 #include "Engine/Model.h"
 #include "Engine/Fbx.h"
-#include "Player.h"
-#include "Shadow.h"
 //クラスの前方宣言
 class Player;
 class Shadow;
@@ -18,8 +16,6 @@ class SceneManager;
 class Stage : public GameObject
 {
     //int hVfxA, hVfxB;
-    const int VERTICAL_VALU_;                       //ステージの高さ
-    const int BESIDE_VALU_;                         //ステージの横幅
     const int BACK_GROUND_;                         //背景のモデル番号
     const int PLAYER_GENERAT_POS_;                  //Playerのリスポーン地点
     const int SHADOW_NAMBER_;                       //影の数
@@ -48,7 +44,7 @@ class Stage : public GameObject
     XMFLOAT3 stertPos;                              //Playerがリセットした時のリセット位置を記憶する変数
     Player* pPlayer_;                               //Playerクラスを格納するポインタ
     SceneManager* pSceneManager_;                   //SceneManagerクラスを格納するポインタ
-    enum
+    enum Direction
     {
         MAP_BESIDE_ = 28,
         MAP_VERTICAL = 23,

@@ -249,14 +249,8 @@ bool Shadow::GetIsRecording()
 void Shadow::AllFind()
 {
 	//Player‚Ìî•ñ‚ğŠi”[
-	if (pPlayer_ == nullptr)
-	{
-		pPlayer_ = (Player*)Find("Player");
-	}
+	if (pPlayer_ == nullptr) pPlayer_ = (Player*)Find("Player");
 
 	//ƒXƒe[ƒW‚Ìî•ñ‚ğŠi”[
-	if (pStage_ == nullptr)
-	{
-		pStage_ = (Stage*)Find("Stage");
-	}
+	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
 }
