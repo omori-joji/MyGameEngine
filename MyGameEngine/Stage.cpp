@@ -1,4 +1,3 @@
-
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
