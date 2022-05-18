@@ -4,8 +4,10 @@
 #include "Engine/Input.h"
 #include "Engine/Audio.h"
 #include "Engine/Fbx.h"
-#include "Stage.h"
 #include <string>
+
+//クラスの前方宣言
+class Stage;
 
 //Player処理を行うクラス
 class Player : public GameObject
@@ -38,7 +40,7 @@ class Player : public GameObject
     bool isPastMeanTimeButton_;             //さっき踏んでいるか
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
-    enum Direction
+    enum
     {
         DIR_RIGHT,                          //右向き
         DIR_LEFT,                           //左向き

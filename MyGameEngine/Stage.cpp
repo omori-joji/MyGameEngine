@@ -2,6 +2,7 @@
 #include "Stage.h"
 #include "Player.h"
 #include "Shadow.h"
+
 //コンストラクタ
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"),
@@ -350,6 +351,7 @@ int Stage::CheckFootBlock(int x, int y)
     return (map_[x][y] % 10) -1;
 }
 
+//保存された影の動きをすべてリセットする関数
 void Stage::ResetShadow()
 {
     //保存された影の動きをすべてリセットする
@@ -404,9 +406,9 @@ void Stage::AllFind()
 
 //押している間発動するボタンに乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
-void Stage::SetMeanTimeStepNumberCountUp(int a)
+void Stage::SetMeanTimeStepNumberCountUp(int meanTimeNum)
 {
-    steppingNumberMeanTime[a]++;
+    steppingNumberMeanTime[meanTimeNum]++;
 }
 
 //押している間発動するボタンに乗っている人数をカウントダウンする関数
@@ -418,9 +420,9 @@ void Stage::SetMeanTimeStepNumberCountDown(int meanTimeNum)
 
 //同時ボタンの片方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
-void Stage::SetOnDoubleStepNumberCountUp(int meanTimeNum)
+void Stage::SetOnDoubleStepNumberCountUp(int onDoubleNum)
 {
-    steppingNumber_OnDouble[meanTimeNum]++;
+    steppingNumber_OnDouble[onDoubleNum]++;
 }
 
 //同時ボタンの片方に乗っている人数をカウントダウンする関数

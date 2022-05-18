@@ -1,4 +1,6 @@
 #include "Shadow.h"
+#include "Player.h"
+#include "Stage.h"
 
 Shadow::Shadow(GameObject* parent)
 	:GameObject(parent, "Shadow"),

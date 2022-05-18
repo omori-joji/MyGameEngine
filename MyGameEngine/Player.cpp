@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Stage.h"
 
 Player::Player(GameObject* parent)
 	: GameObject(parent, "Player"),

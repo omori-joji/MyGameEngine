@@ -7,6 +7,7 @@
 #include "Engine/Input.h"
 #include "Engine/Model.h"
 #include "Engine/Fbx.h"
+
 //クラスの前方宣言
 class Player;
 class Shadow;
@@ -44,7 +45,7 @@ class Stage : public GameObject
     XMFLOAT3 stertPos;                              //Playerがリセットした時のリセット位置を記憶する変数
     Player* pPlayer_;                               //Playerクラスを格納するポインタ
     SceneManager* pSceneManager_;                   //SceneManagerクラスを格納するポインタ
-    enum Direction
+    enum
     {
         MAP_BESIDE_ = 28,
         MAP_VERTICAL = 23,
