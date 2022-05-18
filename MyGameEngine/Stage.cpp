@@ -112,7 +112,6 @@ void Stage::Initialize()
 //更新
 void Stage::Update()
 {
-
     //if (Input::IsKeyDown(DIK_SPACE))
     //{
     //    //1個エフェクトを出す
@@ -121,8 +120,11 @@ void Stage::Update()
     //    transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
     //    VisualEffect::Add(hVfxB, transform, 0.5f, false);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
     //}
+
+    //影を再生する処理をまとめた関数
     PlayRecord();
 
+    //記録した影をすべてまっさらにする関数
     ResetShadow();
 
     //一定時間ごとにブロック切り替える
@@ -537,10 +539,7 @@ void Stage::WarpBlockCollision(int getX, int getY)
     //フラグ処理の初期化
     //Playerがワープブロックから離れたら
     //ワープブロックから離れたらフラグを初期化してもう一度入れるようにする
-    if (map_[getX][getY] == RESET_VALU_)
-    {
-        isWarp_ = true;
-    }
+    if (map_[getX][getY] == RESET_VALU_) isWarp_ = true;
 }
 
 //点滅ブロック
