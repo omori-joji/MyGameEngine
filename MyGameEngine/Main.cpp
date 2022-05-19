@@ -77,7 +77,9 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
     pRootJob = new Rootjob;
     pRootJob->Initialize();
 
-    //メッセージループ（何か起きるのを待つ）
+
+
+  //メッセージループ（何か起きるのを待つ）
     MSG msg;
     //0にしておく
     ZeroMemory(&msg, sizeof(msg));
@@ -98,12 +100,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
             timeBeginPeriod(1);
 
             //経過時間を取得する
-            static DWORD countFps = 0;              //カウンター。何回画面が更新したか
-            static DWORD startTime = timeGetTime(); //プログラムを起動してからの時間を格納
-            DWORD nowTime = timeGetTime();          //PCが起動してからの時間を格納
-            static DWORD lastUpdateTime = nowTime;  //現在の計測時間
+            static DWORD countFps = 0;
+            static DWORD startTime = timeGetTime();//プログラムを起動してからの時間を格納
+            DWORD nowTime = timeGetTime(); //PCが起動してからの時間を格納
+            static DWORD lastUpdateTime = nowTime;
 
-            //タイマーの最小精度を戻す
+
             timeEndPeriod(1);
 
             //現在の時間ースタートした時の時間が1000(1秒)経ったら
@@ -113,14 +115,15 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
                 startTime = nowTime;    //startTimeをその時の時間にする
             }
 
-            //1ミリ秒たったら
+
             if ((nowTime - lastUpdateTime) * 60 <= 1000.0f)
             {
                 continue;
             }
             //前回Updateが呼ばれた時間を記録
             lastUpdateTime = nowTime;
-            //カウントアップ
+
+
             countFps++;
 
             //ゲームの処理
