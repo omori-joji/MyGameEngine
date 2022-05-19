@@ -160,13 +160,14 @@ void Player::Collision()
 		//YŽ²‚ÌˆÚ“®‚ð‰Šú‰»‚·‚é
 		yMove_ = 0;
 
-		isJump_ = false;
-
 		//ˆÊ’u‚ð–ß‚·
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
+
+		isJump_ = false;
 	}
 	else if(!pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		isJump_ = true;
 		//‰º‚É—Ž‚¿‚é
 		transform_.position_.y -= yMove_;
 
@@ -309,7 +310,6 @@ void Player::Jump()
 	if (Input::IsKeyDown(DIK_SPACE) && !isJump_)
 	{
 		Audio::Play(hSe_[0]);
-		isJump_ = true;
 
 		//YŽ²‚ÌˆÚ“®
 		transform_.position_.y += yMove_;

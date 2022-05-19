@@ -171,7 +171,6 @@ GameObject* GameObject::GetRootJob()
 }
 
 //“–‚½‚è”»’è
-//“–‚½‚Á‚½‘ŠŽè‚Ìî•ñ‚ðColliderƒNƒ‰ƒX‚ÌŠÖ”‚É“n‚·
 void GameObject::Collision(GameObject* target)
 {
 	if (target->pCollider_ != nullptr && target != this)

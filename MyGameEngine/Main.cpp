@@ -93,6 +93,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
             DispatchMessage(&msg);
         }
 
+        //プログラムの終了
+        if (Input::IsKey(DIK_ESCAPE))
+        {
+            PostQuitMessage(0);
+        }
+
         //メッセージなし
         else
         {
