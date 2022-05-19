@@ -284,8 +284,6 @@ void Player::OrDoubleButtonCheck()
 //初期位置に戻る処理をまとめた関数
 void Player::Reset()
 {
-	
-
 	//リセットボタンを押したら
 	//記録した影をすべてまっさらな状態にしたら
 	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
