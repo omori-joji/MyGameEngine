@@ -1,4 +1,3 @@
-//インクルード
 #include <Windows.h>
 #include "Engine/Direct3D.h"
 #include "Engine/Camera.h"
@@ -8,7 +7,7 @@
 #include "Engine/VisualEffect.h"
 #include "Engine/Audio.h"
 #include <stdlib.h>
-//#include "Engine/GameObject.h"
+#include "Engine/GameObject.h"
 
 #pragma comment(lib, "winmm.lib")
 
@@ -65,30 +64,24 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
         NULL                    //パラメータ（なし）
     );
 
-  //ウィンドウを表示
+    //ウィンドウを表示
     ShowWindow(hWnd, nCmdShow);
 
-    //Drect3D初期化
+    //クラスの初期化
     Direct3D::Initialize(WINDOW_WIDTH, WINDOW_HEIGHT, hWnd);
-
     Input::Initialize(hWnd);
-
     Camera::Initialize();
-
     VisualEffect::Initialize();
-
     Audio::Initialize();
-
-
 
     pRootJob = new Rootjob;
     pRootJob->Initialize();
 
-
-
     //メッセージループ（何か起きるのを待つ）
     MSG msg;
+    //0にしておく
     ZeroMemory(&msg, sizeof(msg));
+
     while (msg.message != WM_QUIT)
     {
         //メッセージあり
@@ -105,7 +98,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
             timeBeginPeriod(1);
 
             //経過時間を取得する
-            static DWORD countFps = 0;              //カウンター
+            static DWORD countFps = 0;              //カウンター。何回画面が更新したか
             static DWORD startTime = timeGetTime(); //プログラムを起動してからの時間を格納
             DWORD nowTime = timeGetTime();          //PCが起動してからの時間を格納
             static DWORD lastUpdateTime = nowTime;  //現在の計測時間
@@ -120,11 +113,14 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
                 startTime = nowTime;    //startTimeをその時の時間にする
             }
 
+            //1ミリ秒たったら
             if ((nowTime - lastUpdateTime) * 60 <= 1000.0f)
             {
                 continue;
             }
+            //前回Updateが呼ばれた時間を記録
             lastUpdateTime = nowTime;
+            //カウントアップ
             countFps++;
 
             //ゲームの処理
