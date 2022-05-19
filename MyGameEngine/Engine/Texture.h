@@ -6,6 +6,7 @@ using namespace std;
 
 class Texture
 {
+	//テクスチャを描画するときに必要なのでメンバ変数にする
 	ID3D11SamplerState* pSampler_;
 	ID3D11ShaderResourceView* pSRV_;
 

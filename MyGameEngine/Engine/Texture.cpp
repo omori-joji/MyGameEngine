@@ -15,14 +15,14 @@ Texture::~Texture()
 
 HRESULT Texture::Load(std::string fileName)
 {
-	//ファイル名をワイド文字列に
+	//ファイル名をワイド文字列に変換する
 	wchar_t wtext[FILENAME_MAX];
 	size_t ret;
 	mbstowcs_s(&ret, wtext, fileName.c_str(), fileName.length());
 
-	//画像を開く
-	CoInitialize(nullptr);
 
+	//引数で渡された名前のファイルを開く
+	CoInitialize(nullptr);
 	IWICImagingFactory* pFactory = nullptr;
 	IWICBitmapDecoder* pDecoder = nullptr;
 	IWICBitmapFrameDecode* pFrame = nullptr;
@@ -32,17 +32,16 @@ HRESULT Texture::Load(std::string fileName)
 	pDecoder->GetFrame(0, &pFrame);
 	pFactory->CreateFormatConverter(&pFormatConverter);
 	pFormatConverter->Initialize(pFrame, GUID_WICPixelFormat32bppRGBA, WICBitmapDitherTypeNone, NULL, 1.0f, WICBitmapPaletteTypeMedianCut);
-
 	CoUninitialize();
 
 
-	//サイズを調べる
+	//画像サイズを調べる
 	UINT imgWidth;
 	UINT imgHeight;
 	pFormatConverter->GetSize(&imgWidth, &imgHeight);
 
 
-	//テクスチャを作成
+	//画像サイズと同じ大きさのテクスチャを作成
 	ID3D11Texture2D* pTexture;
 	D3D11_TEXTURE2D_DESC texdec;
 	texdec.Width = imgWidth;
@@ -58,13 +57,14 @@ HRESULT Texture::Load(std::string fileName)
 	texdec.MiscFlags = 0;
 	Direct3D::pDevice->CreateTexture2D(&texdec, nullptr, &pTexture);
 
-	//テクスチャをコンテキストに渡す
+	//テクスチャをコンテキストに渡して転写する
 	D3D11_MAPPED_SUBRESOURCE hMappedres;
 	Direct3D::pContext->Map(pTexture, 0, D3D11_MAP_WRITE_DISCARD, 0, &hMappedres);
 	pFormatConverter->CopyPixels(nullptr, imgWidth * 4, imgWidth * imgHeight * 4, (BYTE*)hMappedres.pData);
 	Direct3D::pContext->Unmap(pTexture, 0);
 
 	//サンプラーを作成
+	//テクスチャの貼り方を決める
 	D3D11_SAMPLER_DESC  SamDesc;
 	ZeroMemory(&SamDesc, sizeof(D3D11_SAMPLER_DESC));
 	SamDesc.Filter = D3D11_FILTER_MIN_MAG_MIP_LINEAR;
@@ -74,6 +74,7 @@ HRESULT Texture::Load(std::string fileName)
 	Direct3D::pDevice->CreateSamplerState(&SamDesc, &pSampler_);
 
 	//シェーダーリソースビュー作成
+	//テクスチャをシェーダーに渡す
 	D3D11_SHADER_RESOURCE_VIEW_DESC srv = {};
 	srv.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	srv.ViewDimension = D3D11_SRV_DIMENSION_TEXTURE2D;
