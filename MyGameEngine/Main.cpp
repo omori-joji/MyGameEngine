@@ -14,8 +14,8 @@
 
 
 const char* WIN_CLASS_NAME = "SampleGame";  //ウィンドウクラス名
-const int WINDOW_WIDTH = 800;  //ウィンドウの幅
-const int WINDOW_HEIGHT = 600; //ウィンドウの高さ
+const int WINDOW_WIDTH = 800;               //ウィンドウの幅
+const int WINDOW_HEIGHT = 600;              //ウィンドウの高さ
 
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
@@ -26,12 +26,11 @@ Rootjob* pRootJob;
 //エントリーポイント
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, int nCmdShow)
 {
-
-  //ウィンドウクラス（設計図）を作成
+    //ウィンドウクラス（設計図）を作成
     WNDCLASSEX wc;
     wc.cbSize = sizeof(WNDCLASSEX);             //この構造体のサイズ
     wc.hInstance = hInstance;                   //インスタンスハンドル
-    wc.lpszClassName = WIN_CLASS_NAME;            //ウィンドウクラス名
+    wc.lpszClassName = WIN_CLASS_NAME;          //ウィンドウクラス名
     wc.lpfnWndProc = WndProc;                   //ウィンドウプロシージャ
     wc.style = CS_VREDRAW | CS_HREDRAW;         //スタイル（デフォルト）
     wc.hIcon = LoadIcon(NULL, IDI_APPLICATION); //アイコン
@@ -44,26 +43,26 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
     RegisterClassEx(&wc);  //クラスを登録
 
-      //ウィンドウサイズの計算
+    //ウィンドウサイズの計算
     RECT winRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
     AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
-    int winW = winRect.right - winRect.left;     //ウィンドウ幅
-    int winH = winRect.bottom - winRect.top;     //ウィンドウ高さ
+    int winW = winRect.right - winRect.left;                    //ウィンドウ幅
+    int winH = winRect.bottom - winRect.top;                    //ウィンドウ高さ
 
 
-  //ウィンドウを作成
+    //ウィンドウを作成
     HWND hWnd = CreateWindow(
         WIN_CLASS_NAME,         //ウィンドウクラス名
         "RAN BACK AND RUN",     //タイトルバーに表示する内容
-        WS_OVERLAPPEDWINDOW, //スタイル（普通のウィンドウ）
-        CW_USEDEFAULT,       //表示位置左（おまかせ）
-        CW_USEDEFAULT,       //表示位置上（おまかせ）
-        winW,                 //ウィンドウ幅
-        winH,                 //ウィンドウ高さ
-        NULL,                //親ウインドウ（なし）
-        NULL,                //メニュー（なし）
-        hInstance,           //インスタンス
-        NULL                 //パラメータ（なし）
+        WS_OVERLAPPEDWINDOW,    //スタイル（普通のウィンドウ）
+        CW_USEDEFAULT,          //表示位置左（おまかせ）
+        CW_USEDEFAULT,          //表示位置上（おまかせ）
+        winW,                   //ウィンドウ幅
+        winH,                   //ウィンドウ高さ
+        NULL,                   //親ウインドウ（なし）
+        NULL,                   //メニュー（なし）
+        hInstance,              //インスタンス
+        NULL                    //パラメータ（なし）
     );
 
   //ウィンドウを表示
@@ -87,7 +86,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 
 
-  //メッセージループ（何か起きるのを待つ）
+    //メッセージループ（何か起きるのを待つ）
     MSG msg;
     ZeroMemory(&msg, sizeof(msg));
     while (msg.message != WM_QUIT)
@@ -102,66 +101,45 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
         //メッセージなし
         else
         {
+            //タイマーの最小精度を1ミリ秒にする
             timeBeginPeriod(1);
 
-
             //経過時間を取得する
-            static DWORD countFps = 0;
-            static DWORD startTime = timeGetTime();//プログラムを起動してからの時間を格納
-            DWORD nowTime = timeGetTime(); //PCが起動してからの時間を格納
-            static DWORD lastUpdateTime = nowTime;
+            static DWORD countFps = 0;              //カウンター
+            static DWORD startTime = timeGetTime(); //プログラムを起動してからの時間を格納
+            DWORD nowTime = timeGetTime();          //PCが起動してからの時間を格納
+            static DWORD lastUpdateTime = nowTime;  //現在の計測時間
 
-
+            //タイマーの最小精度を戻す
             timeEndPeriod(1);
-
 
             //現在の時間ースタートした時の時間が1000(1秒)経ったら
             if (nowTime - startTime >= 1000)
             {
-                //char str[16]; //桁数
-                //wsprintf(str, "%u", countFps);//現在の時間ープログラムを起動した時点の経過時間
-
-                //ウインドウの左上に指定したテキストを表示
-                //SetWindowText(hWnd, str); //経過時間を表示
-
-
-
-                countFps = 0; //カウントをリセットする
-                startTime = nowTime; //startTimeをその時の時間にする
+                countFps = 0;           //カウントをリセットする
+                startTime = nowTime;    //startTimeをその時の時間にする
             }
-
 
             if ((nowTime - lastUpdateTime) * 60 <= 1000.0f)
             {
                 continue;
             }
             lastUpdateTime = nowTime;
-
-
             countFps++;
 
-
-
-
-
             //ゲームの処理
+            //実際に使うクラスのUpdate関数を呼ぶ
             Input::Update();
             pRootJob->UpdateSub();
             Camera::Update();
-
             VisualEffect::Update();
-
             Direct3D::BeginDraw();
 
             //描画処理
+            //実際に使うクラスのUpdate関数を呼ぶ
             pRootJob->DrawSub();
-            //pRootJob->UpdateSub();
-            //pRootJob->ReleaseSub();
-
             VisualEffect::Draw();
-
             Direct3D::EndDraw();
-
         }
     }
 
@@ -175,15 +153,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 	return 0;
 }
 
-
 //ウィンドウプロシージャ（何かあった時によばれる関数）
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
     switch (msg)
     {
     case WM_DESTROY:
-        PostQuitMessage(0);  //プログラム終了
-        return 0;
+
+         PostQuitMessage(0);  //プログラム終了
+         return 0;
     }
+
     return DefWindowProc(hWnd, msg, wParam, lParam);
 }

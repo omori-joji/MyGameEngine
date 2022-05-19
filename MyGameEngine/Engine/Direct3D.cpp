@@ -7,23 +7,21 @@ using namespace DirectX;
 //変数
 namespace Direct3D
 {
-	ID3D11Device* pDevice = nullptr;		//デバイス
-	ID3D11DeviceContext* pContext = nullptr;		//デバイスコンテキスト
-	IDXGISwapChain* pSwapChain = nullptr;		//スワップチェイン
+	ID3D11Device* pDevice = nullptr;						//デバイス
+	ID3D11DeviceContext* pContext = nullptr;				//デバイスコンテキスト
+	IDXGISwapChain* pSwapChain = nullptr;					//スワップチェイン
 	ID3D11RenderTargetView* pRenderTargetView = nullptr;	//レンダーターゲットビュー
 
 	//Zバッファ法を用いて、３D物体の前後関係を正しく描画する
 	ID3D11Texture2D* pDepthStencil;
-
 	ID3D11DepthStencilView* pDepthStencilView;
+	ID3D11VertexShader* pVertexShader = nullptr;			//頂点シェーダー
+	ID3D11PixelShader* pPixelShader = nullptr;				//ピクセルシェーダー
+	ID3D11InputLayout* pVertexLayout = nullptr;				//頂点インプットレイアウト
+	ID3D11RasterizerState* pRasterizerState = nullptr;		//ラスタライザー
 
-	ID3D11VertexShader* pVertexShader = nullptr;	//頂点シェーダー
-	ID3D11PixelShader* pPixelShader = nullptr;		//ピクセルシェーダー
-	ID3D11InputLayout* pVertexLayout = nullptr;	//頂点インプットレイアウト
-	ID3D11RasterizerState* pRasterizerState = nullptr;	//ラスタライザー
-
-		//【ブレンドステート】
-//半透明のものをどのように表現するか
+	//【ブレンドステート】
+	//半透明のものをどのように表現するか
 	ID3D11BlendState* pBlendState;
 }
 
@@ -31,7 +29,7 @@ namespace Direct3D
 void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 {
 	///////////////////////////いろいろ準備するための設定///////////////////////////////
-   //いろいろな設定項目をまとめた構造体
+    //いろいろな設定項目をまとめた構造体
 	DXGI_SWAP_CHAIN_DESC scDesc;
 
 	//とりあえず全部0
@@ -178,8 +176,6 @@ void Direct3D::InitShader()
 	rdc.FillMode = D3D11_FILL_SOLID;
 	rdc.FrontCounterClockwise = FALSE;
 	pDevice->CreateRasterizerState(&rdc, &pRasterizerState);
-
-
 }
 
 //描画開始
