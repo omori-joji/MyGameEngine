@@ -4,8 +4,10 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include <string>
-#include "Player.h"
-#include "Stage.h"
+
+//クラスの前方宣言
+class Player;
+class Stage;
 
 //Shadowを管理するクラス
 class Shadow : public GameObject
@@ -37,7 +39,7 @@ class Shadow : public GameObject
 	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列
 	std::vector<XMFLOAT3> recordData_;			//プレイヤーの位置を記録する可変長配列
 
-	enum ShadowDirection
+	enum
 	{
 		SDIR_RIGHT,								//右向き
 		SDIR_LEFT,								//左向き

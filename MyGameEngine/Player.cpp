@@ -1,4 +1,5 @@
 #include "Player.h"
+#include "Stage.h"
 
 Player::Player(GameObject* parent)
 	: GameObject(parent, "Player"),
@@ -23,7 +24,7 @@ Player::Player(GameObject* parent)
 	orGimmickNumber_(0),			//もう方の同時押しボタンのモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
 	filePas_("Assets/Player/"),		//Playerのモデルが保存されているファイルパス
-	isJump_(false),					//ジャンプ中か
+	isJump_(true),					//ジャンプ中か
 	isPastMeanTimeButton_(false),	//1フレーム前、ボタンを踏んでいるかどうかの情報
 	isPastDoubleButton_(),			//同時押しボタンのフラグ
 	pStage_(nullptr),				//ステージの情報を入れるポインタ
@@ -63,12 +64,12 @@ void Player::Update()
 
 	//Playerの左移動をまとめた関数
 	PlayerLeftMove();
-
-	//ジャンプ
-	Jamp();
 	
 	//Playerの当たり判定をまとめる関数
 	Collision();
+
+	//ジャンプ
+	Jamp();
 
 	//初期位置に戻る処理をまとめた関数
 	Reset();
@@ -82,7 +83,7 @@ void Player::Update()
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
-	pStage_->ChengeButtonAndWall((int)transform_.position_.x, (int)transform_.position_.y - PLAYER_FOOT_);
+	pStage_->ChengeButtonAndWall();
 
 	//ゴールに触れたかどうかを判別する関数を呼ぶ
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
@@ -156,19 +157,13 @@ void Player::Collision()
 	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		//下にブロックがあったら今はジャンプしていない
-		isJump_ = false;
+		isJump_ = true;
 
 		//Y軸の移動を初期化する
 		yMove_ = 0;
 
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
-	}
-	else
-	{
-		//今はジャンプしている
-		isJump_ = true;
 	}
 }
 
@@ -223,7 +218,7 @@ void Player::OnDoubleButtonCheck()
 	bool onDoubleButton;
 
 	//踏んだらtrueが返されて、何もなければfalseが返される
-	onDoubleButton = pStage_->DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+	onDoubleButton = pStage_->OnDoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
 
 	//1フレーム前は踏んでいない
 	if (!isPastDoubleButton_[ON_DOUBLE_BUTTON])
@@ -286,8 +281,6 @@ void Player::OrDoubleButtonCheck()
 //初期位置に戻る処理をまとめた関数
 void Player::Reset()
 {
-	
-
 	//リセットボタンを押したら
 	//記録した影をすべてまっさらな状態にしたら
 	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
@@ -301,8 +294,7 @@ void Player::Reset()
 //ジャンプの処理をまとめた関数
 void Player::Jamp()
 {
-	//今ジャンプしていなかったら
-	if (Input::IsKeyDown(DIK_SPACE))
+	if (Input::IsKeyDown(DIK_SPACE) && isJump_)
 	{
 		Audio::Play(hSe_[0]);
 		//Y軸の移動
@@ -310,14 +302,13 @@ void Player::Jamp()
 
 		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 		yMove_ = DROP_DOWN_;
-	}
 
-	//今ジャンプしていたら
-	if (isJump_)
+		isJump_ = false;
+	}
+	else if (!isJump_)
 	{
 		//下に落ちる
 		transform_.position_.y -= yMove_;
-
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
 		//ブロックの直系よりは大きくならないようにする
 		if (yMove_ < BLOCK_SIZE_)
@@ -349,11 +340,8 @@ void Player::PlayerRightMove()
 		modelNumber_ = RUN_MODEL;
 	}
 	//右矢印キーを離した瞬間
-	else if (Input::IsKeyUp(DIK_RIGHT))
-	{
-		//モデル番号を変更
-		modelNumber_ = STANDING_MODEL;
-	}
+	//モデル番号を変更
+	else if (Input::IsKeyUp(DIK_RIGHT)) modelNumber_ = STANDING_MODEL;
 }
 
 //左移動の処理
@@ -370,11 +358,8 @@ void Player::PlayerLeftMove()
 		modelNumber_ = RUN_MODEL;
 	}
 	//左矢印キーを離したら
-	else if (Input::IsKeyUp(DIK_LEFT))
-	{
-		//モデル番号を変更
-		modelNumber_ = STANDING_MODEL;
-	}
+	//モデル番号を変更
+	else if (Input::IsKeyUp(DIK_LEFT)) modelNumber_ = STANDING_MODEL;
 }
 
 //Find処理をまとめた関数
@@ -382,10 +367,7 @@ void Player::AllFind()
 {
 	//Stageクラスを探す
 	//pStage_に探した情報が入る
-	if (pStage_ == nullptr)
-	{
-		pStage_ = (Stage*)Find("Stage");
-	}
+	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
 }
 
 //モデル番号を返す

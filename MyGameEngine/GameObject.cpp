@@ -9,10 +9,15 @@
 
 GameObject::GameObject()
 {
+
 }
 
+//‰Šú‰»
 GameObject::GameObject(GameObject* parent, const std::string& name) :
-	pParent_(parent), objectName_(name),isDead_(false), pCollider_(nullptr)
+	pParent_(parent),		//eî•ñ
+	objectName_(name),		//–¼‘O
+	isDead_(false),			//ƒIƒuƒWƒFƒNƒg‚ðÁ‚·ƒtƒ‰ƒO
+	pCollider_(nullptr)		//“–‚½‚è”»’èB“–‚½‚Á‚½‚ç‰½‚©‚ª“ü‚é
 {
 }
 
@@ -38,7 +43,7 @@ void GameObject::Release()
 
 void GameObject::DrawSub()
 {
-	//Ž©•ª‚ÌDrawSub‚ðŒÄ‚Ô
+	//Ž©•ª‚ÌDraw‚ðŒÄ‚Ô
 	Draw();
 
 	//‚·‚×‚Ä‚ÌŽq‹Ÿ‚ÌDrawSub‚ðŒÄ‚Ô
@@ -68,8 +73,7 @@ void GameObject::UpdateSub()
 		Collision(GetRootJob());
 	}
 
-
-
+	//‚·‚×‚Ä‚ÌŽq‹Ÿ‚ð’T‚µ‚ÄÁ‚¦‚éƒtƒ‰ƒO‚ª—§‚Á‚½‚ç‚»‚¢‚Â‚ÌƒŠƒŠ[ƒX‚ðŒÄ‚ñ‚ÅÁ‚·
 	for (auto i = childList_.begin(); i != childList_.end(); )
 	{
 		if ((*i)->isDead_ == true)
@@ -78,6 +82,7 @@ void GameObject::UpdateSub()
 			SAFE_DELETE(*i);
 			i = childList_.erase(i);
 		}
+		//ƒtƒ‰ƒO‚ª—§‚Á‚Ä‚¢‚È‚¯‚ê‚ÎŽŸ‚ÌŽq‹Ÿ‚ð’T‚·
 		else
 		{
 			i++;
@@ -197,13 +202,12 @@ void GameObject::Collision(GameObject* target)
 	{
 		Collision(*i);
 	}
-
 }
 
 //Ž©•ª‚ÌŽq‘·‚ð’T‚·
 GameObject* GameObject::FindSub(std::string objectName)
 {
-	
+	//’T‚µ‚Ä‚¢‚é‚Ì‚ª‚»‚¢‚Â‚¾‚Á‚½‚ç
 	if (objectName == this->objectName_)
 	{
 		return this;
@@ -217,12 +221,13 @@ GameObject* GameObject::FindSub(std::string objectName)
 			{
 				return go;
 			}
+			SAFE_DELETE(go);
 		}
 	}
 	return nullptr;
 }
 
-//‚¢‚¿‚¢‚¿GetRootJob‚©‚ç’T‚·`‚Æ‚©‚­‚Ì‚Í–Ê“|‚È‚Ì‚Å‚±‚±‚ÅŒÄ‚ñ‚Å‚ ‚°‚Ä‚ ‚Æ‚ÍFind‚ð’T‚·‚¾‚¯‚Å‚¢‚¢
+//‚¢‚¿‚¢‚¿GetRootJob‚©‚ç’T‚·‚Ì‚Í–Ê“|‚È‚Ì‚Å‚±‚±‚ÅŒÄ‚ñ‚Å‚ ‚°‚Ä‚ ‚Æ‚ÍFind‚ð’T‚·‚¾‚¯‚Å‚¢‚¢
 GameObject* GameObject::Find(std::string objectName)
 {
 	return GetRootJob()->FindSub(objectName);
