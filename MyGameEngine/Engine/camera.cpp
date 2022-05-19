@@ -2,7 +2,6 @@
 
 namespace Camera
 {
-	//変数
 	XMVECTOR position_;		//カメラの位置（視点）
 	XMVECTOR target_;		//見る位置（焦点）
 	XMMATRIX viewMatrix_;	//ビュー行列
@@ -53,10 +52,7 @@ void Camera::SetPosition(XMFLOAT3 position)
 	SetPosition(XMLoadFloat3(&position));
 }
 
-//void Camera::SetPosition(float x, float y, float z)
-//{
-//}
-
+//位置と焦点の値を引数に渡す関数
 XMFLOAT3 Camera::GetPosition()
 {
 	XMFLOAT3 f;

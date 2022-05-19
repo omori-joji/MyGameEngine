@@ -3,6 +3,7 @@
 #include "Collider.h"
 #include <list>
 #include <string>
+#define SAFE_DELETE(p) if(p != nullptr){ delete p; p = nullptr;}
 
 using namespace std;
 

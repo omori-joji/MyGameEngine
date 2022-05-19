@@ -24,7 +24,7 @@ Player::Player(GameObject* parent)
 	orGimmickNumber_(0),			//もう方の同時押しボタンのモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
 	filePas_("Assets/Player/"),		//Playerのモデルが保存されているファイルパス
-	isJump_(false),					//ジャンプ中か
+	isJump_(true),					//ジャンプ中か
 	isPastMeanTimeButton_(false),	//1フレーム前、ボタンを踏んでいるかどうかの情報
 	isPastDoubleButton_(),			//同時押しボタンのフラグ
 	pStage_(nullptr),				//ステージの情報を入れるポインタ
@@ -64,12 +64,12 @@ void Player::Update()
 
 	//Playerの左移動をまとめた関数
 	PlayerLeftMove();
-
-	//ジャンプ
-	Jamp();
 	
 	//Playerの当たり判定をまとめる関数
 	Collision();
+
+	//ジャンプ
+	Jamp();
 
 	//初期位置に戻る処理をまとめた関数
 	Reset();
@@ -157,8 +157,7 @@ void Player::Collision()
 	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		//下にブロックがあったら今はジャンプしていない
-		isJump_ = false;
+		isJump_ = true;
 
 		//Y軸の移動を初期化する
 		yMove_ = 0;
@@ -166,8 +165,6 @@ void Player::Collision()
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
 	}
-	//今はジャンプしている
-	else isJump_ = true;
 }
 
 //ボタンを踏んだ瞬間か離れた瞬間の処理を行う関数
@@ -297,8 +294,7 @@ void Player::Reset()
 //ジャンプの処理をまとめた関数
 void Player::Jamp()
 {
-	//今ジャンプしていなかったら
-	if (Input::IsKeyDown(DIK_SPACE))
+	if (Input::IsKeyDown(DIK_SPACE) && isJump_)
 	{
 		Audio::Play(hSe_[0]);
 		//Y軸の移動
@@ -306,14 +302,13 @@ void Player::Jamp()
 
 		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 		yMove_ = DROP_DOWN_;
-	}
 
-	//今ジャンプしていたら
-	if (isJump_)
+		isJump_ = false;
+	}
+	else if (!isJump_)
 	{
 		//下に落ちる
 		transform_.position_.y -= yMove_;
-
 		//ブロックの直径より値が大きくなるとすり抜けてしまうので
 		//ブロックの直系よりは大きくならないようにする
 		if (yMove_ < BLOCK_SIZE_)
