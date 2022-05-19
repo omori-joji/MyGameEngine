@@ -215,7 +215,9 @@ void Direct3D::Release()
 	SAFE_RELEASE(pVertexShader);
 
 	SAFE_RELEASE(pRenderTargetView);
+	SAFE_RELEASE(pDepthStencil);
 	SAFE_RELEASE(pSwapChain);
 	SAFE_RELEASE(pContext);
 	SAFE_RELEASE(pDevice);
+	SAFE_RELEASE(pBlendState);
 }
