@@ -74,6 +74,6 @@ private:
     void PlayerRightMove();                 //Playerの右操作をまとめる関数
     void PlayerLeftMove();                  //Playerの左操作をまとめる関数
     void Collision();                       //Playyerの当たり判定をまとめる関数
-    void Jamp();                            //ジャンプの処理をまとめた関数
+    void Jump();                            //ジャンプの処理をまとめた関数
     void Reset();                           //初期位置に戻る処理をまとめた関数
 };

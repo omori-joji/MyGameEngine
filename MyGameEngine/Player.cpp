@@ -17,7 +17,7 @@ Player::Player(GameObject* parent)
 	BACK_POSITION_UP_(0.6f),		//触れていたら位置を戻す値
 	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
-	yMove_(0.01f),					//Y軸の移動
+	yMove_(0.02f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
 	onGimmickNumber_(0),			//片方の同時押しボタンのモデル番号
@@ -69,7 +69,7 @@ void Player::Update()
 	Collision();
 
 	//ジャンプ
-	Jamp();
+	Jump();
 
 	//初期位置に戻る処理をまとめた関数
 	Reset();
@@ -157,13 +157,25 @@ void Player::Collision()
 	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
-		isJump_ = true;
-
 		//Y軸の移動を初期化する
-		yMove_ = 0;
+		//yMove_ = 0;
+
+		isJump_ = true;
 
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
+	}
+	else
+	{
+		//下に落ちる
+		transform_.position_.y -= yMove_;
+
+		//ブロックの直径より値が大きくなるとすり抜けてしまうので
+		//ブロックの直系よりは大きくならないようにする
+		if (yMove_ < BLOCK_SIZE_)
+		{
+			yMove_ = GRAVITY_;
+		}
 	}
 }
 
@@ -292,28 +304,22 @@ void Player::Reset()
 }
 
 //ジャンプの処理をまとめた関数
-void Player::Jamp()
+void Player::Jump()
 {
-	if (Input::IsKeyDown(DIK_SPACE) && isJump_)
+	if (Input::IsKeyDown(DIK_SPACE))
 	{
 		Audio::Play(hSe_[0]);
-		//Y軸の移動
-		transform_.position_.y += yMove_;
-
-		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
-		yMove_ = DROP_DOWN_;
-
-		isJump_ = false;
-	}
-	else if (!isJump_)
-	{
-		//下に落ちる
-		transform_.position_.y -= yMove_;
-		//ブロックの直径より値が大きくなるとすり抜けてしまうので
-		//ブロックの直系よりは大きくならないようにする
-		if (yMove_ < BLOCK_SIZE_)
+		if (isJump_)
 		{
-			yMove_ += GRAVITY_;
+			//Y軸の移動
+			transform_.position_.y += yMove_;
+
+			//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
+			yMove_ += DROP_DOWN_;
+			if (yMove_ <= MAX_JUMP_)
+			{
+
+			}
 		}
 	}
 }
