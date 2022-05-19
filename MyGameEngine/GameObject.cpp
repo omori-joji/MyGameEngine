@@ -91,6 +91,7 @@ void GameObject::UpdateSub()
 
 }
 
+//Ž©•ª‚ÆŽq‹Ÿ‚ÌRelese‚ðŒÄ‚ÔŠÖ”
 void GameObject::ReleaseSub()
 {
 	//Ž©•ª‚ÌRelease‚ðŒÄ‚Ô
@@ -169,6 +170,8 @@ GameObject* GameObject::GetRootJob()
 	return pParent_->GetRootJob();
 }
 
+//“–‚½‚è”»’è
+//“–‚½‚Á‚½‘ŠŽè‚Ìî•ñ‚ðColliderƒNƒ‰ƒX‚ÌŠÖ”‚É“n‚·
 void GameObject::Collision(GameObject* target)
 {
 	if (target->pCollider_ != nullptr && target != this)
@@ -181,15 +184,6 @@ void GameObject::Collision(GameObject* target)
 
 		float length = XMVectorGetX(XMVector3Length(d));
 
-		//float length = (transform_.position_.x - target->transform_.position_.x)
-		//	* (transform_.position_.x - target->transform_.position_.x)
-		//	+
-		//	(transform_.position_.y - target->transform_.position_.y)
-		//	* (transform_.position_.y - target->transform_.position_.y)
-		//	+
-		//	(transform_.position_.z - target->transform_.position_.z)
-		//	* (transform_.position_.z - target->transform_.position_.z);
-
 		float radius = pCollider_->GetRadius() + target->pCollider_->GetRadius();
 
 		if (length <= radius * radius)
@@ -201,6 +195,7 @@ void GameObject::Collision(GameObject* target)
 	for (auto i = target->childList_.begin(); i != target->childList_.end(); i++)
 	{
 		Collision(*i);
+		SAFE_DELETE(*i);
 	}
 }
 
@@ -221,7 +216,6 @@ GameObject* GameObject::FindSub(std::string objectName)
 			{
 				return go;
 			}
-			SAFE_DELETE(go);
 		}
 	}
 	return nullptr;

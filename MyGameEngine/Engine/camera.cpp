@@ -12,10 +12,9 @@ namespace Camera
 void Camera::Initialize()
 {
 	//カメラをステージの中央に出す処理
-	//横
-	//縦
-	int x = 28;
-	int y = 23;
+	//Stageの大きさ
+	int y = 23;	//縦
+	int x = 28;	//横
 
 	//初期値を設定
 	//カメラの位置
