@@ -22,6 +22,7 @@ public:
 	XMFLOAT3  scale_;			//拡大率
 
 	//ゲッター
+	//戻り値は行列の結果を返すのでXMMATRIXにする
 	XMMATRIX GetWorldMatrix();	//ワールド行列を渡すゲッター
 	XMMATRIX GetNormalmatrix();	//正規行列を渡すゲッター
 };

@@ -1,5 +1,6 @@
 #include "Transform.h"
 
+//コンストラクタ
 Transform::Transform():
 	matTranslate_(XMMatrixIdentity()),
 	matRotate_(XMMatrixIdentity()),
@@ -11,10 +12,12 @@ Transform::Transform():
 {
 }
 
+//デストラクタ
 Transform::~Transform()
 {
 }
 
+//移動、回転、拡大行列(ワールド行列)をかける関数
 void Transform::Calclation()
 {
 	//移動行列
@@ -31,11 +34,16 @@ void Transform::Calclation()
 	matScale_ = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
 }
 
+//ワールド行列を渡すゲッター
+//戻り値は行列の結果を返すのでXMMATRIXにする
 XMMATRIX Transform::GetWorldMatrix()
 {
+	//ワールド行列を返す
 	return  matScale_ * matRotate_ * matTranslate_;
 }
 
+//正規行列を渡すゲッター
+//戻り値は行列の結果を返すのでXMMATRIXにする
 XMMATRIX Transform::GetNormalmatrix()
 {
 	XMVECTOR det;
