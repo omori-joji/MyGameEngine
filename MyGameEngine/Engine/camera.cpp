@@ -7,7 +7,6 @@ namespace Camera
 	XMMATRIX viewMatrix_;	//ビュー行列
 	XMMATRIX projMatrix_;	//プロジェクション行列
 
-
 	//カメラをステージの中央に出す処理
 	//Stageの大きさ
 	const int VERTICAL_ = 23;

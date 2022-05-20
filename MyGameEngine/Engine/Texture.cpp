@@ -4,12 +4,17 @@
 
 #pragma comment( lib, "WindowsCodecs.lib" )
 
-Texture::Texture():pSampler_(nullptr), pSRV_(nullptr)
+//コンストラクタ
+Texture::Texture():
+	pSampler_(nullptr),	//サンプラーを作成
+	pSRV_(nullptr)		//シェーダーリソースビュー作成
 {
 }
 
+//デストラクタ
 Texture::~Texture()
 {
+	//解放処理
 	Release();
 }
 

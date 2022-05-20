@@ -32,7 +32,6 @@ namespace Input
 		//何のキーが押されているかを調べる
 		pKeyDevice->Acquire();
 		pKeyDevice->GetDeviceState(sizeof(keyState), &keyState);
-		
 	}
 
 	//引数で渡されたキーの番号を調べる

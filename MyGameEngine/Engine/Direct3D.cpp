@@ -142,7 +142,6 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 void Direct3D::InitShader()
 {
 	DWORD vectorSize = sizeof(XMVECTOR);
-	//MessageBox(nullptr, "失敗しました", "エラー", MB_OKCANCEL);
 
 	// 頂点シェーダの作成（コンパイル）
 	ID3DBlob* pCompileVS = nullptr;
