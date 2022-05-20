@@ -49,8 +49,8 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	scDesc.OutputWindow = hWnd;		//ウィンドウハンドル
 	scDesc.BufferCount = 1;			//バックバッファの枚数
 	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	//バックバッファの使い道＝画面に描画するために
-	scDesc.SampleDesc.Count = 1;		//MSAA（アンチエイリアス）の設定
-	scDesc.SampleDesc.Quality = 0;		//　〃
+	scDesc.SampleDesc.Count = 1;							//MSAA（アンチエイリアス）の設定
+	scDesc.SampleDesc.Quality = 0;
 
 
 
@@ -212,7 +212,7 @@ void Direct3D::Release()
 	SAFE_RELEASE(pVertexLayout);
 	SAFE_RELEASE(pPixelShader);
 	SAFE_RELEASE(pVertexShader);
-
+	SAFE_RELEASE(pDepthStencilView);
 	SAFE_RELEASE(pRenderTargetView);
 	SAFE_RELEASE(pDepthStencil);
 	SAFE_RELEASE(pSwapChain);

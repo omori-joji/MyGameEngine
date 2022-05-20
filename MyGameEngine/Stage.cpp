@@ -387,10 +387,11 @@ void Stage::PlayRecord()
             }
 
             //影の数がまだ余っていたら
-            if (shadowCount_ <= SHADOW_NAMBER_ - 1) shadowCount_++;//二体目以降の影の番号
+            //二体目以降の影の番号
+            if (shadowCount_ <= SHADOW_NAMBER_ -1) shadowCount_++;
         }
         //影の生成
-        if (shadowCount_ <= SHADOW_NAMBER_) pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this);
+        if (shadowCount_ <= SHADOW_NAMBER_) { pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this); }
     }
 }
 
@@ -465,6 +466,8 @@ void Stage::WarpBlockCollision(int getX, int getY)
                     //そこがワープブロックの出口だったら
                     if (map_[x][y] == OR_WARP_BLOCK_ + i)
                     {
+                        int a = 0;
+
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
