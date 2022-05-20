@@ -2,13 +2,12 @@
 
 //コンストラクタ
 Transform::Transform():
-	matTranslate_(XMMatrixIdentity()),
-	matRotate_(XMMatrixIdentity()),
-	matScale_(XMMatrixIdentity()),
-
-	position_(XMFLOAT3(0,0,0)),
-    rotate_(XMFLOAT3(0, 0, 0)),
-	scale_(XMFLOAT3(1, 1, 1))
+	matTranslate_(XMMatrixIdentity()),	//移動行列の結果
+	matRotate_(XMMatrixIdentity()),		//回転行列の結果
+	matScale_(XMMatrixIdentity()),		//拡大行列の結果
+	position_(XMFLOAT3(0,0,0)),			//位置
+    rotate_(XMFLOAT3(0, 0, 0)),			//回転
+	scale_(XMFLOAT3(1, 1, 1))			//拡大
 {
 }
 
