@@ -603,11 +603,7 @@ bool Stage::isCrash(int x, int y)
     {
         return false;
     }
-    //そこにはブロックがあるから通れない
-    else
-    {
-        return true;
-    }
+    return true;
 }
 
 //スポーン地点を渡す関数

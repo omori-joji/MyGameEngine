@@ -150,7 +150,7 @@
     <ClCompile Include="Clear.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
-    <ClCompile Include="Engine\camera.cpp" />
+    <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\CsvReader.cpp" />
     <ClCompile Include="Engine\Direct3D.cpp" />
     <ClCompile Include="Engine\Fbx.cpp" />
@@ -194,7 +194,7 @@
   <ItemGroup>
     <ClInclude Include="Clear.h" />
     <ClInclude Include="Engine\Audio.h" />
-    <ClInclude Include="Engine\camera.h" />
+    <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\Collider.h" />
     <ClInclude Include="Engine\Common.h" />
     <ClInclude Include="Engine\CsvReader.h" />

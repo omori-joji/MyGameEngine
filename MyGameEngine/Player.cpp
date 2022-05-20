@@ -65,11 +65,6 @@ void Player::Update()
 	//Playerの左移動をまとめた関数
 	PlayerLeftMove();
 	
-	if (yMove_ == 0)
-	{
-		isJump_ = false;
-	}
-
 	//ジャンプ
 	Jump();
 
@@ -170,7 +165,7 @@ void Player::Collision()
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
 	}
-	else if(!pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
+	else
 	{
 		isJump_ = true;
 	}
@@ -303,8 +298,13 @@ void Player::Reset()
 //ジャンプの処理をまとめた関数
 void Player::Jump()
 {
-	if (Input::IsKeyDown(DIK_SPACE) && !isJump_)
+	if (Input::IsKeyDown(DIK_SPACE))
 	{
+		if (!pStage_->isCrash((int)transform_.position_.x, (int)transform_.position_.y - 1))
+		{
+			return;
+		}
+
 		Audio::Play(hSe_[0]);
 
 		//Y軸の移動
@@ -313,7 +313,7 @@ void Player::Jump()
 		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 		yMove_ = DROP_DOWN_;
 
-		isJump_ = true;
+		//isJump_ = true;
 	}
 
 	if (isJump_)
