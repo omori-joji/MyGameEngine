@@ -1,5 +1,6 @@
 #include "Camera.h"
 
+//名前空間
 namespace Camera
 {
 	XMVECTOR position_;		//カメラの位置（視点）
@@ -24,7 +25,7 @@ void Camera::Initialize()
 	position_ = XMVectorSet((BESIDE_ / 2), (VERTICAL_ / 2), CAMERA_POSITION_, 0);
 
 	//カメラの焦点
-	target_ = XMVectorSet((BESIDE_ /2), (VERTICAL_ / 2), 0, 0);
+	target_ = XMVectorSet((BESIDE_ / 2), (VERTICAL_ / 2), 0, 0);
 
 	//プロジェクション行列の処理を実行する関数
 	//引数は(画角, アスペクト比, この値より近いものは映らない, この値より遠いものは映らない)

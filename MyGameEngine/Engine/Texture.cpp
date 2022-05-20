@@ -18,6 +18,8 @@ Texture::~Texture()
 	Release();
 }
 
+//引数で受け取った名前のファイルをロードする関数
+//失敗しやすいので戻り値はHRESULT型にする
 HRESULT Texture::Load(std::string fileName)
 {
 	//ファイル名をワイド文字列に変換する
@@ -90,6 +92,7 @@ HRESULT Texture::Load(std::string fileName)
 	return S_OK;
 }
 
+//解放
 void Texture::Release()
 {
 	SAFE_RELEASE(pSRV_);

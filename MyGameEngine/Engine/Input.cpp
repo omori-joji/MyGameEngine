@@ -1,19 +1,14 @@
 #include "Input.h"
 
+//名前空間
 namespace Input
 {
-	//DirectInputDirectInputの用意
-	LPDIRECTINPUT8   pDInput = nullptr;
+	LPDIRECTINPUT8   pDInput = nullptr;			//DirectInputの用意
+	LPDIRECTINPUTDEVICE8 pKeyDevice = nullptr;	//キーボードの情報を用意	
+	BYTE keyState[256] = { 0 };					//キーの数(一応余分に用意しておく)
+	BYTE prevKeyState[256];						//前フレームでの各キーの状態
 
-	//キーボードの情報を用意
-	LPDIRECTINPUTDEVICE8 pKeyDevice = nullptr;
-
-	//キーの数(一応余分に用意しておく)
-	BYTE keyState[256] = { 0 };
-
-	//前フレームでの各キーの状態
-	BYTE prevKeyState[256];
-
+	//初期化
 	void Initialize(HWND hWnd)
 	{
 		//DirectInputの用意
@@ -25,6 +20,7 @@ namespace Input
 		pKeyDevice->SetCooperativeLevel(hWnd, DISCL_NONEXCLUSIVE | DISCL_BACKGROUND);
 	}
 
+	//更新
 	void Update()
 	{
 		memcpy(prevKeyState, keyState, sizeof(keyState));
@@ -35,6 +31,7 @@ namespace Input
 	}
 
 	//引数で渡されたキーの番号を調べる
+	//押されているかを調べるので戻り値はbool型にする
 	bool IsKey(int keyCode)
 	{
 		//渡されたキー番号の配列に1が入り、trueが返される
@@ -46,6 +43,7 @@ namespace Input
 	}
 
 	//上で作った関数を使い、押した瞬間を取得する
+	//押した瞬間を調べるので戻り値はbool型にする
 	bool IsKeyDown(int keyCode)
 	{
 		//今は押してて、前回は押してない
@@ -56,7 +54,8 @@ namespace Input
 		return false;
 	}
 
-	//離した瞬間
+	//離した瞬間を調べる
+	//離れた瞬間を調べるので戻り値はbool型にする
 	bool IsKeyUp(int keyCode)
 	{
 		//今は押しいない、前回は押していた
@@ -67,6 +66,7 @@ namespace Input
 		return false;
 	}
 
+	//解放
 	void Release()
 	{
 		SAFE_RELEASE(pKeyDevice);
