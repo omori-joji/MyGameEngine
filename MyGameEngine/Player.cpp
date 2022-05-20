@@ -65,11 +65,16 @@ void Player::Update()
 	//Playerの左移動をまとめた関数
 	PlayerLeftMove();
 	
-	//Playerの当たり判定をまとめる関数
-	Collision();
+	if (yMove_ == 0)
+	{
+		isJump_ = false;
+	}
 
 	//ジャンプ
 	Jump();
+
+	//Playerの当たり判定をまとめる関数
+	Collision();
 
 	//初期位置に戻る処理をまとめた関数
 	Reset();
@@ -157,26 +162,17 @@ void Player::Collision()
 	//もし移動先にブロックがあったら
 	if (pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
+		isJump_ = false;
+
 		//Y軸の移動を初期化する
 		yMove_ = 0;
 
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
-
-		isJump_ = false;
 	}
 	else if(!pStage_->isCrash(checkX1, checkY1) || pStage_->isCrash(checkX2, checkY2))
 	{
 		isJump_ = true;
-		//下に落ちる
-		transform_.position_.y -= yMove_;
-
-		//ブロックの直径より値が大きくなるとすり抜けてしまうので
-		//ブロックの直系よりは大きくならないようにする
-		if (yMove_ < BLOCK_SIZE_)
-		{
-			yMove_ += GRAVITY_;
-		}
 	}
 }
 
@@ -316,6 +312,21 @@ void Player::Jump()
 
 		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 		yMove_ = DROP_DOWN_;
+
+		isJump_ = true;
+	}
+
+	if (isJump_)
+	{
+		//下に落ちる
+		transform_.position_.y -= yMove_;
+
+		//ブロックの直径より値が大きくなるとすり抜けてしまうので
+		//ブロックの直系よりは大きくならないようにする
+		if (yMove_ < BLOCK_SIZE_)
+		{
+			yMove_ += GRAVITY_;
+		}
 	}
 }
 

@@ -8,7 +8,7 @@ namespace Camera
 {
 	void Initialize();								//初期化（プロジェクション行列作成）
 	void Update();									//更新（ビュー行列作成）
-	void SetPosition(XMVECTOR position);			//視点（カメラの位置）を設定
+	void SetPosition(DirectX::XMVECTOR position);	//視点（カメラの位置）を設定
 	void SetPosition(XMFLOAT3 position);			//SetPositionにアドレスを渡すセッター
 	void SetTarget(XMVECTOR target);				//焦点（見る位置）を設定
 	void SetTarget(XMFLOAT3 target);				//SetTargetにアドレスを渡すセッター

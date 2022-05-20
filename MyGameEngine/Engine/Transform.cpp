@@ -29,8 +29,6 @@ void Transform::Calclation()
 
 	//ägëÂèkè¨
 	matScale_ = XMMatrixScaling(scale_.x, scale_.y, scale_.z);
-
-
 }
 
 XMMATRIX Transform::GetWorldMatrix()

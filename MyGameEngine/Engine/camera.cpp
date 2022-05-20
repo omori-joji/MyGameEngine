@@ -6,22 +6,26 @@ namespace Camera
 	XMVECTOR target_;		//見る位置（焦点）
 	XMMATRIX viewMatrix_;	//ビュー行列
 	XMMATRIX projMatrix_;	//プロジェクション行列
+
+
+	//カメラをステージの中央に出す処理
+	//Stageの大きさ
+	const int VERTICAL_ = 23;
+	const int BESIDE_ = 28;
+
+	//カメラのZ軸の位置
+	const int CAMERA_POSITION_ = -25;	//奥行
 }
 
 //初期化
 void Camera::Initialize()
 {
-	//カメラをステージの中央に出す処理
-	//Stageの大きさ
-	int y = 23;	//縦
-	int x = 28;	//横
-
 	//初期値を設定
 	//カメラの位置
-	position_ = XMVectorSet((x / 2), (y / 2), -25, 0);
+	position_ = XMVectorSet((BESIDE_ / 2), (VERTICAL_ / 2), CAMERA_POSITION_, 0);
 
 	//カメラの焦点
-	target_ = XMVectorSet((x/2), (y / 2), 0, 0);
+	target_ = XMVectorSet((BESIDE_ /2), (VERTICAL_ / 2), 0, 0);
 
 	//プロジェクション行列の処理を実行する関数
 	//引数は(画角, アスペクト比, この値より近いものは映らない, この値より遠いものは映らない)
@@ -82,3 +86,5 @@ XMMATRIX Camera::GetProjectionMatrix()
 {
 	return projMatrix_;
 }
+
+
