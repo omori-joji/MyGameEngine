@@ -30,7 +30,7 @@ namespace Input
 		pKeyDevice->GetDeviceState(sizeof(keyState), &keyState);
 	}
 
-	//引数で渡されたキーの番号を調べる
+	//引数でキーコードを受け取る
 	//押されているかを調べるので戻り値はbool型にする
 	bool IsKey(int keyCode)
 	{
