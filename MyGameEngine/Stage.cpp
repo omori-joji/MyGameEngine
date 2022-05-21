@@ -66,10 +66,11 @@ void Stage::Initialize()
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
-    AllFind();
-
     //Csvファイルの読み込み
     CsvReader csv;
+
+    //SceneManagerクラスの情報を格納する
+    if (pSceneManager_ == nullptr) pSceneManager_ = (SceneManager*)Find("SceneManager");
 
     //読み込まれたステージIDに対応するCSVファイルを読み込む
     switch (pSceneManager_->nextSceneID_)
@@ -104,12 +105,7 @@ void Stage::Initialize()
         }
     }
 
-    //Player情報の格納
-    if (pPlayer_ == nullptr)
-    {
-        pPlayer_ = (Player*)Find("Player");
-        int a = 0;
-    }
+
 
     //影の生成
     //最初は非表示で影を生成する
@@ -119,6 +115,12 @@ void Stage::Initialize()
 //更新
 void Stage::Update()
 {
+    //Player情報の格納
+    if (pPlayer_ == nullptr)
+    {
+        pPlayer_ = (Player*)Find("Player");
+    }
+
     //if (Input::IsKeyDown(DIK_SPACE))
     //{
     //    //1個エフェクトを出す
@@ -130,9 +132,6 @@ void Stage::Update()
 
     //影を再生する処理をまとめた関数
     PlayRecord();
-
-    //記録した影をすべてまっさらにする関数
-    ResetShadow();
 
     //一定時間ごとにブロック切り替える
     Blinking(BRINKING_BLOCKS_, FRAME_TIME_);
@@ -358,23 +357,6 @@ int Stage::CheckFootBlock(int x, int y)
     return (map_[x][y] % 10) -1;
 }
 
-//保存された影の動きをすべてリセットする関数
-void Stage::ResetShadow()
-{
-    //保存された影の動きをすべてリセットする
-    if (Input::IsKeyDown(DIK_2))
-    {
-        //今ある影分
-        for (int i = RESET_VALU_; i <= shadowCount_; i++)
-        {
-            //解放処理
-            pShadow_[i]->killMe();
-        }
-        //影の数をリセット
-        shadowCount_ = RESET_VALU_;
-    }
-}
-
 void Stage::PlayRecord()
 {
     //再生スタート
@@ -406,9 +388,6 @@ void Stage::PlayRecord()
 void Stage::AllFind()
 {
 
-
-    //SceneManagerクラスの情報を格納する
-    if (pSceneManager_ == nullptr) pSceneManager_ = (SceneManager*)Find("SceneManager");
 }
 
 //押している間発動するボタンに乗っている人数をカウントアップする関数
