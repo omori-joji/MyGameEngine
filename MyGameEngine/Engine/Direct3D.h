@@ -10,6 +10,7 @@
 
 namespace Direct3D
 {
+	//éŒ¾
 	extern ID3D11Device* pDevice;
 	extern ID3D11DeviceContext* pContext;
 

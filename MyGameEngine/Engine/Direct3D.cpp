@@ -4,7 +4,6 @@
 
 using namespace DirectX;
 
-//変数
 namespace Direct3D
 {
 	ID3D11Device* pDevice = nullptr;						//デバイス
@@ -36,23 +35,23 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	ZeroMemory(&scDesc, sizeof(scDesc));
 
 	//描画先のフォーマット
-	scDesc.BufferDesc.Width = winW;		//画面幅
-	scDesc.BufferDesc.Height = winH;	//画面高さ
-	scDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;	// 何色使えるか
+	scDesc.BufferDesc.Width = winW;
+	scDesc.BufferDesc.Height = winH;
+	scDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 
 	//FPS（1/60秒に1回）
 	scDesc.BufferDesc.RefreshRate.Numerator = 60;
 	scDesc.BufferDesc.RefreshRate.Denominator = 1;
 
 	//その他
-	scDesc.Windowed = TRUE;			//ウィンドウモードかフルスクリーンか
-	scDesc.OutputWindow = hWnd;		//ウィンドウハンドル
-	scDesc.BufferCount = 1;			//バックバッファの枚数
-	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;	//バックバッファの使い道＝画面に描画するために
-	scDesc.SampleDesc.Count = 1;							//MSAA（アンチエイリアス）の設定
+	scDesc.Windowed = TRUE;
+	scDesc.OutputWindow = hWnd;
+	scDesc.BufferCount = 1;
+
+	//バックバッファの使い道＝画面に描画するために
+	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	scDesc.SampleDesc.Count = 1;
 	scDesc.SampleDesc.Quality = 0;
-
-
 
 	////////////////上記設定をもとにデバイス、コンテキスト、スワップチェインを作成////////////////////////
 	D3D_FEATURE_LEVEL level;
@@ -92,7 +91,6 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	vp.TopLeftX = 0;			//左
 	vp.TopLeftY = 0;			//上
 
-
 	//深度ステンシルビューの作成
 	D3D11_TEXTURE2D_DESC descDepth;
 	descDepth.Width = winW;
@@ -108,7 +106,6 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	descDepth.MiscFlags = 0;
 	Direct3D::pDevice->CreateTexture2D(&descDepth, NULL, &pDepthStencil);
 	Direct3D::pDevice->CreateDepthStencilView(pDepthStencil, NULL, &pDepthStencilView);
-
 
 	//ブレンドステート
 	//透過するため
@@ -128,10 +125,9 @@ void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 	float blendFactor[4] = { D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO };
 	Direct3D::pContext->OMSetBlendState(pBlendState, blendFactor, 0xffffffff);
 
-
 	//データを画面に描画するための一通りの設定（パイプライン）
-	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);  // データの入力種類を指定
-	pContext->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);            // 描画先を設定
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);			// データの入力種類を指定
+	pContext->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);				// 描画先を設定
 	pContext->RSSetViewports(1, &vp);
 
 	//シェーダー準備
@@ -159,9 +155,8 @@ void Direct3D::InitShader()
 
 	};
 	pDevice->CreateInputLayout(layout, sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC), pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
-	SAFE_RELEASE(pCompileVS);;//一時的に使った変数を消す
-
-
+	//一時的に使った変数を消す
+	SAFE_RELEASE(pCompileVS);;
 
 	//ピクセルシェーダの作成（コンパイル）
 	ID3DBlob* pCompilePS = nullptr;

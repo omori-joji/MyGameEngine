@@ -74,6 +74,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
     VisualEffect::Initialize();
     Audio::Initialize();
 
+    //Rootjob‚Ìì¬‚Æ‰Šú‰»
     pRootJob = new Rootjob;
     pRootJob->Initialize();
 
