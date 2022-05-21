@@ -1,12 +1,10 @@
 #include "Engine/Model.h"
 #include "Engine/Common.h"
 
-
 namespace Model
 {
     std::vector<ModelData*> datas;
 }
-
 
 int Model::Load(std::string fileName)
 {

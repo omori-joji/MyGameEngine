@@ -1,5 +1,5 @@
-#include "Stage.h"
 #include "Player.h"
+#include "Stage.h"
 #include "Shadow.h"
 
 //コンストラクタ
@@ -103,6 +103,14 @@ void Stage::Initialize()
             }
         }
     }
+
+    //Player情報の格納
+    if (pPlayer_ == nullptr)
+    {
+        pPlayer_ = (Player*)Find("Player");
+        int a = 0;
+    }
+
     //影の生成
     //最初は非表示で影を生成する
     pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
@@ -397,8 +405,7 @@ void Stage::PlayRecord()
 
 void Stage::AllFind()
 {
-    //Player情報の格納
-    if (pPlayer_ == nullptr) pPlayer_ = (Player*)Find("Player");
+
 
     //SceneManagerクラスの情報を格納する
     if (pSceneManager_ == nullptr) pSceneManager_ = (SceneManager*)Find("SceneManager");
@@ -466,8 +473,6 @@ void Stage::WarpBlockCollision(int getX, int getY)
                     //そこがワープブロックの出口だったら
                     if (map_[x][y] == OR_WARP_BLOCK_ + i)
                     {
-                        int a = 0;
-
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
                         pPlayer_->transform_.position_.y = y;
