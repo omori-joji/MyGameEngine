@@ -92,7 +92,6 @@ private:
     void CollisionExit();                           //当たり判定。ボタンから離れたら呼ばれる
     void Blinking(int blockNum, int time);          //点滅ブロックのギミックをまとめた関数。引数は(第一引数が点滅させたいブロックのモデル番号, 第二引数が点滅する時間の間隔(単位はフレーム))
     void SimultaneousWallOpen();                    //同時押しボタンがどちらも押されていたら。壁を開き、それ以外の条件だったら壁を閉じる関数
-    void ResetShadow();                             //記録した影の動きをすべてまっさらな状態にする処理をまとめた関数
     void PlayRecord();                              //影の再生をまとめた関数
     void AllFind();                                 //Find処理をまとめた関数
 };
