@@ -199,6 +199,7 @@ bool Stage::MeanTimeButton(int x, int y)
         //下にあるボタンが踏んでいる間だけのボタンもしくは踏んだ後のボタンだったら
         if (map_[x][y] == MEANTIME_BUTTON_UP_ + i || map_[x][y] == MEANTIME_BUTTON_DOWN_ + i) return true;
     }
+
     //離れた時の処理
     CollisionExit();
     return false;
