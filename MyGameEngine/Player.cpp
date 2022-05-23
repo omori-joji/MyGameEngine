@@ -165,6 +165,7 @@ void Player::Collision()
 		//位置を戻す
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
 	}
+
 	else
 	{
 		isJump_ = true;
@@ -300,11 +301,13 @@ void Player::Jump()
 {
 	if (Input::IsKeyDown(DIK_SPACE))
 	{
+		//足元にブロックがなかったら
 		if (!pStage_->isCrash((int)transform_.position_.x, (int)transform_.position_.y - 1))
 		{
 			return;
 		}
 
+		//SEを鳴らす
 		Audio::Play(hSe_[0]);
 
 		//Y軸の移動
@@ -312,8 +315,6 @@ void Player::Jump()
 
 		//gravityの値をマイナスの値にして、今度は上方向に重力がかかるようになる
 		yMove_ = DROP_DOWN_;
-
-		//isJump_ = true;
 	}
 
 	if (isJump_)
@@ -382,18 +383,19 @@ void Player::AllFind()
 	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
 }
 
-//モデル番号を返す
+//モデル番号を返す関数
 int Player::GetModelNumber()
 {
 	return modelNumber_;
 }
 
-//毎フレーム向いている方向を返す
+//毎フレーム向いている方向を返す関数
 int Player::GetDirection()
 {
 	return direction_;
 }
 
+//解放
 void Player::Release()
 {
 }

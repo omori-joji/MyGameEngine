@@ -40,7 +40,8 @@ class Player : public GameObject
     bool isPastMeanTimeButton_;             //さっき踏んでいるか
     Stage* pStage_;                         //ステージの情報を入れるポインタ
 
-    enum Direction                         //Playerの向き
+    //列挙体
+    enum
     {
         DIR_RIGHT,                          //右向き
         DIR_LEFT,                           //左向き
@@ -51,7 +52,7 @@ class Player : public GameObject
 
         ON_DOUBLE_BUTTON = 0,               //片方の同時押しボタンのフラグ番号
         OR_DOUBLE_BUTTON,                   //もう片方の同時押しボタンのフラグ番号
-        MAX_DOUBLE_BUTTON,              //isPastDoubleButton_の最大要素数
+        MAX_DOUBLE_BUTTON,                  //isPastDoubleButton_の最大要素数
     };
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
     bool isPastDoubleButton_[MAX_DOUBLE_BUTTON];//同時ボタンのフラグ
@@ -69,7 +70,7 @@ public:
     void OrDoubleButtonCheck();             //もう片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
     int GetModelNumber();                   //Playerの走っているモデル番号を返す関数
     int GetDirection();                     //Player向きのモデル番号を返す関数
-private:    
+private:
     void AllFind();                         //Find処理をすべてまとめる関数
     void PlayerRightMove();                 //Playerの右操作をまとめる関数
     void PlayerLeftMove();                  //Playerの左操作をまとめる関数

@@ -13,7 +13,7 @@ class Player;
 class Shadow;
 class SceneManager;
 
-//◆◆◆を管理するクラス
+//Stageを管理するクラス
 class Stage : public GameObject
 {
     //int hVfxA, hVfxB;
