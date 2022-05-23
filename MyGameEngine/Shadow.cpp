@@ -243,11 +243,6 @@ void Shadow::Release()
 {
 }
 
-bool Shadow::GetIsRecording()
-{
-	return isRecording_;
-}
-
 void Shadow::AllFind()
 {
 	//Player‚Ìî•ñ‚ğŠi”[

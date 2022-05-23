@@ -1,8 +1,8 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Engine/Fbx.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
+#include "Engine/Fbx.h"
 #include <string>
 
 //クラスの前方宣言
@@ -62,7 +62,6 @@ public:
 	void Draw() override;						//描画
 	void Release() override;					//開放
 	void ShadowIsPlayFlag();					//影の表示非表示、再生中か記録中かをを管理する関数
-	bool GetIsRecording();						//isRecording_を返すためのゲッター
 private:
 	void AllFind();								//Find処理をまとめる関数
 	void RecordingandPlayBack();				//Playerの動きを記録と再生する関数

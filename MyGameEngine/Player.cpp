@@ -20,6 +20,7 @@ Player::Player(GameObject* parent)
 	yMove_(0.02f),					//Y軸の移動
 	direction_(0),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
+	meanTimeGimmickNumber_(0),		//押している間発動するボタンのモデル番号の1の位
 	onGimmickNumber_(0),			//片方の同時押しボタンのモデル番号
 	orGimmickNumber_(0),			//もう方の同時押しボタンのモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
