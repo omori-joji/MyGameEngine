@@ -6,6 +6,7 @@
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"),
     hModel_(),                              //すべてのステージモデルを格納する変数
+    map_(),
     hSound_(),                              //SEとBGMを格納する変数
     PLAYER_GENERAT_POS_(200),               //Playerの初期位置
     SHADOW_NAMBER_(5),                      //影の最大数
@@ -51,18 +52,6 @@ Stage::~Stage()
 //初期化
 void Stage::Initialize()
 {
-    //エフェクトの画像をロード
-    //引数は「ファイル名」「横に何個並んでるか」「縦に何個並んでるか」
-    //戻り値は画像番号
-    //hVfxA = VisualEffect::Load("Assets/SampleEffectA.png", 7, 7);
-    //hVfxB = VisualEffect::Load("Assets/SampleEffectB.png", 6, 5);
-
-    ////1個エフェクトを出す
-    //Transform transform;
-    //transform.position_ = XMFLOAT3(6, 7, -1);       //位置
-    //transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
-    //VisualEffect::Add(hVfxA, transform, 0.5f, true);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
-
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
@@ -105,8 +94,6 @@ void Stage::Initialize()
         }
     }
 
-
-
     //影の生成
     //最初は非表示で影を生成する
     pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
@@ -120,15 +107,6 @@ void Stage::Update()
     {
         pPlayer_ = (Player*)Find("Player");
     }
-
-    //if (Input::IsKeyDown(DIK_SPACE))
-    //{
-    //    //1個エフェクトを出す
-    //    Transform transform;
-    //    transform.position_ = XMFLOAT3(15, 15, -1);       //位置
-    //    transform.scale_ = XMFLOAT3(3.0f, 3.0f, 1.0f);  //サイズ（デフォルトだと1辺が2ｍ）
-    //    VisualEffect::Add(hVfxB, transform, 0.5f, false);//出す（引数は「画像番号」「トランスフォーム」「再生速度」「ループさせるかどうか」）
-    //}
 
     //影を再生する処理をまとめた関数
     PlayRecord();
