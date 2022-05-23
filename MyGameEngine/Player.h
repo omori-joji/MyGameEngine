@@ -55,8 +55,8 @@ class Player : public GameObject
         MAX_DOUBLE_BUTTON,                  //isPastDoubleButton_の最大要素数
     };
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
-    bool isPastDoubleButton_[MAX_DOUBLE_BUTTON];//同時ボタンのフラグ
     int hSe_[10];
+    bool isPastDoubleButton_[MAX_DOUBLE_BUTTON];//同時ボタンのフラグ
 
 public:    
     Player(GameObject* parent);             //コンストラクタ
@@ -65,9 +65,6 @@ public:
     void Update() override;                 //更新
     void Draw() override;                   //描画  
     void Release() override;                //開放
-    void MeanTimeButtonCheck();             //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
-    void OnDoubleButtonCheck();             //片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
-    void OrDoubleButtonCheck();             //もう片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
     int GetModelNumber();                   //Playerの走っているモデル番号を返す関数
     int GetDirection();                     //Player向きのモデル番号を返す関数
 private:
@@ -75,6 +72,9 @@ private:
     void PlayerRightMove();                 //Playerの右操作をまとめる関数
     void PlayerLeftMove();                  //Playerの左操作をまとめる関数
     void Collision();                       //Playyerの当たり判定をまとめる関数
-    void Jump();                            //ジャンプの処理をまとめた関数
     void Reset();                           //初期位置に戻る処理をまとめた関数
+    void Jump();                            //ジャンプの処理をまとめた関数
+    void MeanTimeButtonCheck();             //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
+    void OnDoubleButtonCheck();             //片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
+    void OrDoubleButtonCheck();             //もう片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
 };
