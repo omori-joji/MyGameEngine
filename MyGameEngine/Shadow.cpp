@@ -27,6 +27,7 @@ Shadow::Shadow(GameObject* parent)
 {
 }
 
+//初期化
 void Shadow::Initialize()
 {
 	//右方向を向いているモデルのロード
@@ -38,6 +39,7 @@ void Shadow::Initialize()
 	hModel_[SDIR_LEFT][RUN_MODEL] = Model::Load(filePas_ +"ShadowRun_Left.fbx");
 }
 
+//更新
 void Shadow::Update()
 {
 	//Find処理をまとめる関数
@@ -58,6 +60,7 @@ void Shadow::Update()
 	pStage_->ChengeButtonAndWall();
 }
 
+//影の表示非表示、再生中か記録中かをを管理する関数
 void Shadow::RecordingandPlayBack()
 {
 	//記録中
@@ -239,10 +242,12 @@ void Shadow::ShadowIsPlayFlag()
 	frameCounter_ = RESET_VALU_;
 }
 
+//解放
 void Shadow::Release()
 {
 }
 
+//Find処理をまとめた関数
 void Shadow::AllFind()
 {
 	//Playerの情報を格納
