@@ -358,6 +358,7 @@ int Stage::CheckFootBlock(int x, int y)
     return (map_[x][y] % 10) -1;
 }
 
+//影を出現させた時に行う処理
 void Stage::PlayRecord()
 {
     //再生スタート
@@ -384,11 +385,6 @@ void Stage::PlayRecord()
         //影の生成
         if (shadowCount_ <= SHADOW_NAMBER_) { pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this); }
     }
-}
-
-void Stage::AllFind()
-{
-
 }
 
 //押している間発動するボタンに乗っている人数をカウントアップする関数
@@ -605,6 +601,7 @@ void Stage::Release()
 {
 }
 
+//モデルをロードする処理をまとめた関数
 void Stage::ModelLoad()
 {
     //サウンドデータのロード
