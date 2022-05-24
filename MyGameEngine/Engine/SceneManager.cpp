@@ -3,7 +3,7 @@
 #include "../PlayScene.h"
 #include "Model.h"
 #include "../Stage.h"
-#include "../Clear.h"
+#include "../Result.h"
 #include "../Title.h"
 
 //コンストラクタ
@@ -32,9 +32,7 @@ void SceneManager::Update()
 		KillAllChildren();
 
 		//ロードしたデータを全削除
-		//Audio::AllRelease();
 		Model::AllRelease();
-		//Image::AllRelease();
 
 		//次のシーンを作成
 		switch (nextSceneID_)
@@ -43,8 +41,7 @@ void SceneManager::Update()
 		   case SCENE_ID_STAGE2: Instantiate<Stage>(this); break;
 		   case SCENE_ID_STAGE3: Instantiate<Stage>(this); break;
 		   case SCENE_ID_STAGE4: Instantiate<Stage>(this); break;
-		   case SCENE_ID_CLEAR: Instantiate<Clear>(this); break;
-		   case SCENE_ID_CLEDIT: Instantiate<Clear>(this); break;
+		   case SCENE_ID_CLEAR: Instantiate<Result>(this); break;
 		   case SCENE_ID_TITLE2: Instantiate<Title>(this); break;
 		}
 		currentSceneID_ = nextSceneID_;

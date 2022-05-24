@@ -43,7 +43,6 @@ void Title::Update()
         case 2:pSceneManager->ChangeScene(SCENE_ID_STAGE3); break;
         case 3:pSceneManager->ChangeScene(SCENE_ID_STAGE4); break;
         }
-        SAFE_DELETE(pSceneManager);
     }
 }
 

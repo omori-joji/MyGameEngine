@@ -41,7 +41,7 @@ public:
 	SCENE_ID nextSceneID_;		//次のシーン
 
 private:
-
 	SCENE_ID currentSceneID_;	//現在のシーン
+
 	
 };

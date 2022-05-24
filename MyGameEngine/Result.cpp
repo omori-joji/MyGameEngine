@@ -1,26 +1,26 @@
-#include "Clear.h"
+#include "Result.h"
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/SceneManager.h"
 
 //コンストラクタ
-Clear::Clear(GameObject* parent)
-	: GameObject(parent, "Clear"), hModel_(-1)
+Result::Result(GameObject* parent)
+	: GameObject(parent, "Result"), hModel_(-1)
 {
 }
 
 //初期化
-void Clear::Initialize()
+void Result::Initialize()
 {
 	//モデルデータのロード
-	hModel_ = Model::Load("Assets/StageBlock/Clear.fbx");
+	hModel_ = Model::Load("Assets/StageBlock/Result.fbx");
 	assert(hModel_ >= 0);
 }
 
 //更新
-void Clear::Update()
+void Result::Update()
 {
-	if (Input::IsKeyDown(DIK_1))
+	if (Input::IsKeyDown(DIK_SPACE))
 	{
 		SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
 		pSceneManager->ChangeScene(SCENE_ID_TITLE2);
@@ -28,13 +28,13 @@ void Clear::Update()
 }
 
 //描画
-void Clear::Draw()
+void Result::Draw()
 {
 	Transform trans;
 
-	trans.position_.x = 10;
-	trans.position_.y = 15;
-	trans.position_.z = 40;
+	trans.position_.x = 28/2;
+	trans.position_.y = 23/2;
+	trans.position_.z = -21.4;
 
 	trans.Calclation();
 
@@ -43,6 +43,6 @@ void Clear::Draw()
 }
 
 //開放
-void Clear::Release()
+void Result::Release()
 {
 }

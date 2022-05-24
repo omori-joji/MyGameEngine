@@ -3,7 +3,7 @@
 
 
 //■■シーンを管理するクラス
-class Clear : public GameObject
+class Result : public GameObject
 {
 	int hModel_;
 
@@ -11,7 +11,7 @@ class Clear : public GameObject
 public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
-	Clear(GameObject* parent);
+	Result(GameObject* parent);
 
 	//初期化
 	void Initialize() override;
