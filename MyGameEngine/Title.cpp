@@ -8,13 +8,16 @@ Title::Title(GameObject* parent)
     chengeCount(0),
     hModel_(),
     stageNumModel_(),
-    stageNum_(0)
+    stageNum_(0),
+    se_()
 {
 }
 
 //初期化
 void Title::Initialize()
 {
+    //se_[1] = Audio::Load("Assets/Sound/StegeSelect.wav", 2);
+
     //モデルデータのロード
     hModel_[0] = Model::Load("Assets/StageBlock/Title.fbx");
     hModel_[1] = Model::Load("Assets/StageBlock/TitleNowLoading.fbx");
@@ -24,16 +27,26 @@ void Title::Initialize()
     stageNumModel_[1] = Model::Load("Assets/StageBlock/TitleNumber2.fbx");
     stageNumModel_[2] = Model::Load("Assets/StageBlock/TitleNumber3.fbx");
     stageNumModel_[3] = Model::Load("Assets/StageBlock/TitleNumber4.fbx");
+    se_[0] = Audio::Load("Assets/Sound/StegeSelectMove.wav", 2);
 }
 
 //更新
 void Title::Update()
 {
-    if (Input::IsKeyDown(DIK_UP) && stageNum_ < 3)stageNum_++;
-    if (Input::IsKeyDown(DIK_DOWN) && stageNum_ > 0)stageNum_--;
+    if (Input::IsKeyDown(DIK_UP) && stageNum_ < 3)
+    {
+        Audio::Play(se_[0]);
+        stageNum_++;
+    }
+    if (Input::IsKeyDown(DIK_DOWN) && stageNum_ > 0)
+    {
+        Audio::Play(se_[0]);
+        stageNum_--;
+    }
 
     if (Input::IsKeyDown(DIK_SPACE))
     {
+        //Audio::Play(se_[1]);
         imageNum_ = 1;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         switch (stageNum_)

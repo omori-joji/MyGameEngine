@@ -3,6 +3,7 @@
 #include "Engine/GameObject.h"
 #include "Engine/Input.h"
 #include "Engine/Model.h"
+#include "Engine/Audio.h"
 
 
 //Titleシーンを管理するクラス
@@ -10,6 +11,7 @@ class Title : public GameObject
 {
 	int hModel_[3];
 	int stageNumModel_[4];
+	int se_[2];
 	int stageNum_;
 	int imageNum_;
 	int chengeCount;
