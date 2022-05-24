@@ -1,5 +1,4 @@
 #include "sceneManager.h"
-#include "../TestScene.h"
 #include "../PlayScene.h"
 #include "Model.h"
 #include "../Stage.h"
@@ -19,7 +18,7 @@ void SceneManager::Initialize()
 	//最初のシーンを準備
 	currentSceneID_ = SCENE_ID_TITLE;
 	nextSceneID_ = currentSceneID_;
-	Instantiate<Title>(this);
+	Instantiate<Result>(this);
 }
 
 //更新

@@ -24,12 +24,12 @@ Player::Player(GameObject* parent)
 	onGimmickNumber_(0),			//片方の同時押しボタンのモデル番号
 	orGimmickNumber_(0),			//もう方の同時押しボタンのモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
-	filePas_("Assets/Player/"),		//Playerのモデルが保存されているファイルパス
+	FILE_PAS_("Assets/Player/"),	//Playerのモデルが保存されているファイルパス
 	isJump_(false),					//ジャンプ中か
 	isPastMeanTimeButton_(false),	//1フレーム前、ボタンを踏んでいるかどうかの情報
 	isPastDoubleButton_(),			//同時押しボタンのフラグ
 	pStage_(nullptr),				//ステージの情報を入れるポインタ
-	hSe_()
+	hSe_()							//SEをロードするための配列
 {
 }
 
@@ -47,12 +47,12 @@ void Player::Initialize()
 	hSe_[4] = Audio::Load("Assets/Sound/ButtonDown.wav", 5);
 
 	//右方向を向いているモデルのロード
-	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load(filePas_ + "PlayerRightStanding.fbx");
-	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load(filePas_ + "PlayerRightRun.fbx");
+	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load(FILE_PAS_ + "PlayerRightStanding.fbx");
+	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load(FILE_PAS_ + "PlayerRightRun.fbx");
 
 	//左方向を向いているモデルのロード
-	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load(filePas_ + "PlayerLeftStanding.fbx");
-	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load(filePas_ + "PlayerLeftRun.fbx");
+	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load(FILE_PAS_ + "PlayerLeftStanding.fbx");
+	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load(FILE_PAS_ + "PlayerLeftRun.fbx");
 }
 
 void Player::Update()

@@ -16,8 +16,8 @@ Title::Title(GameObject* parent)
 //初期化
 void Title::Initialize()
 {
-    //se_[1] = Audio::Load("Assets/Sound/StegeSelect.wav", 2);
     //se_[0] = Audio::Load("Assets/Sound/StegeSelectMove.wav", 2);
+    se_[1] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
 
     //モデルデータのロード
     hModel_[0] = Model::Load("Assets/StageBlock/Title.fbx");
@@ -46,7 +46,7 @@ void Title::Update()
 
     if (Input::IsKeyDown(DIK_SPACE))
     {
-        //Audio::Play(se_[1]);
+        Audio::Play(se_[1]);
         imageNum_ = 1;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         switch (stageNum_)

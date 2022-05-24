@@ -53,11 +53,9 @@ void Direct3D::InitShader()
 
 	//頂点インプットレイアウト
 	D3D11_INPUT_ELEMENT_DESC layout[] = {
-
 		{ "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT,0, 0,  D3D11_INPUT_PER_VERTEX_DATA, 0 },	//位置
 		{ "NORMAL",	0, DXGI_FORMAT_R32G32B32_FLOAT, 0,sizeof(XMFLOAT3),	D3D11_INPUT_PER_VERTEX_DATA, 0 },//法線
 		{ "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,   0, sizeof(XMFLOAT3) * 2, D3D11_INPUT_PER_VERTEX_DATA, 0 },//UV座標
-
 	};
 	pDevice->CreateInputLayout(layout, sizeof(layout) / sizeof(D3D11_INPUT_ELEMENT_DESC), pCompileVS->GetBufferPointer(), pCompileVS->GetBufferSize(), &pVertexLayout);
 	//一時的に使った変数を消す

@@ -27,7 +27,7 @@ class Player : public GameObject
     const float DROP_DOWN_;                 //Playerの下に何もなければ下に落ちるための定数
     const int RESET_VALU_;                  //初期化用の定数
     const int PLAYER_FOOT_;                 //Playerの足元を見るためにY軸を-1する定数
-    const string filePas_;                  //モデルが保存されているファイルパス
+    const string FILE_PAS_;                  //モデルが保存されているファイルパス
 
     //変数宣言
     int direction_;                         //プレイヤーの向きの番号
@@ -43,10 +43,6 @@ class Player : public GameObject
     //列挙体
     enum
     {
-        DIR_RIGHT,                          //右向き
-        DIR_LEFT,                           //左向き
-        DIR_MAX,                            //配列の最大要素数
-
         STANDING_MODEL = 0,                 //立っているモデル番号
         RUN_MODEL,                          //走っているモデル番号
 
@@ -54,7 +50,15 @@ class Player : public GameObject
         OR_DOUBLE_BUTTON,                   //もう片方の同時押しボタンのフラグ番号
         MAX_DOUBLE_BUTTON,                  //isPastDoubleButton_の最大要素数
     };
+
+    enum Direction
+    {
+        DIR_LEFT,
+        DIR_RIGHT,
+        DIR_MAX
+    };
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
+
     int hSe_[10];
     bool isPastDoubleButton_[MAX_DOUBLE_BUTTON];//同時ボタンのフラグ
 
@@ -74,7 +78,7 @@ private:
     void Collision();                       //Playyerの当たり判定をまとめる関数
     void Reset();                           //初期位置に戻る処理をまとめた関数
     void Jump();                            //ジャンプの処理をまとめた関数
-    void MeanTimeButtonCheck();             //Playerがボタンを踏んでいるか、ボタンから離れたかを判断する関数
+    void MeanTimeButtonCheck();             //Playerがボタンを踏んでいるか、ボタンから離れたかを処理する関数
     void OnDoubleButtonCheck();             //片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
     void OrDoubleButtonCheck();             //もう片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
 };
