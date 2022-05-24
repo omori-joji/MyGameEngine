@@ -5,7 +5,9 @@
 //Titleシーンを管理するクラス
 class Title : public GameObject
 {
-	int hModel_[5];
+	int hModel_[3];
+	int stageNumModel_[4];
+	int stageNum_;
 	int imageNum_;
 	int chengeCount;
 
