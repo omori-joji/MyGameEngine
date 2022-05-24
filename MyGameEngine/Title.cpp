@@ -1,7 +1,4 @@
 #include "Title.h"
-#include "Engine/SceneManager.h"
-#include "Engine/Input.h"
-#include "Engine/Model.h"
 
 //コンストラクタ
 Title::Title(GameObject* parent)
@@ -46,6 +43,7 @@ void Title::Update()
         case 2:pSceneManager->ChangeScene(SCENE_ID_STAGE3); break;
         case 3:pSceneManager->ChangeScene(SCENE_ID_STAGE4); break;
         }
+        SAFE_DELETE(pSceneManager);
     }
 }
 

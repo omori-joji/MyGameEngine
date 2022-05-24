@@ -6,7 +6,6 @@
 #include "../Clear.h"
 #include "../Title.h"
 
-
 //コンストラクタ
 SceneManager::SceneManager(GameObject * parent)
 	: GameObject(parent, "SceneManager")

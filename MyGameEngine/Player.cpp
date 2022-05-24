@@ -289,7 +289,7 @@ void Player::Reset()
 {
 	//リセットボタンを押したら
 	//記録した影をすべてまっさらな状態にしたら
-	if (Input::IsKeyDown(DIK_1) || Input::IsKeyDown(DIK_2))
+	if (Input::IsKeyDown(DIK_1))
 	{
 		//初期位置に戻る
 		transform_.position_ = pStage_->GetStartPosition();

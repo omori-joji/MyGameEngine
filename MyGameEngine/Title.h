@@ -1,5 +1,8 @@
 #pragma once
+#include "Engine/SceneManager.h"
 #include "Engine/GameObject.h"
+#include "Engine/Input.h"
+#include "Engine/Model.h"
 
 
 //Titleシーンを管理するクラス
