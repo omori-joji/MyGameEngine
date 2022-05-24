@@ -5,7 +5,7 @@
 
 //コンストラクタ
 Title::Title(GameObject* parent)
-	: GameObject(parent, "Title"), imageNum_(0), iskeyDown_(false), chengeCount(0)
+	: GameObject(parent, "Title"), imageNum_(0), iskeyDown_(false), chengeCount(0),hModel_()
 {
 }
 
@@ -14,10 +14,7 @@ void Title::Initialize()
 {
     //モデルデータのロード
     hModel_[0] = Model::Load("Assets/StageBlock/Title.fbx");
-    hModel_[1] = Model::Load("Assets/StageBlock/TitleNowLoding.fbx");
-    hModel_[2] = Model::Load("Assets/StageBlock/TitleNowLodingAnimation2.fbx");
-    hModel_[3] = Model::Load("Assets/StageBlock/TitleNowLodingAnimation3.fbx");
-    hModel_[4] = Model::Load("Assets/StageBlock/TitleNowLodingAnimation4.fbx");
+    hModel_[1] = Model::Load("Assets/StageBlock/TitleNowLoading.fbx");
 }
 
 //更新
@@ -57,11 +54,10 @@ void Title::Update()
 //描画
 void Title::Draw()
 {
-    Transform trans;
+    Transform trans,stage;
     trans.position_.x = 28 / 2;
     trans.position_.y = 23 / 2;
-    trans.position_.z = -21.4;
-
+    trans.position_.z = -17.8;
     trans.Calclation();
 
     Model::SetTransform(hModel_[imageNum_], trans);
