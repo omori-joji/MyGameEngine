@@ -27,108 +27,13 @@ namespace Direct3D
 //初期化
 void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 {
-	///////////////////////////いろいろ準備するための設定///////////////////////////////
-    //いろいろな設定項目をまとめた構造体
-	DXGI_SWAP_CHAIN_DESC scDesc;
+	Preparation(winW, winH, hWnd);
 
-	//とりあえず全部0
-	ZeroMemory(&scDesc, sizeof(scDesc));
+	RenderTargetView();
 
-	//描画先のフォーマット
-	scDesc.BufferDesc.Width = winW;
-	scDesc.BufferDesc.Height = winH;
-	scDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	BlendState();
 
-	//FPS（1/60秒に1回）
-	scDesc.BufferDesc.RefreshRate.Numerator = 60;
-	scDesc.BufferDesc.RefreshRate.Denominator = 1;
-
-	//その他
-	scDesc.Windowed = TRUE;
-	scDesc.OutputWindow = hWnd;
-	scDesc.BufferCount = 1;
-
-	//バックバッファの使い道＝画面に描画するために
-	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
-	scDesc.SampleDesc.Count = 1;
-	scDesc.SampleDesc.Quality = 0;
-
-	////////////////上記設定をもとにデバイス、コンテキスト、スワップチェインを作成////////////////////////
-	D3D_FEATURE_LEVEL level;
-	D3D11CreateDeviceAndSwapChain(
-		nullptr,						// どのビデオアダプタを使用するか？既定ならばnullptrで
-		D3D_DRIVER_TYPE_HARDWARE,		// ドライバのタイプを渡す。ふつうはHARDWARE
-		nullptr,						// 上記をD3D_DRIVER_TYPE_SOFTWAREに設定しないかぎりnullptr
-		0,								// 何らかのフラグを指定する。（デバッグ時はD3D11_CREATE_DEVICE_DEBUG？）
-		nullptr,						// デバイス、コンテキストのレベルを設定。nullptrにしとけばOK
-		0,								// 上の引数でレベルを何個指定したか
-		D3D11_SDK_VERSION,				// SDKのバージョン。必ずこの値
-		&scDesc,						// 上でいろいろ設定した構造体
-		&pSwapChain,					// 無事完成したSwapChainのアドレスが返ってくる
-		&pDevice,						// 無事完成したDeviceアドレスが返ってくる
-		&level,							// 無事完成したDevice、Contextのレベルが返ってくる
-		&pContext);						// 無事完成したContextのアドレスが返ってくる
-
-
-	///////////////////////////レンダーターゲットビュー作成///////////////////////////////
-	//スワップチェーンからバックバッファを取得（バックバッファ ＝ レンダーターゲット）
-	ID3D11Texture2D* pBackBuffer;
-	pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
-
-	//レンダーターゲットビューを作成
-	pDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
-
-	//一時的にバックバッファを取得しただけなので解放
-	pBackBuffer->Release();
-
-	///////////////////////////ビューポート（描画範囲）設定///////////////////////////////
-	//レンダリング結果を表示する範囲
-	D3D11_VIEWPORT vp;
-	vp.Width = (float)winW;		//幅
-	vp.Height = (float)winH;	//高さ
-	vp.MinDepth = 0.0f;			//手前
-	vp.MaxDepth = 1.0f;			//奥
-	vp.TopLeftX = 0;			//左
-	vp.TopLeftY = 0;			//上
-
-	//深度ステンシルビューの作成
-	D3D11_TEXTURE2D_DESC descDepth;
-	descDepth.Width = winW;
-	descDepth.Height = winH;
-	descDepth.MipLevels = 1;
-	descDepth.ArraySize = 1;
-	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
-	descDepth.SampleDesc.Count = 1;
-	descDepth.SampleDesc.Quality = 0;
-	descDepth.Usage = D3D11_USAGE_DEFAULT;
-	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
-	descDepth.CPUAccessFlags = 0;
-	descDepth.MiscFlags = 0;
-	Direct3D::pDevice->CreateTexture2D(&descDepth, NULL, &pDepthStencil);
-	Direct3D::pDevice->CreateDepthStencilView(pDepthStencil, NULL, &pDepthStencilView);
-
-	//ブレンドステート
-	//透過するため
-	D3D11_BLEND_DESC BlendDesc;
-	ZeroMemory(&BlendDesc, sizeof(BlendDesc));
-	BlendDesc.AlphaToCoverageEnable = FALSE;
-	BlendDesc.IndependentBlendEnable = FALSE;
-	BlendDesc.RenderTarget[0].BlendEnable = TRUE;
-	BlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
-	BlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
-	BlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
-	BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
-	BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
-	BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
-	BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
-	Direct3D::pDevice->CreateBlendState(&BlendDesc, &pBlendState);
-	float blendFactor[4] = { D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO };
-	Direct3D::pContext->OMSetBlendState(pBlendState, blendFactor, 0xffffffff);
-
-	//データを画面に描画するための一通りの設定（パイプライン）
-	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);			// データの入力種類を指定
-	pContext->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);				// 描画先を設定
-	pContext->RSSetViewports(1, &vp);
+	ViewPort(winW, winH);
 
 	//シェーダー準備
 	InitShader();
@@ -203,15 +108,142 @@ void Direct3D::EndDraw()
 //解放処理
 void Direct3D::Release()
 {
+	SAFE_RELEASE(pBlendState);
 	SAFE_RELEASE(pRasterizerState);
 	SAFE_RELEASE(pVertexLayout);
 	SAFE_RELEASE(pPixelShader);
 	SAFE_RELEASE(pVertexShader);
 	SAFE_RELEASE(pDepthStencilView);
-	SAFE_RELEASE(pRenderTargetView);
 	SAFE_RELEASE(pDepthStencil);
+	SAFE_RELEASE(pRenderTargetView);
 	SAFE_RELEASE(pSwapChain);
 	SAFE_RELEASE(pContext);
 	SAFE_RELEASE(pDevice);
-	SAFE_RELEASE(pBlendState);
 }
+
+void Direct3D::Preparation(int winW, int winH, HWND hWnd)
+{
+	///////////////////////////いろいろ準備するための設定///////////////////////////////
+	//いろいろな設定項目をまとめた構造体
+	DXGI_SWAP_CHAIN_DESC scDesc;
+
+	//とりあえず全部0
+	ZeroMemory(&scDesc, sizeof(scDesc));
+
+	//描画先のフォーマット
+	scDesc.BufferDesc.Width = winW;
+	scDesc.BufferDesc.Height = winH;
+	scDesc.BufferDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+
+	//FPS（1/60秒に1回）
+	scDesc.BufferDesc.RefreshRate.Numerator = 60;
+	scDesc.BufferDesc.RefreshRate.Denominator = 1;
+
+	//その他
+	scDesc.Windowed = TRUE;
+	scDesc.OutputWindow = hWnd;
+	scDesc.BufferCount = 1;
+
+	//バックバッファの使い道＝画面に描画するために
+	scDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;
+	scDesc.SampleDesc.Count = 1;
+	scDesc.SampleDesc.Quality = 0;
+
+	////////////////上記設定をもとにデバイス、コンテキスト、スワップチェインを作成////////////////////////
+	D3D_FEATURE_LEVEL level;
+	D3D11CreateDeviceAndSwapChain(
+		nullptr,						// どのビデオアダプタを使用するか？既定ならばnullptrで
+		D3D_DRIVER_TYPE_HARDWARE,		// ドライバのタイプを渡す。ふつうはHARDWARE
+		nullptr,						// 上記をD3D_DRIVER_TYPE_SOFTWAREに設定しないかぎりnullptr
+		0,								// 何らかのフラグを指定する。（デバッグ時はD3D11_CREATE_DEVICE_DEBUG？）
+		nullptr,						// デバイス、コンテキストのレベルを設定。nullptrにしとけばOK
+		0,								// 上の引数でレベルを何個指定したか
+		D3D11_SDK_VERSION,				// SDKのバージョン。必ずこの値
+		&scDesc,						// 上でいろいろ設定した構造体
+		&pSwapChain,					// 無事完成したSwapChainのアドレスが返ってくる
+		&pDevice,						// 無事完成したDeviceアドレスが返ってくる
+		&level,							// 無事完成したDevice、Contextのレベルが返ってくる
+		&pContext);						// 無事完成したContextのアドレスが返ってくる
+	//安全対策
+	assert(pSwapChain != nullptr);
+	assert(pDevice != nullptr);
+	assert(pContext != nullptr);
+}
+
+void Direct3D::RenderTargetView()
+{
+	///////////////////////////レンダーターゲットビュー作成///////////////////////////////
+	//スワップチェーンからバックバッファを取得（バックバッファ ＝ レンダーターゲット）
+	ID3D11Texture2D* pBackBuffer;
+	pSwapChain->GetBuffer(0, __uuidof(ID3D11Texture2D), (LPVOID*)&pBackBuffer);
+
+	//レンダーターゲットビューを作成
+	pDevice->CreateRenderTargetView(pBackBuffer, NULL, &pRenderTargetView);
+	assert(pRenderTargetView != nullptr);
+	assert(pBackBuffer != nullptr);
+
+	//一時的にバックバッファを取得しただけなので解放
+	pBackBuffer->Release();
+}
+
+void Direct3D::BlendState()
+{
+	//ブレンドステート
+	//透過するため
+	D3D11_BLEND_DESC BlendDesc;
+	ZeroMemory(&BlendDesc, sizeof(BlendDesc));
+	BlendDesc.AlphaToCoverageEnable = FALSE;
+	BlendDesc.IndependentBlendEnable = FALSE;
+	BlendDesc.RenderTarget[0].BlendEnable = TRUE;
+	BlendDesc.RenderTarget[0].SrcBlend = D3D11_BLEND_SRC_ALPHA;
+	BlendDesc.RenderTarget[0].DestBlend = D3D11_BLEND_INV_SRC_ALPHA;
+	BlendDesc.RenderTarget[0].BlendOp = D3D11_BLEND_OP_ADD;
+	BlendDesc.RenderTarget[0].SrcBlendAlpha = D3D11_BLEND_ONE;
+	BlendDesc.RenderTarget[0].DestBlendAlpha = D3D11_BLEND_ZERO;
+	BlendDesc.RenderTarget[0].BlendOpAlpha = D3D11_BLEND_OP_ADD;
+	BlendDesc.RenderTarget[0].RenderTargetWriteMask = D3D11_COLOR_WRITE_ENABLE_ALL;
+	Direct3D::pDevice->CreateBlendState(&BlendDesc, &pBlendState);
+	assert(pBlendState != nullptr);
+
+	float blendFactor[4] = { D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO, D3D11_BLEND_ZERO };
+	Direct3D::pContext->OMSetBlendState(pBlendState, blendFactor, 0xffffffff);
+}
+
+void Direct3D::ViewPort(int winW, int winH)
+{
+	///////////////////////////ビューポート（描画範囲）設定///////////////////////////////
+	//レンダリング結果を表示する範囲
+	D3D11_VIEWPORT vp;
+	vp.Width = (float)winW;		//幅
+	vp.Height = (float)winH;	//高さ
+	vp.MinDepth = 0.0f;			//手前
+	vp.MaxDepth = 1.0f;			//奥
+	vp.TopLeftX = 0;			//左
+	vp.TopLeftY = 0;			//上
+
+	//深度ステンシルビューの作成
+	D3D11_TEXTURE2D_DESC descDepth;
+	descDepth.Width = winW;
+	descDepth.Height = winH;
+	descDepth.MipLevels = 1;
+	descDepth.ArraySize = 1;
+	descDepth.Format = DXGI_FORMAT_D32_FLOAT;
+	descDepth.SampleDesc.Count = 1;
+	descDepth.SampleDesc.Quality = 0;
+	descDepth.Usage = D3D11_USAGE_DEFAULT;
+	descDepth.BindFlags = D3D11_BIND_DEPTH_STENCIL;
+	descDepth.CPUAccessFlags = 0;
+	descDepth.MiscFlags = 0;
+	Direct3D::pDevice->CreateTexture2D(&descDepth, NULL, &pDepthStencil);
+	Direct3D::pDevice->CreateDepthStencilView(pDepthStencil, NULL, &pDepthStencilView);
+	assert(pDepthStencil != nullptr);
+	assert(pDepthStencilView != nullptr);
+
+	//データを画面に描画するための一通りの設定（パイプライン）
+	pContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);			// データの入力種類を指定
+	pContext->OMSetRenderTargets(1, &pRenderTargetView, pDepthStencilView);				// 描画先を設定
+	assert(pDepthStencilView != nullptr);
+	assert(pRenderTargetView != nullptr);
+	pContext->RSSetViewports(1, &vp);
+}
+

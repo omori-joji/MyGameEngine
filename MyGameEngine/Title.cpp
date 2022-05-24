@@ -17,6 +17,7 @@ Title::Title(GameObject* parent)
 void Title::Initialize()
 {
     //se_[1] = Audio::Load("Assets/Sound/StegeSelect.wav", 2);
+    //se_[0] = Audio::Load("Assets/Sound/StegeSelectMove.wav", 2);
 
     //モデルデータのロード
     hModel_[0] = Model::Load("Assets/StageBlock/Title.fbx");
@@ -27,7 +28,6 @@ void Title::Initialize()
     stageNumModel_[1] = Model::Load("Assets/StageBlock/TitleNumber2.fbx");
     stageNumModel_[2] = Model::Load("Assets/StageBlock/TitleNumber3.fbx");
     stageNumModel_[3] = Model::Load("Assets/StageBlock/TitleNumber4.fbx");
-    se_[0] = Audio::Load("Assets/Sound/StegeSelectMove.wav", 2);
 }
 
 //更新
@@ -35,12 +35,12 @@ void Title::Update()
 {
     if (Input::IsKeyDown(DIK_UP) && stageNum_ < 3)
     {
-        Audio::Play(se_[0]);
+        //Audio::Play(se_[0]);
         stageNum_++;
     }
     if (Input::IsKeyDown(DIK_DOWN) && stageNum_ > 0)
     {
-        Audio::Play(se_[0]);
+        //Audio::Play(se_[0]);
         stageNum_--;
     }
 

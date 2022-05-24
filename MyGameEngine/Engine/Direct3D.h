@@ -14,18 +14,14 @@ namespace Direct3D
 	extern ID3D11Device* pDevice;
 	extern ID3D11DeviceContext* pContext;
 
-	//初期化
-	void Initialize(int winW, int winH, HWND hWnd);
-
-	//シェーダー準備
-	void InitShader();
-
-	//描画開始
-	void BeginDraw();
-
-	//描画終了
-	void EndDraw();
-
-	//解放
-	void Release();
+	void Initialize(int winW, int winH, HWND hWnd);	//初期化
+	void InitShader();								//シェーダー準備
+	void BeginDraw();								//描画開始
+	void EndDraw();									//描画終了
+	void Release();									//解放
+	void Preparation(int winW,int winH, HWND hWnd);
+	void RenderTargetView();
+	void BlendState();
+	void ViewPort(int winW, int winH);
+		
 };
