@@ -262,7 +262,6 @@ void Stage::CollisionExit()
             isDoubleButton_[1] = false;
         }
     }
-
 }
 
 //ボタンのモデルと壁のモデルを変更する関数
@@ -466,7 +465,6 @@ void Stage::WarpBlockCollision(int getX, int getY)
             }
         }
     }
-
     //フラグ処理の初期化
     //Playerがワープブロックから離れたら
     //ワープブロックから離れたらフラグを初期化してもう一度入れるようにする

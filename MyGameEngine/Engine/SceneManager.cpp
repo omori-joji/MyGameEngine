@@ -7,9 +7,10 @@
 
 //コンストラクタ
 SceneManager::SceneManager(GameObject * parent)
-	: GameObject(parent, "SceneManager")
+	: GameObject(parent, "SceneManager"),
+	nextSceneID_(),
+	currentSceneID_()
 {
-
 }
 
 //初期化
@@ -18,7 +19,7 @@ void SceneManager::Initialize()
 	//最初のシーンを準備
 	currentSceneID_ = SCENE_ID_TITLE;
 	nextSceneID_ = currentSceneID_;
-	Instantiate<Result>(this);
+	Instantiate<Title>(this);
 }
 
 //更新
