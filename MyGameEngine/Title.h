@@ -18,13 +18,20 @@ class Title : public GameObject
 
 	int stageNum_;
 	int imageNum_;
-	int chengeCount;
+	int chengeCount_;
 	enum
 	{
+		MODELE_NUMVER_1,
+		MODELE_NUMVER_2,
+		MODELE_NUMVER_3,
+		MODELE_NUMVER_4,
+
+		SE_NUMBER_1 = 0,
+		SE_NUMBER_2,
+
 		MAX_SE = 2,
 		MAX_MODELE,
 		MAX_STAGE_NUMBER,
-
 	};
 	int se_[MAX_SE];
 	int hModel_[MAX_MODELE];

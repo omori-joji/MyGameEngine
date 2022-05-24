@@ -4,18 +4,18 @@
 Title::Title(GameObject* parent)
 	: GameObject(parent, "Title"), 
     imageNum_(0),
-    iskeyDown_(false),
-    chengeCount(0),
-    hModel_(),
-    stageNum_Modele_(),
     stageNum_(0),
+    chengeCount_(0),
+    hModel_(),
     se_(),
+    stageNum_Modele_(),
     BACK_GROUND_VERTICAL_(23),
     BACK_GROUND_BESIDE_(28),
     DEPTH_(-17.8f),
     STAGE_NUMBER_VERTICAL_(9.7),
     STAGE_NUMBER_BESIDE_(17.3),
-    SCALE_MAGNIFICATION_(0.6)
+    SCALE_MAGNIFICATION_(0.6),
+    iskeyDown_(false)
 {
 }
 
@@ -23,17 +23,16 @@ Title::Title(GameObject* parent)
 void Title::Initialize()
 {
     //se_[0] = Audio::Load("Assets/Sound/StegeSelectMove.wav", 2);
-    se_[1] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
+    se_[SE_NUMBER_2] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
 
     //モデルデータのロード
     hModel_[0] = Model::Load("Assets/StageBlock/Title.fbx");
     hModel_[1] = Model::Load("Assets/StageBlock/TitleNowLoading.fbx");
-    hModel_[2] = Model::Load("Assets/StageBlock/TitleNumber1.fbx");
 
-    stageNum_Modele_[0] = Model::Load("Assets/StageBlock/TitleNumber1.fbx");
-    stageNum_Modele_[1] = Model::Load("Assets/StageBlock/TitleNumber2.fbx");
-    stageNum_Modele_[2] = Model::Load("Assets/StageBlock/TitleNumber3.fbx");
-    stageNum_Modele_[3] = Model::Load("Assets/StageBlock/TitleNumber4.fbx");
+    stageNum_Modele_[MODELE_NUMVER_1] = Model::Load("Assets/StageBlock/TitleNumber1.fbx");
+    stageNum_Modele_[MODELE_NUMVER_2] = Model::Load("Assets/StageBlock/TitleNumber2.fbx");
+    stageNum_Modele_[MODELE_NUMVER_3] = Model::Load("Assets/StageBlock/TitleNumber3.fbx");
+    stageNum_Modele_[MODELE_NUMVER_4] = Model::Load("Assets/StageBlock/TitleNumber4.fbx");
 }
 
 //更新
@@ -52,15 +51,15 @@ void Title::Update()
 
     if (Input::IsKeyDown(DIK_SPACE))
     {
-        Audio::Play(se_[1]);
+        Audio::Play(se_[SE_NUMBER_2]);
         imageNum_ = 1;
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         switch (stageNum_)
         {
-        case 0 : pSceneManager->ChangeScene(SCENE_ID_STAGE1); break;
-        case 1 : pSceneManager->ChangeScene(SCENE_ID_STAGE2); break;
-        case 2 : pSceneManager->ChangeScene(SCENE_ID_STAGE3); break;
-        case 3 : pSceneManager->ChangeScene(SCENE_ID_STAGE4); break;
+        case MODELE_NUMVER_1: pSceneManager->ChangeScene(SCENE_ID_STAGE1); break;
+        case MODELE_NUMVER_2: pSceneManager->ChangeScene(SCENE_ID_STAGE2); break;
+        case MODELE_NUMVER_3: pSceneManager->ChangeScene(SCENE_ID_STAGE3); break;
+        case MODELE_NUMVER_4: pSceneManager->ChangeScene(SCENE_ID_STAGE4); break;
         }
     }
 }
