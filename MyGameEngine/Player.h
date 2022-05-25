@@ -1,17 +1,12 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Engine/Model.h"
-#include "Engine/Input.h"
-#include "Engine/Audio.h"
-#include "Engine/Fbx.h"
 #include "Basic.h"
-#include <string>
 
 //クラスの前方宣言
 class Stage;
 
 //Player処理を行うクラス
-class Player : public Basic
+class Player :  public Basic
 {
     //定数宣言
     const float SPEED_;                     //Playerの移動速度
