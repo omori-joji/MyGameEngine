@@ -53,8 +53,8 @@ class Player : public GameObject
 
     enum Direction
     {
-        DIR_LEFT,
         DIR_RIGHT,
+        DIR_LEFT,
         DIR_MAX
     };
     int hModel_[DIR_MAX][DIR_MAX];          //Player‚Ìƒ‚ƒfƒ‹”Ô†‚ğŠi”[‚·‚é‘½ŸŒ³”z—ñ
