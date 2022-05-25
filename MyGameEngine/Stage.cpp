@@ -6,7 +6,7 @@
 Stage::Stage(GameObject* parent)
     :GameObject(parent, "Stage"),
     hModel_(),                              //すべてのステージモデルを格納する変数
-    map_(),
+    map_(),                                 //ステージを管理する多次元配列
     hSound_(),                              //SEとBGMを格納する変数
     PLAYER_GENERAT_POS_(200),               //Playerの初期位置
     SHADOW_NAMBER_(5),                      //影の最大数
