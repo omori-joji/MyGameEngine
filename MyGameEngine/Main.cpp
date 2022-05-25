@@ -19,6 +19,7 @@ const int WINDOW_HEIGHT = 600;              //ウィンドウの高さ
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+//Rootjobクラスおポインタ作成
 Rootjob* pRootJob;
 
 
@@ -45,6 +46,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
     //ウィンドウサイズの計算
     RECT winRect = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
     AdjustWindowRect(&winRect, WS_OVERLAPPEDWINDOW, FALSE);
+
     int winW = winRect.right - winRect.left;                    //ウィンドウ幅
     int winH = winRect.bottom - winRect.top;                    //ウィンドウ高さ
 
@@ -80,7 +82,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInst, LPSTR lpCmdLine, 
 
 
 
-  //メッセージループ（何か起きるのを待つ）
+    //メッセージループ（何か起きるのを待つ）
     MSG msg;
     //0にしておく
     ZeroMemory(&msg, sizeof(msg));

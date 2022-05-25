@@ -147,6 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Basic.cpp" />
     <ClCompile Include="Result.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
@@ -192,6 +193,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Basic.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\Camera.h" />

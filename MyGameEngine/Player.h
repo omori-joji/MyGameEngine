@@ -1,16 +1,12 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Engine/Model.h"
-#include "Engine/Input.h"
-#include "Engine/Audio.h"
-#include "Engine/Fbx.h"
-#include <string>
+#include "Basic.h"
 
 //クラスの前方宣言
 class Stage;
 
 //Player処理を行うクラス
-class Player : public GameObject
+class Player :  public Basic
 {
     //定数宣言
     const float SPEED_;                     //Playerの移動速度
@@ -30,7 +26,7 @@ class Player : public GameObject
     const string FILE_PAS_;                  //モデルが保存されているファイルパス
 
     //変数宣言
-    int direction_;                         //プレイヤーの向きの番号
+    
     int modelNumber_;                       //走っているモデルの番号
     int meanTimeGimmickNumber_;             //踏んだボタンのモデル番号を格納する変数
     int onGimmickNumber_;                   //踏んだボタンのモデル番号を格納する変数
@@ -53,10 +49,10 @@ class Player : public GameObject
 
     enum Direction
     {
-        DIR_LEFT,
         DIR_RIGHT,
+        DIR_LEFT,
         DIR_MAX
-    };
+    }direction_;                         //プレイヤーの向きの番号
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
 
     int hSe_[10];

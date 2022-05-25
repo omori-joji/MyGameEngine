@@ -1,8 +1,9 @@
 #include "Player.h"
 #include "Stage.h"
 
+
 Player::Player(GameObject* parent)
-	: GameObject(parent, "Player"),
+	: Basic(parent, "Player"),
 	SPEED_(0.1f),					//移動速度
 	WIDTH_(0.3f),					//Playerの幅
 	HEIGHT_(0.6f),					//Playerの高さ
@@ -18,7 +19,7 @@ Player::Player(GameObject* parent)
 	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
 	yMove_(0.02f),					//Y軸の移動
-	direction_(0),					//Playerの向きのモデル番号
+	direction_(),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
 	meanTimeGimmickNumber_(0),		//押している間発動するボタンのモデル番号の1の位
 	onGimmickNumber_(0),			//片方の同時押しボタンのモデル番号

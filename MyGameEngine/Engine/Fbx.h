@@ -33,8 +33,6 @@ class Fbx
 	//FbxPartのprivateな関数にもアクセス可
 	friend class FbxParts;
 
-
-
 	//モデルの各パーツ（複数あるかも）
 	std::vector<FbxParts*>	parts_;
 
@@ -44,27 +42,19 @@ class Fbx
 	//FBXファイルのシーン（Mayaで作ったすべての物体）を扱う
 	FbxScene*	pFbxScene_;
 
-
 	// アニメーションのフレームレート
 	FbxTime::EMode	_frameRate;
 
 	//アニメーション速度
-	float			_animSpeed;
+	float _animSpeed;
 
 	//アニメーションの最初と最後のフレーム
 	int _startFrame, _endFrame;
-
-
-
-
 
 	//ノードの中身を調べる
 	//引数：pNode		調べるノード
 	//引数：pPartsList	パーツのリスト
 	void CheckNode(FbxNode* pNode, std::vector<FbxParts*> *pPartsList);
-
-
-
 
 public:
 	Fbx();

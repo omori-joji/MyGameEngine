@@ -27,12 +27,16 @@ namespace Direct3D
 //初期化
 void Direct3D::Initialize(int winW, int winH, HWND hWnd)
 {
+	//準備
 	Preparation(winW, winH, hWnd);
 
+	//レンダーターゲットビュー作成
 	RenderTargetView();
 
+	//ブレンドステート作成
 	BlendState();
 
+	//ビューポート作成
 	ViewPort(winW, winH);
 
 	//シェーダー準備
