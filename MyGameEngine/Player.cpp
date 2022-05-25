@@ -1,35 +1,36 @@
 #include "Player.h"
 #include "Stage.h"
 
+
 Player::Player(GameObject* parent)
-	: GameObject(parent, "Player"),
-	SPEED_(0.1f),					//移動速度
-	WIDTH_(0.3f),					//Playerの幅
-	HEIGHT_(0.6f),					//Playerの高さ
-	MARGIN_(0.11f),					//当たり判定の遊び
-	BLOCK_SIZE_(1.0f),				//ブロックのサイズ
-	MAX_JUMP_(3.0f),				//ジャンプの上限
-	GRAVITY_(0.01f),				//重力の値
-	RESET_VALU_(0),					//初期化用の定数
-	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
-	BACK_POSITION_LEFT_(1.3f),		//触れていたら位置を戻す値
-	BACK_POSITION_RIGHT_(0.3f),		//触れていたら位置を戻す値
-	BACK_POSITION_UP_(0.6f),		//触れていたら位置を戻す値
-	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
-	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
-	yMove_(0.02f),					//Y軸の移動
-	direction_(0),					//Playerの向きのモデル番号
-	modelNumber_(0),				//Playerの走っているモデル番号
-	meanTimeGimmickNumber_(0),		//押している間発動するボタンのモデル番号の1の位
-	onGimmickNumber_(0),			//片方の同時押しボタンのモデル番号
-	orGimmickNumber_(0),			//もう方の同時押しボタンのモデル番号
-	hModel_(),						//モデルをロードするための多次元配列
-	FILE_PAS_("Assets/Player/"),	//Playerのモデルが保存されているファイルパス
-	isJump_(false),					//ジャンプ中か
-	isPastMeanTimeButton_(false),	//1フレーム前、ボタンを踏んでいるかどうかの情報
-	isPastDoubleButton_(),			//同時押しボタンのフラグ
-	pStage_(nullptr),				//ステージの情報を入れるポインタ
-	hSe_()							//SEをロードするための配列
+//	: GameObject(parent, "Player"),
+//	SPEED_(0.1f),					//移動速度
+//	WIDTH_(0.3f),					//Playerの幅
+//	HEIGHT_(0.6f),					//Playerの高さ
+//	MARGIN_(0.11f),					//当たり判定の遊び
+//	BLOCK_SIZE_(1.0f),				//ブロックのサイズ
+//	MAX_JUMP_(3.0f),				//ジャンプの上限
+//	GRAVITY_(0.01f),				//重力の値
+//	RESET_VALU_(0),					//初期化用の定数
+//	PLAYER_FOOT_(1),				//Playerの足元を見るためにY軸を-1する定数
+//	BACK_POSITION_LEFT_(1.3f),		//触れていたら位置を戻す値
+//	BACK_POSITION_RIGHT_(0.3f),		//触れていたら位置を戻す値
+//	BACK_POSITION_UP_(0.6f),		//触れていたら位置を戻す値
+//	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
+//	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
+//	yMove_(0.02f),					//Y軸の移動
+//	direction_(),					//Playerの向きのモデル番号
+//	modelNumber_(0),				//Playerの走っているモデル番号
+//	meanTimeGimmickNumber_(0),		//押している間発動するボタンのモデル番号の1の位
+//	onGimmickNumber_(0),			//片方の同時押しボタンのモデル番号
+//	orGimmickNumber_(0),			//もう方の同時押しボタンのモデル番号
+//	hModel_(),						//モデルをロードするための多次元配列
+//	FILE_PAS_("Assets/Player/"),	//Playerのモデルが保存されているファイルパス
+//	isJump_(false),					//ジャンプ中か
+//	isPastMeanTimeButton_(false),	//1フレーム前、ボタンを踏んでいるかどうかの情報
+//	isPastDoubleButton_(),			//同時押しボタンのフラグ
+//	pStage_(nullptr),				//ステージの情報を入れるポインタ
+//	hSe_()							//SEをロードするための配列
 {
 }
 
