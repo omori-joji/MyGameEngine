@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "Stage.h"
 #include "Shadow.h"
+#include "Engine/SceneManager.h"
 
 //コンストラクタ
 Stage::Stage(GameObject* parent)
@@ -55,9 +56,9 @@ void Stage::Initialize()
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
 
+
     //Csvファイルの読み込み
     CsvReader csv;
-
     //SceneManagerクラスの情報を格納する
     if (pSceneManager_ == nullptr) pSceneManager_ = (SceneManager*)Find("SceneManager");
 

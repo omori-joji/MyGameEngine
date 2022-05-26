@@ -1,6 +1,5 @@
 #pragma once
 #include "Engine/VisualEffect.h"
-#include "Engine/SceneManager.h"
 #include "Engine/GameObject.h"
 #include "Engine/CsvReader.h"
 #include "Engine/Audio.h"

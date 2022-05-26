@@ -2,6 +2,8 @@
 #include "GameObject.h"
 #include "Common.h"
 
+
+
 //ƒQ[ƒ€‚É“oê‚·‚éƒV[ƒ“
 enum SCENE_ID
 {
