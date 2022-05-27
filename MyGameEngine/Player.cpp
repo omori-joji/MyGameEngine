@@ -177,43 +177,47 @@ void Player::Collision()
 //ボタンを踏んだ瞬間か離れた瞬間の処理を行う関数
 void Player::MeanTimeButtonCheck()
 {
-	//変数を作成
-	//1フレーム前は踏んでいるかどうか
-	bool nowMeanTimeButton;
+	pBasic_ = (Basic*)Find("Basic");
 
-	//ボタンを踏んでいればtrue踏んでいなければfalseが返される
-	nowMeanTimeButton = pStage_->MeanTimeButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+	pBasic_->CommonMeanTimeButtonDown();
 
-	//1フレーム前は踏んでいない
-	if (!isPastMeanTimeButton_)
-	{
-		//今は踏んでいる
-		if (nowMeanTimeButton)
-		{
-			//踏んだ瞬間の処理
-			//ギミックのモデル番号を調べる
-			//踏んだボタンのモデル番号の1の位が返される
-			meanTimeGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+	////変数を作成
+	////1フレーム前は踏んでいるかどうか
+	//bool nowMeanTimeButton;
 
-			//踏んだボタンに対応する変数をカウントアップ
-			//引数には踏んだモデル番号の1の位を渡す
-			pStage_->SetMeanTimeStepNumberCountUp(meanTimeGimmickNumber_);
-		}
-	}
-	//1フレーム前は踏んでいる
-	else if (isPastMeanTimeButton_)
-	{
-		//今は踏んでいない
-		if (!nowMeanTimeButton)
-		{
-			//離れた瞬間の処理
-			//離れたボタンに対応する変数をカウントダウン
-			//引数には離れたモデル番号の1の位を渡す
-			pStage_->SetMeanTimeStepNumberCountDown(meanTimeGimmickNumber_);
-		}
-	}
-	//フレームを１つ進める
-	isPastMeanTimeButton_ = nowMeanTimeButton;
+	////ボタンを踏んでいればtrue踏んでいなければfalseが返される
+	//nowMeanTimeButton = pStage_->MeanTimeButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+
+	////1フレーム前は踏んでいない
+	//if (!isPastMeanTimeButton_)
+	//{
+	//	//今は踏んでいる
+	//	if (nowMeanTimeButton)
+	//	{
+	//		//踏んだ瞬間の処理
+	//		//ギミックのモデル番号を調べる
+	//		//踏んだボタンのモデル番号の1の位が返される
+	//		meanTimeGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
+
+	//		//踏んだボタンに対応する変数をカウントアップ
+	//		//引数には踏んだモデル番号の1の位を渡す
+	//		pStage_->SetMeanTimeStepNumberCountUp(meanTimeGimmickNumber_);
+	//	}
+	//}
+	////1フレーム前は踏んでいる
+	//else if (isPastMeanTimeButton_)
+	//{
+	//	//今は踏んでいない
+	//	if (!nowMeanTimeButton)
+	//	{
+	//		//離れた瞬間の処理
+	//		//離れたボタンに対応する変数をカウントダウン
+	//		//引数には離れたモデル番号の1の位を渡す
+	//		pStage_->SetMeanTimeStepNumberCountDown(meanTimeGimmickNumber_);
+	//	}
+	//}
+	////フレームを１つ進める
+	//isPastMeanTimeButton_ = nowMeanTimeButton;
 }
 	
 //同時押しボタンの片方

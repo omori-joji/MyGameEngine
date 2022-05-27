@@ -35,7 +35,7 @@ class Player :  public Basic
     bool isJump_;                           //ジャンプしているか
     bool isPastMeanTimeButton_;             //さっき踏んでいるか
     Stage* pStage_;                         //ステージの情報を入れるポインタ
-
+    Basic* pBasic_;
     //列挙体
     enum
     {
