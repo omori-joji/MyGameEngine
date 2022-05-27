@@ -43,6 +43,7 @@ void SceneManager::Update()
 		   case SCENE_ID_STAGE4: Instantiate<Stage>(this); break;
 		   case SCENE_ID_CLEAR: Instantiate<Result>(this); break;
 		   case SCENE_ID_TITLE2: Instantiate<Title>(this); break;
+		   case SCENE_ID_DEBUG: Instantiate<Stage>(this); break;
 		}
 		currentSceneID_ = nextSceneID_;
 	}

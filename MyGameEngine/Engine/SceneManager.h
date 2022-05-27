@@ -17,6 +17,7 @@ enum SCENE_ID
 	SCENE_ID_TITLE,
 	SCENE_ID_TITLE2,
 	SCENE_ID_SETUMEI,
+	SCENE_ID_DEBUG,
 };
 
 //-----------------------------------------------------------
