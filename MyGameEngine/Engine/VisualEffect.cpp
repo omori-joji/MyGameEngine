@@ -2,8 +2,6 @@
 #include <DirectXMath.h>
 #include <vector>
 #include <list>
-
-
 #include "VisualEffect.h"
 #include "Texture.h"
 #include "Direct3D.h"
