@@ -35,7 +35,6 @@ class Player :  public Basic
     bool isJump_;                           //ジャンプしているか
     bool isPastMeanTimeButton_;             //さっき踏んでいるか
     Stage* pStage_;                         //ステージの情報を入れるポインタ
-    Basic* pBasic_;
     //列挙体
     enum
     {
@@ -74,7 +73,6 @@ private:
     void Collision();                       //Playyerの当たり判定をまとめる関数
     void Reset();                           //初期位置に戻る処理をまとめた関数
     void Jump();                            //ジャンプの処理をまとめた関数
-    void MeanTimeButtonCheck();             //Playerがボタンを踏んでいるか、ボタンから離れたかを処理する関数
     void OnDoubleButtonCheck();             //片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
     void OrDoubleButtonCheck();             //もう片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
 };

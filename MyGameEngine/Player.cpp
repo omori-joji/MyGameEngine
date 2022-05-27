@@ -77,11 +77,11 @@ void Player::Update()
 	Reset();
 
 	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数
-	MeanTimeButtonCheck();
+	CommonMeanTimeButtonDown();
 
 	//同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
-	OnDoubleButtonCheck();
-	OrDoubleButtonCheck();
+	No1DoubleButtonDown();
+	No2DoubleButtonDown();
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
@@ -172,121 +172,6 @@ void Player::Collision()
 	{
 		isJump_ = true;
 	}
-}
-
-//ボタンを踏んだ瞬間か離れた瞬間の処理を行う関数
-void Player::MeanTimeButtonCheck()
-{
-	pBasic_ = (Basic*)Find("Basic");
-
-	pBasic_->CommonMeanTimeButtonDown();
-
-	////変数を作成
-	////1フレーム前は踏んでいるかどうか
-	//bool nowMeanTimeButton;
-
-	////ボタンを踏んでいればtrue踏んでいなければfalseが返される
-	//nowMeanTimeButton = pStage_->MeanTimeButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
-
-	////1フレーム前は踏んでいない
-	//if (!isPastMeanTimeButton_)
-	//{
-	//	//今は踏んでいる
-	//	if (nowMeanTimeButton)
-	//	{
-	//		//踏んだ瞬間の処理
-	//		//ギミックのモデル番号を調べる
-	//		//踏んだボタンのモデル番号の1の位が返される
-	//		meanTimeGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
-
-	//		//踏んだボタンに対応する変数をカウントアップ
-	//		//引数には踏んだモデル番号の1の位を渡す
-	//		pStage_->SetMeanTimeStepNumberCountUp(meanTimeGimmickNumber_);
-	//	}
-	//}
-	////1フレーム前は踏んでいる
-	//else if (isPastMeanTimeButton_)
-	//{
-	//	//今は踏んでいない
-	//	if (!nowMeanTimeButton)
-	//	{
-	//		//離れた瞬間の処理
-	//		//離れたボタンに対応する変数をカウントダウン
-	//		//引数には離れたモデル番号の1の位を渡す
-	//		pStage_->SetMeanTimeStepNumberCountDown(meanTimeGimmickNumber_);
-	//	}
-	//}
-	////フレームを１つ進める
-	//isPastMeanTimeButton_ = nowMeanTimeButton;
-}
-	
-//同時押しボタンの片方
-//押した直後のタイミングと離れた瞬間の処理を行う
-void Player::OnDoubleButtonCheck()
-{
-	//変数宣言
-	//1フレーム前は踏んでいるかどうか
-	bool onDoubleButton;
-
-	//踏んだらtrueが返されて、何もなければfalseが返される
-	onDoubleButton = pStage_->OnDoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
-
-	//1フレーム前は踏んでいない
-	if (!isPastDoubleButton_[ON_DOUBLE_BUTTON])
-	{
-		//今は踏んでいる
-		if (onDoubleButton)
-		{
-			//踏んだ瞬間の処理
-			//ギミックのモデル番号を調べる
-			//踏んだボタンのモデル番号の1の位が返される
-			onGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
-
-			//踏んだボタンに対応する変数をカウントアップ
-			//引数には踏んだモデル番号の1の位を渡す
-			pStage_->SetOnDoubleStepNumberCountUp(onGimmickNumber_);
-		}
-	}
-	//1フレーム前は踏んでいる
-	else if (isPastDoubleButton_[ON_DOUBLE_BUTTON])
-	{
-		//今は踏んでいない
-		if (!onDoubleButton)
-		{
-			//離れた瞬間の処理
-			//離れたボタンに対応する変数をカウントダウン
-			//引数には離れたモデル番号の1の位を渡す
-			pStage_->SetOnDoubleStepNumberCountDown(onGimmickNumber_);
-		}
-	}
-	//フレームを１つ進める
-	isPastDoubleButton_[ON_DOUBLE_BUTTON] = onDoubleButton;
-}
-
-//同時押しボタンのもう片方の処理
-//内容は同じなのでコメントは省略
-void Player::OrDoubleButtonCheck()
-{
-	bool orDoubleButton;
-
-	orDoubleButton = pStage_->OrDoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
-
-	if (!isPastDoubleButton_[OR_DOUBLE_BUTTON])
-	{
-		if (orDoubleButton)
-		{
-			orGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - PLAYER_FOOT_);
-			pStage_->SetOrDoubleStepNumberCountUp(orGimmickNumber_);
-		}
-	}
-	else if (isPastDoubleButton_[OR_DOUBLE_BUTTON])
-	{
-		if (!orDoubleButton)
-		{
-			pStage_->SetOrDoubleStepNumberCountDown(orGimmickNumber_);
-		}
-	}
-	isPastDoubleButton_[OR_DOUBLE_BUTTON] = orDoubleButton;
 }
 
 //初期位置に戻る処理をまとめた関数

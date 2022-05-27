@@ -13,8 +13,11 @@ class Stage;
 class Basic : public GameObject
 {
 	int meanTimeGimmickNumber_;
+	int no1DoubleGimmickNumber_;
+	int no2DoubleGimmickNumber_;
 	Stage* pStage_;
 	bool isPastMeanTimeButton_;
+	bool isPastDoubleButton_[2];
 
 public:
 	//èâä˙âª
@@ -30,5 +33,7 @@ public:
 	void Release() override;
 	Basic(GameObject* parent, const std::string& name);
 	void CommonMeanTimeButtonDown();
+	void No1DoubleButtonDown();
+	void No2DoubleButtonDown();
 };
 
