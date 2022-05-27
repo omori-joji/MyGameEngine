@@ -12,9 +12,9 @@ class Stage;
 
 class Basic : public GameObject
 {
-	int meanTimeGimmickNumber_;
-	int no1DoubleGimmickNumber_;
-	int no2DoubleGimmickNumber_;
+	char meanTimeGimmickNumber_;
+	char no1DoubleGimmickNumber_;
+	char no2DoubleGimmickNumber_;
 	Stage* pStage_;
 	bool isPastMeanTimeButton_;
 	bool isPastDoubleButton_[2];

@@ -21,19 +21,15 @@ class Player :  public Basic
     const float BACK_POSITION_DOWN_;        //触れていたら位置を戻す値
     const float GRAVITY_;                   //重力の値
     const float DROP_DOWN_;                 //Playerの下に何もなければ下に落ちるための定数
-    const int RESET_VALU_;                  //初期化用の定数
-    const int PLAYER_FOOT_;                 //Playerの足元を見るためにY軸を-1する定数
+    const char RESET_VALU_;                  //初期化用の定数
+    const char PLAYER_FOOT_;                 //Playerの足元を見るためにY軸を-1する定数
     const string FILE_PAS_;                  //モデルが保存されているファイルパス
 
     //変数宣言
     
-    int modelNumber_;                       //走っているモデルの番号
-    int meanTimeGimmickNumber_;             //踏んだボタンのモデル番号を格納する変数
-    int onGimmickNumber_;                   //踏んだボタンのモデル番号を格納する変数
-    int orGimmickNumber_;                   //踏んだボタンのモデル番号を格納する変数
+    char modelNumber_;                       //走っているモデルの番号
     float yMove_;                           //Y軸の移動
     bool isJump_;                           //ジャンプしているか
-    bool isPastMeanTimeButton_;             //さっき踏んでいるか
     Stage* pStage_;                         //ステージの情報を入れるポインタ
     //列挙体
     enum
@@ -45,7 +41,6 @@ class Player :  public Basic
         OR_DOUBLE_BUTTON,                   //もう片方の同時押しボタンのフラグ番号
         MAX_DOUBLE_BUTTON,                  //isPastDoubleButton_の最大要素数
     };
-
     enum Direction
     {
         DIR_RIGHT,
@@ -53,9 +48,7 @@ class Player :  public Basic
         DIR_MAX
     }direction_;                         //プレイヤーの向きの番号
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
-
     int hSe_[10];
-    bool isPastDoubleButton_[MAX_DOUBLE_BUTTON];//同時ボタンのフラグ
 
 public:    
     Player(GameObject* parent);             //コンストラクタ
@@ -73,6 +66,4 @@ private:
     void Collision();                       //Playyerの当たり判定をまとめる関数
     void Reset();                           //初期位置に戻る処理をまとめた関数
     void Jump();                            //ジャンプの処理をまとめた関数
-    void OnDoubleButtonCheck();             //片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
-    void OrDoubleButtonCheck();             //もう片方の同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
 };

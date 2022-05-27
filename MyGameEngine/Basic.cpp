@@ -24,7 +24,8 @@ Basic::Basic(GameObject* parent, const std::string& name)
 	pStage_(nullptr),
 	meanTimeGimmickNumber_(0),
 	no1DoubleGimmickNumber_(0),
-	no2DoubleGimmickNumber_(0)
+	no2DoubleGimmickNumber_(0),
+	isPastDoubleButton_()
 {
 }
 

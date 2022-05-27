@@ -37,7 +37,7 @@ class Stage : public GameObject
     const int OR_DOUBLE_BUTTON_DOWN_;               //同時押しボタンの片方。踏んでいる状態のモデル番号
     const int DOUBLE_BUTTON_WALL_;                  //同時押しボタンに対応した壁。開いてない状態のモデル番号
     const int DOUBLE_BUTTON_WALL_ALPHA_;            //同時押しボタンに対応した壁。開いている状態のモデル番号
-    int shadowCount_;                               //影の数
+    char shadowCount_;                               //影の数
     int timeCount_;                                 //点滅ブロックの点滅間隔
     bool isBlinking_;                               //ブロックが消えたかどうか
     bool isWarp_;                                   //ワープしたか塚
@@ -57,9 +57,9 @@ class Stage : public GameObject
     int map_[MAP_BESIDE_][MAP_VERTICAL];            //ステージのマス情報
     int hModel_[MAX_MODEL];                         //モデル番号
     int hSound_[MAX_SOUND];                         //サウンドファイル
-    int steppingNumberMeanTime[MAX_STEPNUMBER];     //何人踏んでいるか
-    int steppingNumber_OnDouble[MAX_STEPNUMBER];    //何人踏んでいるか
-    int steppingNumber_OrDouble[MAX_STEPNUMBER];    //何人踏んでいるか
+    char steppingNumberMeanTime[MAX_STEPNUMBER];     //何人踏んでいるか
+    char steppingNumber_OnDouble[MAX_STEPNUMBER];    //何人踏んでいるか
+    char steppingNumber_OrDouble[MAX_STEPNUMBER];    //何人踏んでいるか
     bool isDoubleButton_[MAX_DOUBLE_FLAG];          //同時ボタンの片方を押した
     Shadow* pShadow_[MAX_SHADOW_NUMBER];            //Shadowクラスを格納するポインタ型の配列
 

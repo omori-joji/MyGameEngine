@@ -21,14 +21,9 @@ Player::Player(GameObject* parent)
 	yMove_(0.02f),					//Y軸の移動
 	direction_(),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
-	meanTimeGimmickNumber_(0),		//押している間発動するボタンのモデル番号の1の位
-	onGimmickNumber_(0),			//片方の同時押しボタンのモデル番号
-	orGimmickNumber_(0),			//もう方の同時押しボタンのモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
 	FILE_PAS_("Assets/Player/"),	//Playerのモデルが保存されているファイルパス
 	isJump_(false),					//ジャンプ中か
-	isPastMeanTimeButton_(false),	//1フレーム前、ボタンを踏んでいるかどうかの情報
-	isPastDoubleButton_(),			//同時押しボタンのフラグ
 	pStage_(nullptr),				//ステージの情報を入れるポインタ
 	hSe_()							//SEをロードするための配列
 {
