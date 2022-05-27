@@ -1,13 +1,10 @@
 #include "Basic.h"
 
-
 void Basic::Initialize()
 {
 }
 
-void Basic::Update()
-{
-
+void Basic::Update
 }
 
 void Basic::Draw()

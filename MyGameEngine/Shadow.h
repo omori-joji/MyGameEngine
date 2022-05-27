@@ -14,10 +14,8 @@ class Stage;
 class Shadow : public Basic
 {
 	//定数宣言
-	const int RESET_VALU_;						//初期化用
-	const int ALL_GIMICKS_;						//同じ種類のギミックすべてを探すための値
+	const char RESET_VALU_;						//初期化用
 	const int MATCH_VALU_;						//配列の要素数を合わせるための値
-	const int SHADOW_FOOT_;						//影の足元を見るための値
 	const float BACK_DRAW_;						//Playerに重ならないように少し奥に描画する
 	const string filePas_;						//モデルが保存されているファイルパス
 
@@ -55,6 +53,5 @@ public:
 private:
 	void AllFind();								//Find処理をまとめる関数
 	void RecordingandPlayBack();				//Playerの動きを記録と再生する関数
-
 };
 

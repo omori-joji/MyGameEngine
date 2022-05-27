@@ -9,9 +9,7 @@ Shadow::Shadow(GameObject* parent)
 	shadowModelNumber_(0),				//走っているモデル番号を記録する動的配列
 	RESET_VALU_(0),						//初期化用
 	BACK_DRAW_(0.1f),					//Playerに重ならないように少し奥に描画する
-	ALL_GIMICKS_(9),					//同じ種類のギミックすべてを探すための値
 	MATCH_VALU_(1),						//配列の要素数を合わせるための値
-	SHADOW_FOOT_(1),					//影の足元を見るための値
 	hModel_(),							//影のモデルを格納する多次元配列
 	filePas_("Assets/Shadow/"),			//Shadowのファイルパス
 	isRecording_(false),				//Playerの動きを記録しているか
@@ -134,7 +132,6 @@ void Shadow::AllFind()
 {
 	//Playerの情報を格納
 	if (pPlayer_ == nullptr) pPlayer_ = (Player*)Find("Player");
-
 	//ステージの情報を格納
 	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
 }
