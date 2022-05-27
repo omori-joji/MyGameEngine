@@ -4,7 +4,8 @@ void Basic::Initialize()
 {
 }
 
-void Basic::Update
+void Basic::Update()
+{
 }
 
 void Basic::Draw()
@@ -17,21 +18,26 @@ void Basic::Release()
 
 Basic::Basic(GameObject* parent, const std::string& name)
 	:GameObject(parent, name),
-	isPastMeanTimeButton_(false),
-	pStage_(nullptr),
-	meanTimeGimmickNumber_(0),
-	no1DoubleGimmickNumber_(0),
-	no2DoubleGimmickNumber_(0),
-	isPastDoubleButton_()
+	meanTimeGimmickNumber_(0),			//押している間発動するボタンの1の位
+	no1DoubleGimmickNumber_(0),			//片方の同時押しボタンの1の位
+	no2DoubleGimmickNumber_(0),			//もう片方の同時押しボタンの1の位
+	isPastDoubleButton_(),				//1フレーム前に同時ボタンを踏んでいるかいないか
+	isPastMeanTimeButton_(false),		//1フレーム前に踏んでいる間発動するボタンを踏んでいるかいないか
+	pStage_(nullptr)					//Stageクラスを格納するポインタ
 {
 }
 
+//踏んでいる間発動するボタンを踏んだ瞬間の処理
 void Basic::CommonMeanTimeButtonDown()
 {
+	//Stageクラスを格納
 	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
 
+	//変数宣言
+	//今ボタンを踏んでいるかいないかを判断する
 	bool nowMeanTimeButton;
 
+	//踏んでいる間発動するボタンを踏んでいたらtrue。踏んでいなかったらfalseが返される
 	nowMeanTimeButton = pStage_->MeanTimeButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 
 	//1フレーム前は踏んでいない
@@ -66,6 +72,8 @@ void Basic::CommonMeanTimeButtonDown()
 	isPastMeanTimeButton_ = nowMeanTimeButton;
 }
 
+
+//同時押しボタンの片方を踏んだ瞬間の処理
 void Basic::No1DoubleButtonDown()
 {
 	//変数宣言
@@ -107,6 +115,9 @@ void Basic::No1DoubleButtonDown()
 	isPastDoubleButton_[0] = nowNo1DoubleButton;
 }
 
+
+//もう片方の同時押しボタンを踏んだ瞬間の処理
+//上記と同じ処理なのでコメントは省略
 void Basic::No2DoubleButtonDown()
 {
 	bool nowNo2DoubleButton;
