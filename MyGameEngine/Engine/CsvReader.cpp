@@ -65,7 +65,7 @@ bool CsvReader::Load(std::string fileName)
 		GetToComma(&val, temp, &index);
 
 		//•¶š”‚ª0‚¾‚Á‚½‚Æ‚¢‚¤‚±‚Æ‚Ís––
-		if (val.length() - 1 == 4)
+		if (val.c_str() - 1 == "*")
 		{
 			//_data‚É1s•ª’Ç‰Á
 			data_.push_back(line);
