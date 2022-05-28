@@ -28,16 +28,16 @@ class Stage : public GameObject
     const int MEANTIME_BUTTON_UP_;                  //踏んでいる間発動するボタンの踏む前のモデル番号
     const int MEANTIME_BUTTON_DOWN_;                //踏んでいる間発動するボタンの踏んだあとのモデル番号
     const int MEANTIME_BLOCK_ALPHA_;                //ボタンが踏まれている間開いている壁のモデル番号
-    const int ON_WARP_BLOCK_;                       //片方のワープブロックのモデル番号
-    const int OR_WARP_BLOCK_;                       //もう片方のワープブロックのモデル番号
+    const int NO1_WARP_BLOCK_;                      //片方のワープブロックのモデル番号
+    const int NO2_WARP_BLOCK_;                      //もう片方のワープブロックのモデル番号
     const int GOAL_BLOCK_;                          //ゴールブロックのモデル番号
-    const int ON_DOUBLE_BUTTON_UP_;                 //同時押しボタンの片方。踏んでいない状態のモデル番号
-    const int ON_DOUBLE_BUTTON_DOWN_;               //同時押しボタンの片方。踏んでいる状態のモデル番号
-    const int OR_DOUBLE_BUTTON_UP_;                 //同時押しボタンのもう片方。踏んでいない状態のモデル番号
-    const int OR_DOUBLE_BUTTON_DOWN_;               //同時押しボタンの片方。踏んでいる状態のモデル番号
+    const int NO1_DOUBLE_BUTTON_UP_;                //同時押しボタンの片方。踏んでいない状態のモデル番号
+    const int NO1_DOUBLE_BUTTON_DOWN_;              //同時押しボタンの片方。踏んでいる状態のモデル番号
+    const int NO2_DOUBLE_BUTTON_UP_;                //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    const int NO2_DOUBLE_BUTTON_DOWN_;              //同時押しボタンの片方。踏んでいる状態のモデル番号
     const int DOUBLE_BUTTON_WALL_;                  //同時押しボタンに対応した壁。開いてない状態のモデル番号
     const int DOUBLE_BUTTON_WALL_ALPHA_;            //同時押しボタンに対応した壁。開いている状態のモデル番号
-    char shadowCount_;                               //影の数
+    char shadowCount_;                              //影の数
     int timeCount_;                                 //点滅ブロックの点滅間隔
     bool isBlinking_;                               //ブロックが消えたかどうか
     bool isWarp_;                                   //ワープしたか塚
@@ -58,8 +58,8 @@ class Stage : public GameObject
     int hModel_[MAX_MODEL];                         //モデル番号
     int hSound_[MAX_SOUND];                         //サウンドファイル
     char steppingNumberMeanTime[MAX_STEPNUMBER];    //何人踏んでいるか
-    char steppingNumber_OnDouble[MAX_STEPNUMBER];   //何人踏んでいるか
-    char steppingNumber_OrDouble[MAX_STEPNUMBER];   //何人踏んでいるか
+    char steppingNumber_No1Double[MAX_STEPNUMBER];  //何人踏んでいるか
+    char steppingNumber_No2Double[MAX_STEPNUMBER];  //何人踏んでいるか
     bool isDoubleButton_[MAX_DOUBLE_FLAG];          //同時ボタンの片方を押した
     Shadow* pShadow_[MAX_SHADOW_NUMBER];            //Shadowクラスを格納するポインタ型の配列
 
@@ -75,15 +75,15 @@ public:
     void ChengeButtonAndWall();                     //壁のモデルとボタンのモデルを切り替える関数。
     void SetMeanTimeStepNumberCountUp(int a);       //ボタンに乗っている人数をカウントアップする関数
     void SetMeanTimeStepNumberCountDown(int a);     //ボタンに乗っている人数をカウントアップする関数
-    void SetOnDoubleStepNumberCountUp(int b);       //同時押しボタンの片方のボタンの乗っている人数をカウントアップする関数
-    void SetOnDoubleStepNumberCountDown(int b);     //同時押しボタンの片方のボタンの乗っている人数をカウントダウンする関数
-    void SetOrDoubleStepNumberCountUp(int c);       //同時押しボタンのもう片方のボタンの乗っている人数をカウントアップする関数
-    void SetOrDoubleStepNumberCountDown(int c);     //同時押しボタンのもう片方のボタンの乗っている人数をカウントダウンする関数
+    void SetNo1DoubleStepNumberCountUp(int b);      //同時押しボタンの片方のボタンの乗っている人数をカウントアップする関数
+    void SetNo1DoubleStepNumberCountDown(int b);    //同時押しボタンの片方のボタンの乗っている人数をカウントダウンする関数
+    void SetNo2DoubleStepNumberCountUp(int c);      //同時押しボタンのもう片方のボタンの乗っている人数をカウントアップする関数
+    void SetNo2DoubleStepNumberCountDown(int c);    //同時押しボタンのもう片方のボタンの乗っている人数をカウントダウンする関数
     int CheckFootBlock(int x, int y);               //足元のブロックのモデル番号を引数で受け取り、それの1の位を返す関数
     bool isCrash(int x, int y);                     //ぶつかるかどうか
     bool MeanTimeButton(int x, int y);              //すべてのボタンを管理する関数
-    bool OnDoubleButton(int x, int y);              //同時押しボタンの片方に乗ったらtrueそれ以外はfalseを返す関数
-    bool OrDoubleButton(int x, int y);              //同時押しボタンのもう片方に乗ったらtrueそれ以外はfalseを返す関数
+    bool No1DoubleButton(int x, int y);              //同時押しボタンの片方に乗ったらtrueそれ以外はfalseを返す関数
+    bool No2DoubleButton(int x, int y);              //同時押しボタンのもう片方に乗ったらtrueそれ以外はfalseを返す関数
     XMFLOAT3 GetStartPosition();                    //初期スポーン地点を返すゲッター
 private:
     void ModelLoad();                               //まとめてモデルをロードする関数

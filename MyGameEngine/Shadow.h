@@ -14,8 +14,8 @@ class Stage;
 class Shadow : public Basic
 {
 	//定数宣言
-	const char RESET_VALU_;						//初期化用
 	const int MATCH_VALU_;						//配列の要素数を合わせるための値
+	const char RESET_VALU_;						//初期化用
 	const float BACK_DRAW_;						//Playerに重ならないように少し奥に描画する
 	const string filePas_;						//モデルが保存されているファイルパス
 
@@ -31,7 +31,6 @@ class Shadow : public Basic
 	std::vector<int> recordDirection_;			//Playerの向きを記録する動的配列
 	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列
 	std::vector<XMFLOAT3> recordData_;			//プレイヤーの位置を記録する可変長配列
-
 	enum
 	{
 		SDIR_RIGHT,								//右向き
@@ -42,7 +41,6 @@ class Shadow : public Basic
 		RUN_MODEL,								//走っているモデル番号
 	};
 	int hModel_[SDIR_MAX][SDIR_MAX];			//影のモデルを格納する多次元配列
-
 public:
 	Shadow(GameObject* parent);					//コンストラクタ
 	void Initialize() override;					//初期化

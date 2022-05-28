@@ -7,6 +7,7 @@
 #include "Stage.h"
 #include <string>
 
+//クラスの前方宣言
 class Stage;
 
 class Basic : public GameObject
@@ -18,17 +19,10 @@ class Basic : public GameObject
 	bool isPastDoubleButton_[2];		//1フレーム前に踏んでいる間発動するボタンを踏んでいるかいないか
 	Stage* pStage_;						//Stageクラスを格納するポインタ
 public:
-	//初期化
-	void Initialize() override;
-
-	//更新
-	void Update() override;
-
-	//描画
-	void Draw() override;
-
-	//開放
-	void Release() override;
+	void Initialize() override;		//初期化
+	void Update() override;			//更新
+	void Draw() override;			//描画
+	void Release() override;		//開放
 	Basic(GameObject* parent, const std::string& name);//コンストラクタ
 	void CommonMeanTimeButtonDown();			//踏んでいる間発動するボタンを踏んだ瞬間の処理
 	void No1DoubleButtonDown();					//同時押しボタンの片方を踏んだ瞬間の処理

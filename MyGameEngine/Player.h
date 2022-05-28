@@ -21,13 +21,12 @@ class Player :  public Basic
     const float BACK_POSITION_DOWN_;        //触れていたら位置を戻す値
     const float GRAVITY_;                   //重力の値
     const float DROP_DOWN_;                 //Playerの下に何もなければ下に落ちるための定数
-    const char RESET_VALU_;                  //初期化用の定数
-    const char PLAYER_FOOT_;                 //Playerの足元を見るためにY軸を-1する定数
-    const string FILE_PAS_;                  //モデルが保存されているファイルパス
+    const char RESET_VALU_;                 //初期化用の定数
+    const char PLAYER_FOOT_;                //Playerの足元を見るためにY軸を-1する定数
+    const string FILE_PAS_;                 //モデルが保存されているファイルパス
 
     //変数宣言
-    
-    char modelNumber_;                       //走っているモデルの番号
+    char modelNumber_;                      //走っているモデルの番号
     float yMove_;                           //Y軸の移動
     bool isJump_;                           //ジャンプしているか
     Stage* pStage_;                         //ステージの情報を入れるポインタ
@@ -46,7 +45,7 @@ class Player :  public Basic
         DIR_RIGHT,
         DIR_LEFT,
         DIR_MAX
-    }direction_;                         //プレイヤーの向きの番号
+    }direction_;                            //プレイヤーの向きの番号
     int hModel_[DIR_MAX][DIR_MAX];          //Playerのモデル番号を格納する多次元配列
     int hSe_[10];
 

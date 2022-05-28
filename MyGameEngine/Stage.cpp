@@ -21,8 +21,8 @@ Stage::Stage(GameObject* parent)
     MEANTIME_BUTTON_DOWN_(41),              //踏んでいる間発動するボタンの踏んだあとのモデル番号
     MEANTIME_WALL_(51),                     //ボタンが踏まれていない間閉じている壁のモデル番号
     MEANTIME_BLOCK_ALPHA_(61),              //ボタンが踏まれている間開いている壁のモデル番号
-    ON_WARP_BLOCK_(91),                     //片方のワープブロックのモデル番号
-    OR_WARP_BLOCK_(101),                    //もう片方のワープブロックのモデル番号
+    NO1_WARP_BLOCK_(91),                     //片方のワープブロックのモデル番号
+    NO2_WARP_BLOCK_(101),                    //もう片方のワープブロックのモデル番号
     GOAL_BLOCK_(3),                         //ゴールブロックのモデル番号
     shadowCount_(0),                        //今いる影の数
     timeCount_(0),                          //秒数を格納する変数
@@ -34,12 +34,12 @@ Stage::Stage(GameObject* parent)
     isWarp_(true),                          //ワープしたかしていないか
     isDoubleButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
     steppingNumberMeanTime(),               //ボタンに乗っている人数を記憶する変数
-    steppingNumber_OnDouble(),              //ボタンに乗っている人数を記憶する変数
-    steppingNumber_OrDouble(),              //ボタンに乗っている人数を記憶する変数
-    ON_DOUBLE_BUTTON_UP_(111),              //同時押しボタンの片方。踏んでいない状態のモデル番号
-    ON_DOUBLE_BUTTON_DOWN_(121),            //同時押しボタンの片方。踏んでいる状態のモデル番号
-    OR_DOUBLE_BUTTON_UP_(131),              //同時押しボタンのもう片方。踏んでいない状態のモデル番号
-    OR_DOUBLE_BUTTON_DOWN_(141),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    steppingNumber_No1Double(),              //ボタンに乗っている人数を記憶する変数
+    steppingNumber_No2Double(),              //ボタンに乗っている人数を記憶する変数
+    NO1_DOUBLE_BUTTON_UP_(111),              //同時押しボタンの片方。踏んでいない状態のモデル番号
+    NO1_DOUBLE_BUTTON_DOWN_(121),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    NO2_DOUBLE_BUTTON_UP_(131),              //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    NO2_DOUBLE_BUTTON_DOWN_(141),            //同時押しボタンの片方。踏んでいる状態のモデル番号
     DOUBLE_BUTTON_WALL_(151),               //同時押しボタンに対応した壁。開いてない状態のモデル番号
     DOUBLE_BUTTON_WALL_ALPHA_(161)          //同時押しボタンに対応した壁。開いている状態のモデル番号
 {
@@ -55,7 +55,6 @@ void Stage::Initialize()
 {
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
-
 
     //Csvファイルの読み込み
     CsvReader csv;
@@ -188,13 +187,13 @@ bool Stage::MeanTimeButton(int x, int y)
 //同時押しボタンの片方があるかどうかの処理を実行する
 //引数はPlayerもしくは影の足元の値
 //戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
-bool Stage::OnDoubleButton(int x, int y)
+bool Stage::No1DoubleButton(int x, int y)
 {
     //同時押しボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //下にあるボタンが同時押しボタンの押す前、もしくは押した後のモデルだったら
-        if (map_[x][y] == ON_DOUBLE_BUTTON_UP_ + i || map_[x][y] == ON_DOUBLE_BUTTON_DOWN_ + i) return true;
+        if (map_[x][y] == NO1_DOUBLE_BUTTON_UP_ + i || map_[x][y] == NO1_DOUBLE_BUTTON_DOWN_ + i) return true;
     }
     //離れた時の処理
     CollisionExit();
@@ -204,13 +203,13 @@ bool Stage::OnDoubleButton(int x, int y)
 //同時押しボタンのもう片方があるかどうかの処理を実行する
 //引数はPlayerもしくは影の足元の値
 //戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
-bool Stage::OrDoubleButton(int x, int y)
+bool Stage::No2DoubleButton(int x, int y)
 {
     //同時押しボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //下にあるボタンが同時押しボタンの押す前、もしくは押した後のモデルだったら
-        if (map_[x][y] == OR_DOUBLE_BUTTON_UP_ + i || map_[x][y] == OR_DOUBLE_BUTTON_DOWN_ + i) return true;
+        if (map_[x][y] == NO2_DOUBLE_BUTTON_UP_ + i || map_[x][y] == NO2_DOUBLE_BUTTON_DOWN_ + i) return true;
     }
     //離れた時の処理
     CollisionExit();
@@ -240,10 +239,10 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //同時押しボタンの片方のボタンに乗っている人数が0人だったら
-        if (steppingNumber_OnDouble[i] == 0)
+        if (steppingNumber_No1Double[i] == 0)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(ON_DOUBLE_BUTTON_DOWN_ + i, false);
+            CheckBlock(NO1_DOUBLE_BUTTON_DOWN_ + i, false);
 
             //壁を開くフラグをtrueにする
             isDoubleButton_[0] = false;
@@ -255,10 +254,10 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //同時押しボタンのもう片方のボタンに乗っている人数が0人だったら
-        if (steppingNumber_OrDouble[i] == 0)
+        if (steppingNumber_No2Double[i] == 0)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(OR_DOUBLE_BUTTON_DOWN_ + i, false);
+            CheckBlock(NO2_DOUBLE_BUTTON_DOWN_ + i, false);
 
             //壁を開くフラグをtrueにする
             isDoubleButton_[1] = false;
@@ -291,10 +290,10 @@ void Stage::ChengeButtonAndWall()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //誰かが同時ボタンに乗っていたら
-        if (steppingNumber_OnDouble[i] != 0)
+        if (steppingNumber_No1Double[i] != 0)
         {
             //モデル変更
-            CheckBlock(ON_DOUBLE_BUTTON_UP_ + i, true);
+            CheckBlock(NO1_DOUBLE_BUTTON_UP_ + i, true);
 
             //壁を開くフラグをtrueにする
             isDoubleButton_[0] = true;
@@ -307,9 +306,9 @@ void Stage::ChengeButtonAndWall()
     //上記と同じ処理なのでコメントは省略
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        if (steppingNumber_OrDouble[i] != 0)
+        if (steppingNumber_No2Double[i] != 0)
         {
-            CheckBlock(OR_DOUBLE_BUTTON_UP_ + i, true);
+            CheckBlock(NO2_DOUBLE_BUTTON_UP_ + i, true);
             isDoubleButton_[1] = true;
             SimultaneousWallOpen();
         }
@@ -382,30 +381,30 @@ void Stage::SetMeanTimeStepNumberCountDown(int meanTimeNum)
 
 //同時ボタンの片方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
-void Stage::SetOnDoubleStepNumberCountUp(int onDoubleNum)
+void Stage::SetNo1DoubleStepNumberCountUp(int onDoubleNum)
 {
-    steppingNumber_OnDouble[onDoubleNum]++;
+    steppingNumber_No1Double[onDoubleNum]++;
 }
 
 //同時ボタンの片方に乗っている人数をカウントダウンする関数
 //引数は対応するギミックの番号
-void Stage::SetOnDoubleStepNumberCountDown(int onDoubleNum)
+void Stage::SetNo1DoubleStepNumberCountDown(int onDoubleNum)
 {
-    steppingNumber_OnDouble[onDoubleNum]--;
+    steppingNumber_No1Double[onDoubleNum]--;
 }
 
 //同時ボタンのもう方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
-void Stage::SetOrDoubleStepNumberCountUp(int orDunbleNum)
+void Stage::SetNo2DoubleStepNumberCountUp(int orDunbleNum)
 {
-    steppingNumber_OrDouble[orDunbleNum]++;
+    steppingNumber_No2Double[orDunbleNum]++;
 }
 
 //同時ボタンのもう方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
-void Stage::SetOrDoubleStepNumberCountDown(int orDunbleNum)
+void Stage::SetNo2DoubleStepNumberCountDown(int orDunbleNum)
 {
-    steppingNumber_OrDouble[orDunbleNum]--;
+    steppingNumber_No2Double[orDunbleNum]--;
 }
 
 //ワープブロックに入った時の処理を実行する
@@ -416,7 +415,7 @@ void Stage::WarpBlockCollision(int getX, int getY)
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //そこがワープブロックだったら
-        if (map_[getX][getY] == ON_WARP_BLOCK_ + i && isWarp_ == true)
+        if (map_[getX][getY] == NO1_WARP_BLOCK_ + i && isWarp_ == true)
         {
             //Stageのサイズ分調べる
             //横
@@ -426,7 +425,7 @@ void Stage::WarpBlockCollision(int getX, int getY)
                 for (int y = RESET_VALU_; y < MAP_VERTICAL; y++)
                 {
                     //そこがワープブロックの出口だったら
-                    if (map_[x][y] == OR_WARP_BLOCK_ + i)
+                    if (map_[x][y] == NO2_WARP_BLOCK_ + i)
                     {
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
@@ -444,7 +443,7 @@ void Stage::WarpBlockCollision(int getX, int getY)
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //そこがワープブロックだったら
-        if (map_[getX][getY] == OR_WARP_BLOCK_ + i && isWarp_ == true)
+        if (map_[getX][getY] == NO2_WARP_BLOCK_ + i && isWarp_ == true)
         {
             //Stageのサイズ分調べる
             //横
@@ -454,7 +453,7 @@ void Stage::WarpBlockCollision(int getX, int getY)
                 for (int y = RESET_VALU_; y < MAP_VERTICAL; y++)
                 {
                     //そこがワープブロックの出口だったら
-                    if (map_[x][y] == ON_WARP_BLOCK_ + i)
+                    if (map_[x][y] == NO1_WARP_BLOCK_ + i)
                     {
                         //Playerの位置をそこのワープブロックに反映させる
                         pPlayer_->transform_.position_.x = x;
@@ -556,8 +555,8 @@ bool Stage::isCrash(int x, int y)
     if (map_[x][y] == 0 ||
         map_[x][y] == BACK_GROUND_ ||
         map_[x][y] == PLAYER_GENERAT_POS_ ||
-        map_[x][y] == ON_WARP_BLOCK_ ||
-        map_[x][y] == OR_WARP_BLOCK_ ||
+        map_[x][y] == NO1_WARP_BLOCK_ ||
+        map_[x][y] == NO2_WARP_BLOCK_ ||
         map_[x][y] == MEANTIME_BLOCK_ALPHA_ ||
         map_[x][y] == 62 ||
         map_[x][y] == BRINKING_BLOCKS_ ||
@@ -580,6 +579,7 @@ void Stage::Release()
 }
 
 //モデルをロードする処理をまとめた関数
+//ステージに置くギミックが増えるとモデルが変わるのでループ処理はしない
 void Stage::ModelLoad()
 {
     //サウンドデータのロード
