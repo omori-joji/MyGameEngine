@@ -1,9 +1,9 @@
-#include "sceneManager.h"
 #include "../PlayScene.h"
-#include "Model.h"
 #include "../Stage.h"
 #include "../Result.h"
 #include "../Title.h"
+#include "sceneManager.h"
+#include "Model.h"
 
 //コンストラクタ
 SceneManager::SceneManager(GameObject * parent)
@@ -45,6 +45,7 @@ void SceneManager::Update()
 		   case SCENE_ID_TITLE2: Instantiate<Title>(this); break;
 		   case SCENE_ID_DEBUG: Instantiate<Stage>(this); break;
 		}
+		//次のシーンを現在のシーンに入れ替える
 		currentSceneID_ = nextSceneID_;
 	}
 }
@@ -65,6 +66,7 @@ void SceneManager::ChangeScene(SCENE_ID next)
 	nextSceneID_ = next;
 }
 
+//次のシーンを登録する関数
 SCENE_ID SceneManager::SetnextSceneID(SCENE_ID x)
 {
 	x = nextSceneID_;

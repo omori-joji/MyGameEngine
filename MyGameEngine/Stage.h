@@ -57,9 +57,9 @@ class Stage : public GameObject
     int map_[MAP_BESIDE_][MAP_VERTICAL];            //ステージのマス情報
     int hModel_[MAX_MODEL];                         //モデル番号
     int hSound_[MAX_SOUND];                         //サウンドファイル
-    char steppingNumberMeanTime[MAX_STEPNUMBER];     //何人踏んでいるか
-    char steppingNumber_OnDouble[MAX_STEPNUMBER];    //何人踏んでいるか
-    char steppingNumber_OrDouble[MAX_STEPNUMBER];    //何人踏んでいるか
+    char steppingNumberMeanTime[MAX_STEPNUMBER];    //何人踏んでいるか
+    char steppingNumber_OnDouble[MAX_STEPNUMBER];   //何人踏んでいるか
+    char steppingNumber_OrDouble[MAX_STEPNUMBER];   //何人踏んでいるか
     bool isDoubleButton_[MAX_DOUBLE_FLAG];          //同時ボタンの片方を押した
     Shadow* pShadow_[MAX_SHADOW_NUMBER];            //Shadowクラスを格納するポインタ型の配列
 
