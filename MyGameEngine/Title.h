@@ -5,7 +5,6 @@
 #include "Engine/Model.h"
 #include "Engine/Audio.h"
 
-
 //Titleシーンを管理するクラス
 class Title : public GameObject
 {
@@ -15,11 +14,8 @@ class Title : public GameObject
 	const float STAGE_NUMBER_VERTICAL_;	//ステージ番号Y軸の値
 	const float STAGE_NUMBER_BESIDE_;	//ステージ番号X軸の値
 	const float SCALE_MAGNIFICATION_;	//ステージ番号の奥行
-
-	int stageNum_;
-	int imageNum_;
-	int chengeCount_;
-	bool iskeyDown_;
+	int stageNum_;//移行したいステージのモデル番号
+	int imageNum_;//背景のモデル番号
 
 	enum
 	{
@@ -42,17 +38,9 @@ public:
 	//コンストラクタ
 	//引数：parent  親オブジェクト（SceneManager）
 	Title(GameObject* parent);
-
-	//初期化
-	void Initialize() override;
-
-	//更新
-	void Update() override;
-
-	//描画
-	void Draw() override;
-
-	//開放
-	void Release() override;
+	void Initialize() override;		//初期化
+	void Update() override;			//更新
+	void Draw() override;			//描画
+	void Release() override;		//開放
 };
 

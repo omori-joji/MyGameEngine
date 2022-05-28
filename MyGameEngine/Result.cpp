@@ -24,7 +24,10 @@ void Result::Update()
 	//SPACEキーを押したらタイトル画面に移行
 	if (Input::IsKeyDown(DIK_SPACE))
 	{
+		//SceneManagerクラスを探して
 		SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
+
+		//ChangeSceneでシーンを変える
 		pSceneManager->ChangeScene(SCENE_ID_TITLE2);
 	}
 }
