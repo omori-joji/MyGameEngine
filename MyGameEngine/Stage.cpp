@@ -21,8 +21,8 @@ Stage::Stage(GameObject* parent)
     MEANTIME_BUTTON_DOWN_(41),              //踏んでいる間発動するボタンの踏んだあとのモデル番号
     MEANTIME_WALL_(51),                     //ボタンが踏まれていない間閉じている壁のモデル番号
     MEANTIME_BLOCK_ALPHA_(61),              //ボタンが踏まれている間開いている壁のモデル番号
-    NO1_WARP_BLOCK_(91),                     //片方のワープブロックのモデル番号
-    NO2_WARP_BLOCK_(101),                    //もう片方のワープブロックのモデル番号
+    NO1_WARP_BLOCK_(91),                    //片方のワープブロックのモデル番号
+    NO2_WARP_BLOCK_(101),                   //もう片方のワープブロックのモデル番号
     GOAL_BLOCK_(3),                         //ゴールブロックのモデル番号
     shadowCount_(0),                        //今いる影の数
     timeCount_(0),                          //秒数を格納する変数
@@ -34,12 +34,12 @@ Stage::Stage(GameObject* parent)
     isWarp_(true),                          //ワープしたかしていないか
     isDoubleButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
     steppingNumberMeanTime(),               //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No1Double(),              //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No2Double(),              //ボタンに乗っている人数を記憶する変数
-    NO1_DOUBLE_BUTTON_UP_(111),              //同時押しボタンの片方。踏んでいない状態のモデル番号
-    NO1_DOUBLE_BUTTON_DOWN_(121),            //同時押しボタンの片方。踏んでいる状態のモデル番号
-    NO2_DOUBLE_BUTTON_UP_(131),              //同時押しボタンのもう片方。踏んでいない状態のモデル番号
-    NO2_DOUBLE_BUTTON_DOWN_(141),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    steppingNumber_No1Double(),             //ボタンに乗っている人数を記憶する変数
+    steppingNumber_No2Double(),             //ボタンに乗っている人数を記憶する変数
+    NO1_DOUBLE_BUTTON_UP_(111),             //同時押しボタンの片方。踏んでいない状態のモデル番号
+    NO1_DOUBLE_BUTTON_DOWN_(121),           //同時押しボタンの片方。踏んでいる状態のモデル番号
+    NO2_DOUBLE_BUTTON_UP_(131),             //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    NO2_DOUBLE_BUTTON_DOWN_(141),           //同時押しボタンの片方。踏んでいる状態のモデル番号
     DOUBLE_BUTTON_WALL_(151),               //同時押しボタンに対応した壁。開いてない状態のモデル番号
     DOUBLE_BUTTON_WALL_ALPHA_(161)          //同時押しボタンに対応した壁。開いている状態のモデル番号
 {

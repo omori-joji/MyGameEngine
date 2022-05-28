@@ -63,6 +63,13 @@ void Title::Update()
         case MODELE_NUMVER_4: pSceneManager->ChangeScene(SCENE_ID_STAGE4); break;
         }
     }
+
+    if (Input::IsKeyDown(DIK_1))
+    {
+        SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
+        pSceneManager->ChangeScene(SCENE_ID_DEBUG);
+    }
+
 }
 
 //•`‰æ
