@@ -33,9 +33,9 @@ Stage::Stage(GameObject* parent)
     isBlinking_(true),                      //壁が消えたか消えていないか
     isWarp_(true),                          //ワープしたかしていないか
     isDoubleButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
-    steppingNumberMeanTime(),               //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No1Double(),             //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No2Double(),             //ボタンに乗っている人数を記憶する変数
+    steppingNumberMeanTime_(),               //ボタンに乗っている人数を記憶する変数
+    steppingNumber_No1Double_(),             //ボタンに乗っている人数を記憶する変数
+    steppingNumber_No2Double_(),             //ボタンに乗っている人数を記憶する変数
     NO1_DOUBLE_BUTTON_UP_(111),             //同時押しボタンの片方。踏んでいない状態のモデル番号
     NO1_DOUBLE_BUTTON_DOWN_(121),           //同時押しボタンの片方。踏んでいる状態のモデル番号
     NO2_DOUBLE_BUTTON_UP_(131),             //同時押しボタンのもう片方。踏んでいない状態のモデル番号
@@ -224,7 +224,7 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //押している間だけ発動するボタンに乗っている人数が0人だったら
-        if (steppingNumberMeanTime[i] == 0)
+        if (steppingNumberMeanTime_[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(MEANTIME_BUTTON_DOWN_ + i, false);
@@ -239,7 +239,7 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //同時押しボタンの片方のボタンに乗っている人数が0人だったら
-        if (steppingNumber_No1Double[i] == 0)
+        if (steppingNumber_No1Double_[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(NO1_DOUBLE_BUTTON_DOWN_ + i, false);
@@ -254,7 +254,7 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //同時押しボタンのもう片方のボタンに乗っている人数が0人だったら
-        if (steppingNumber_No2Double[i] == 0)
+        if (steppingNumber_No2Double_[i] == 0)
         {
             //ボタンのモデルを切り替える
             CheckBlock(NO2_DOUBLE_BUTTON_DOWN_ + i, false);
@@ -274,7 +274,7 @@ void Stage::ChengeButtonAndWall()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //誰かが押している間発動するボタンに乗っていたら
-        if (steppingNumberMeanTime[i] != 0)
+        if (steppingNumberMeanTime_[i] != 0)
         {
             //モデル変更
             //ボタンを先に変えるとそれに対応した壁をひらけないので壁を先に変える
@@ -290,7 +290,7 @@ void Stage::ChengeButtonAndWall()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //誰かが同時ボタンに乗っていたら
-        if (steppingNumber_No1Double[i] != 0)
+        if (steppingNumber_No1Double_[i] != 0)
         {
             //モデル変更
             CheckBlock(NO1_DOUBLE_BUTTON_UP_ + i, true);
@@ -306,7 +306,7 @@ void Stage::ChengeButtonAndWall()
     //上記と同じ処理なのでコメントは省略
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        if (steppingNumber_No2Double[i] != 0)
+        if (steppingNumber_No2Double_[i] != 0)
         {
             CheckBlock(NO2_DOUBLE_BUTTON_UP_ + i, true);
             isDoubleButton_[1] = true;
@@ -369,42 +369,42 @@ void Stage::PlayRecord()
 //引数は対応するギミックの番号
 void Stage::SetMeanTimeStepNumberCountUp(int meanTimeNum)
 {
-    steppingNumberMeanTime[meanTimeNum]++;
+    steppingNumberMeanTime_[meanTimeNum]++;
 }
 
 //押している間発動するボタンに乗っている人数をカウントダウンする関数
 //引数は対応するギミックの番号
 void Stage::SetMeanTimeStepNumberCountDown(int meanTimeNum)
 {
-    steppingNumberMeanTime[meanTimeNum]--;
+    steppingNumberMeanTime_[meanTimeNum]--;
 }
 
 //同時ボタンの片方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
 void Stage::SetNo1DoubleStepNumberCountUp(int onDoubleNum)
 {
-    steppingNumber_No1Double[onDoubleNum]++;
+    steppingNumber_No1Double_[onDoubleNum]++;
 }
 
 //同時ボタンの片方に乗っている人数をカウントダウンする関数
 //引数は対応するギミックの番号
 void Stage::SetNo1DoubleStepNumberCountDown(int onDoubleNum)
 {
-    steppingNumber_No1Double[onDoubleNum]--;
+    steppingNumber_No1Double_[onDoubleNum]--;
 }
 
 //同時ボタンのもう方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
 void Stage::SetNo2DoubleStepNumberCountUp(int orDunbleNum)
 {
-    steppingNumber_No2Double[orDunbleNum]++;
+    steppingNumber_No2Double_[orDunbleNum]++;
 }
 
 //同時ボタンのもう方に乗っている人数をカウントアップする関数
 //引数は対応するギミックの番号
 void Stage::SetNo2DoubleStepNumberCountDown(int orDunbleNum)
 {
-    steppingNumber_No2Double[orDunbleNum]--;
+    steppingNumber_No2Double_[orDunbleNum]--;
 }
 
 //ワープブロックに入った時の処理を実行する
@@ -558,7 +558,7 @@ bool Stage::isCrash(int x, int y)
         map_[x][y] == NO1_WARP_BLOCK_ ||
         map_[x][y] == NO2_WARP_BLOCK_ ||
         map_[x][y] == MEANTIME_BLOCK_ALPHA_ ||
-        map_[x][y] == 62 ||
+        map_[x][y] == MEANTIME_BLOCK_ALPHA_ + 1 ||
         map_[x][y] == BRINKING_BLOCKS_ ||
         map_[x][y] == DOUBLE_BUTTON_WALL_ALPHA_)
     {

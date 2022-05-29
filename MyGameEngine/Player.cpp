@@ -22,7 +22,8 @@ Player::Player(GameObject* parent)
 	direction_(),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
-	FILE_PAS_("Assets/Player/"),	//Playerのモデルが保存されているファイルパス
+	MODEL_FILE_PAS_("Assets/Player/"),	//Playerのモデルが保存されているファイルパス
+	SE_FILE_PAS_("Assets/Sound/"),
 	isJump_(false),					//ジャンプ中か
 	pStage_(nullptr),				//ステージの情報を入れるポインタ
 	hSe_()							//SEをロードするための配列
@@ -36,19 +37,16 @@ Player::~Player()
 void Player::Initialize()
 {
 	//サウンドファイルのロード
-	hSe_[0] = Audio::Load("Assets/Sound/Jump.wav", 5);
-	hSe_[1] = Audio::Load("Assets/Sound/Reset.wav", 5);
-	hSe_[2] = Audio::Load("Assets/Sound/Warpe.wav", 5);
-	hSe_[3] = Audio::Load("Assets/Sound/OpenWall.wav", 5);
-	hSe_[4] = Audio::Load("Assets/Sound/ButtonDown.wav", 5);
+	hSe_[JUMP] = Audio::Load(SE_FILE_PAS_ + "Jump.wav", 2);
+	hSe_[RESET] = Audio::Load(SE_FILE_PAS_ + "Reset.wav", 2);
 
 	//右方向を向いているモデルのロード
-	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load(FILE_PAS_ + "PlayerRightStanding.fbx");
-	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load(FILE_PAS_ + "PlayerRightRun.fbx");
+	hModel_[DIR_RIGHT][STANDING_MODEL] = Model::Load(MODEL_FILE_PAS_ + "PlayerRightStanding.fbx");
+	hModel_[DIR_RIGHT][RUN_MODEL] = Model::Load(MODEL_FILE_PAS_ + "PlayerRightRun.fbx");
 
 	//左方向を向いているモデルのロード
-	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load(FILE_PAS_ + "PlayerLeftStanding.fbx");
-	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load(FILE_PAS_ + "PlayerLeftRun.fbx");
+	hModel_[DIR_LEFT][STANDING_MODEL] = Model::Load(MODEL_FILE_PAS_ + "PlayerLeftStanding.fbx");
+	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load(MODEL_FILE_PAS_ + "PlayerLeftRun.fbx");
 }
 
 void Player::Update()

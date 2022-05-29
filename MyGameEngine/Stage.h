@@ -15,7 +15,6 @@ class SceneManager;
 //Stageを管理するクラス
 class Stage : public GameObject
 {
-    //int hVfxA, hVfxB;
     const int BACK_GROUND_;                         //背景のモデル番号
     const int PLAYER_GENERAT_POS_;                  //Playerのリスポーン地点
     const int SHADOW_NAMBER_;                       //影の数
@@ -57,9 +56,9 @@ class Stage : public GameObject
     int map_[MAP_BESIDE_][MAP_VERTICAL];            //ステージのマス情報
     int hModel_[MAX_MODEL];                         //モデル番号
     int hSound_[MAX_SOUND];                         //サウンドファイル
-    char steppingNumberMeanTime[MAX_STEPNUMBER];    //何人踏んでいるか
-    char steppingNumber_No1Double[MAX_STEPNUMBER];  //何人踏んでいるか
-    char steppingNumber_No2Double[MAX_STEPNUMBER];  //何人踏んでいるか
+    char steppingNumberMeanTime_[MAX_STEPNUMBER];    //何人踏んでいるか
+    char steppingNumber_No1Double_[MAX_STEPNUMBER];  //何人踏んでいるか
+    char steppingNumber_No2Double_[MAX_STEPNUMBER];  //何人踏んでいるか
     bool isDoubleButton_[MAX_DOUBLE_FLAG];          //同時ボタンの片方を押した
     Shadow* pShadow_[MAX_SHADOW_NUMBER];            //Shadowクラスを格納するポインタ型の配列
 
