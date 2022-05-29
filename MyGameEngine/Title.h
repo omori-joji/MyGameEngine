@@ -14,19 +14,20 @@ class Title : public GameObject
 	const float STAGE_NUMBER_VERTICAL_;	//ステージ番号Y軸の値
 	const float STAGE_NUMBER_BESIDE_;	//ステージ番号X軸の値
 	const float SCALE_MAGNIFICATION_;	//ステージ番号の奥行
-	int stageNum_;//移行したいステージのモデル番号
-	int imageNum_;//背景のモデル番号
+	int stageNum_;						//移行したいステージのモデル番号
+	int imageNum_;						//背景のモデル番号
 
 	enum
 	{
-		MODELE_NUMVER_1,
-		MODELE_NUMVER_2,
-		MODELE_NUMVER_3,
-		MODELE_NUMVER_4,
+		MODELE_NUMVER_1,	//ステージ番号1
+		MODELE_NUMVER_2,	//ステージ番号2
+		MODELE_NUMVER_3,	//ステージ番号3
+		MODELE_NUMVER_4,	//ステージ番号4
 
-		SE_NUMBER_1 = 0,
-		SE_NUMBER_2,
+		SE_NUMBER_1 = 0,	//矢印キーを押したときのSE
+		SE_NUMBER_2,		//決定ボタンのSE
 
+		//各配列の最大要素数
 		MAX_SE = 2,
 		MAX_MODELE,
 		MAX_STAGE_NUMBER,

@@ -5,16 +5,12 @@
 //ゲームに登場するシーン
 enum SCENE_ID
 {
-	SCENE_ID_TEST = 0,
-	SCENE_ID_STAGE1,
-	SCENE_ID_STAGE2,
-	SCENE_ID_STAGE3,
-	SCENE_ID_STAGE4,
-	SCENE_ID_CLEAR,
-	SCENE_ID_CLEDIT,
-	SCENE_ID_TITLE,
-	SCENE_ID_TITLE2,
-	SCENE_ID_SETUMEI,
+	SCENE_ID_STAGE1,//STAGE1
+	SCENE_ID_STAGE2,//STAGE2
+	SCENE_ID_STAGE3,//STAGE3
+	SCENE_ID_STAGE4,//STAGE4
+	SCENE_ID_CLEAR,//クリア画面
+	SCENE_ID_TITLE,//一番最初のタイトル
 	SCENE_ID_DEBUG,
 };
 
@@ -35,6 +31,7 @@ public:
 
 	//シーン切り替え（実際に切り替わるのはこの次のフレーム）
 	//引数：next	次のシーンのID
+	//いろんなとこで使うのでpublicにしておく
 	void ChangeScene(SCENE_ID next);
 	SCENE_ID SetnextSceneID(SCENE_ID x);	//次のシーンを登録する関数
 	SCENE_ID nextSceneID_;					//次のシーン

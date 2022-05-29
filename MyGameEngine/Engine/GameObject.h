@@ -15,16 +15,10 @@ protected:
 	string	     objectName_; //オブジェクトの名前
 	bool         isDead_;
 	Collider*    pCollider_;
-
-
 public:
 	Transform	 transform_; //位置、角度、拡大
-
-
 private:
 	GameObject* FindSub(std::string objectName);
-
-
 public:
 	GameObject();
 	GameObject(GameObject* parent, const std::string& name);
@@ -32,38 +26,28 @@ public:
 	//親のデストラクタが呼ばれる仕様なので
 	//子オブジェクトを消すときは親オブジェクトのデストラクタに
 	//virtualをつけてあげる
+	//仮想関数
 	virtual ~GameObject();
-
 	virtual void Initialize() =0;
 	virtual void Update() = 0;
 	virtual void Draw() = 0;
 	virtual void Release() = 0;
-
 	void DrawSub();
 	void UpdateSub();
 	void ReleaseSub();
-
 	void killMe();
-
 	void KillAllChildren();
-
 	void KillObjectSub(GameObject* obj);
-
 	std::list<GameObject*>* GetChildList();
-
 	void AddCollider(Collider* collider);
-
 	GameObject* GetRootJob();
-
 	void Collision(GameObject* target);
-
 	virtual void OnCollisionEnter(GameObject* target) {};
-
-	
 	GameObject* Find(std::string objectName);
 
 	template<class T>
 
+	//オブジェクトを生成する関数
 	GameObject* Instantiate(GameObject* parent)
 	{
 		T* p;

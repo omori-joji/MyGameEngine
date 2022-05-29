@@ -9,7 +9,6 @@
 
 GameObject::GameObject()
 {
-
 }
 
 //初期化
@@ -110,6 +109,7 @@ void GameObject::killMe()
 	isDead_ = true;
 }
 
+//シーンを切り替えるときにオブジェクトをすべて消す関数
 void GameObject::KillAllChildren()
 {
 	//子供がいないなら終わり
@@ -132,6 +132,7 @@ void GameObject::KillAllChildren()
 	childList_.clear();
 }
 
+//オブジェクトを消す関数
 void GameObject::KillObjectSub(GameObject* obj)
 {
 	if (!childList_.empty())

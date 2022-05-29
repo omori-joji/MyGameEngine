@@ -28,7 +28,7 @@ void Result::Update()
 		SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
 
 		//ChangeScene‚ÅƒV[ƒ“‚ð•Ï‚¦‚é
-		pSceneManager->ChangeScene(SCENE_ID_TITLE2);
+		pSceneManager->ChangeScene(SCENE_ID_TITLE);
 	}
 }
 

@@ -64,17 +64,18 @@ void Title::Update()
         }
     }
 
+    //デバッグ用のステージに移行
     if (Input::IsKeyDown(DIK_1))
     {
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
         pSceneManager->ChangeScene(SCENE_ID_DEBUG);
     }
-
 }
 
 //描画
 void Title::Draw()
 {
+    //背景の描画
     Transform trans, stageNum;
 
     //背景の位置決定

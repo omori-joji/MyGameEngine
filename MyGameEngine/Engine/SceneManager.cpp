@@ -37,13 +37,13 @@ void SceneManager::Update()
 		//次のシーンを作成
 		switch (nextSceneID_)
 		{
-		   case SCENE_ID_STAGE1: Instantiate<Stage>(this); break;
-		   case SCENE_ID_STAGE2: Instantiate<Stage>(this); break;
-		   case SCENE_ID_STAGE3: Instantiate<Stage>(this); break;
-		   case SCENE_ID_STAGE4: Instantiate<Stage>(this); break;
-		   case SCENE_ID_CLEAR: Instantiate<Result>(this); break;
-		   case SCENE_ID_TITLE2: Instantiate<Title>(this); break;
-		   case SCENE_ID_DEBUG: Instantiate<Stage>(this); break;
+		   case SCENE_ID_STAGE1: Instantiate<Stage>(this); break;	//STAGE1
+		   case SCENE_ID_STAGE2: Instantiate<Stage>(this); break;	//STAGE2
+		   case SCENE_ID_STAGE3: Instantiate<Stage>(this); break;	//STAGE3
+		   case SCENE_ID_STAGE4: Instantiate<Stage>(this); break;	//STAGE4
+		   case SCENE_ID_TITLE: Instantiate<Title>(this); break;	//タイトル画面
+		   case SCENE_ID_CLEAR: Instantiate<Result>(this); break;	//クリア画面
+		   case SCENE_ID_DEBUG: Instantiate<Stage>(this); break;	//デバッグ用
 		}
 		//次のシーンを現在のシーンに入れ替える
 		currentSceneID_ = nextSceneID_;
