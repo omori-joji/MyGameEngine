@@ -65,7 +65,7 @@ bool CsvReader::Load(std::string fileName)
 		GetToComma(&val, temp, &index);
 
 		//文字数が0だったということは行末
-		if (val.c_str() - 1 == "*")
+		if (val.length() - 1 == 0)
 		{
 			//_dataに1行分追加
 			data_.push_back(line);
@@ -115,7 +115,6 @@ std::string CsvReader::GetString(DWORD x, DWORD y)
 //指定した位置のデータを整数で取得
 int CsvReader::GetValue(DWORD x, DWORD y)
 {
-	int a = 0;
 	return atoi(GetString(x, y).c_str());
 }
 
