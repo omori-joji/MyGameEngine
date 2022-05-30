@@ -5,7 +5,7 @@ Title::Title(GameObject* parent)
 	: GameObject(parent, "Title"), 
     imageNum_(0),                   //背景のモデル番号
     stageNum_(0),                   //移行したいステージのモデル番号
-    BACK_GROUND_VERTICAL_(23),   //背景のY軸の値
+    BACK_GROUND_VERTICAL_(22.0f),   //背景のY軸の値
     BACK_GROUND_BESIDE_(28.0f),     //背景のX軸の値
     hModel_(),                      //モデルを格納する変数
     se_(),                          //SEを格納する変数
