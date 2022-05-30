@@ -147,7 +147,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Basic.cpp" />
+    <ClCompile Include="Actor.cpp" />
     <ClCompile Include="Engine\Collider.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
     <ClCompile Include="Engine\Model.cpp" />
@@ -192,7 +192,7 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Basic.h" />
+    <ClInclude Include="Actor.h" />
     <ClInclude Include="Engine\resource.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Engine\Audio.h" />

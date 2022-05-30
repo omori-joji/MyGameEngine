@@ -3,7 +3,7 @@
 #include "Engine/Model.h"
 #include "Engine/Input.h"
 #include "Engine/Fbx.h"
-#include "Basic.h"
+#include "Actor.h"
 #include <string>
 
 //クラスの前方宣言
@@ -11,7 +11,7 @@ class Player;
 class Stage;
 
 //Shadowを管理するクラス
-class Shadow : public Basic
+class Shadow : public Actor
 {
 	//定数宣言
 	const int MATCH_VALU_;						//配列の要素数を合わせるための値

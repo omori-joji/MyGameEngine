@@ -5,15 +5,16 @@ Title::Title(GameObject* parent)
 	: GameObject(parent, "Title"), 
     imageNum_(0),                   //背景のモデル番号
     stageNum_(0),                   //移行したいステージのモデル番号
-    BACK_GROUND_VERTICAL_(23),      //背景のY軸の値
-    BACK_GROUND_BESIDE_(28),        //背景のX軸の値
+    BACK_GROUND_VERTICAL_(23.0f),      //背景のY軸の値
+    BACK_GROUND_BESIDE_(28.0f),        //背景のX軸の値
     hModel_(),                      //モデルを格納する変数
     se_(),                          //SEを格納する変数
     stageNum_Modele_(),             //ステージ番号のモデルを格納する変数
-    DEPTH_(-17.8f),                 //背景の奥行
-    STAGE_NUMBER_VERTICAL_(9.7),    //ステージ番号Y軸の値
-    STAGE_NUMBER_BESIDE_(17.3),     //ステージ番号X軸の値
-    SCALE_MAGNIFICATION_(0.6),      //ステージ番号の奥行
+    DEPTH_(-17.9f),                 //背景の奥行
+    DEPTH_DIFFERRENCE_(0.1f),
+    STAGE_NUMBER_VERTICAL_(9.7f),    //ステージ番号Y軸の値
+    STAGE_NUMBER_BESIDE_(17.3f),     //ステージ番号X軸の値
+    SCALE_MAGNIFICATION_(0.6f),      //ステージ番号の奥行
     FILE_PAS_("Assets/Title/")      //Titleのモデルデータのファイルパス
 {
 }
@@ -22,17 +23,23 @@ Title::Title(GameObject* parent)
 void Title::Initialize()
 {
     //サウンドファイルをロード
-    se_[SE_NUMBER_2] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
+    se_[SE_DECISION] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
 
     //モデルデータのロード
-    hModel_[0] = Model::Load(FILE_PAS_ + "TitleBG_01.fbx");
-    hModel_[1] = Model::Load(FILE_PAS_ + "TitleBG_02.fbx");
+    hModel_[BACKGROUND] = Model::Load(FILE_PAS_ + "TitleBG_01.fbx");
+    hModel_[BACKGROUND_NOWLOADING] = Model::Load(FILE_PAS_ + "TitleBG_02.fbx");
 
     //Stage番号のモデル
-    stageNum_Modele_[MODELE_NUMVER_1] = Model::Load(FILE_PAS_ + "StageNumber1.fbx");
-    stageNum_Modele_[MODELE_NUMVER_2] = Model::Load(FILE_PAS_ + "StageNumber2.fbx");
-    stageNum_Modele_[MODELE_NUMVER_3] = Model::Load(FILE_PAS_ + "StageNumber3.fbx");
-    stageNum_Modele_[MODELE_NUMVER_4] = Model::Load(FILE_PAS_ + "StageNumber4.fbx");
+    //stageNum_Modele_[STAGE_NUMVER_1] = Model::Load(FILE_PAS_ + "StageNumber1.fbx");
+    //stageNum_Modele_[STAGE_NUMVER_2] = Model::Load(FILE_PAS_ + "StageNumber2.fbx");
+    //stageNum_Modele_[STAGE_NUMVER_3] = Model::Load(FILE_PAS_ + "StageNumber3.fbx");
+    //stageNum_Modele_[MODELE_NUMVER_4] = Model::Load(FILE_PAS_ + "StageNumber4.fbx");
+    for (int i = 0; i < STAGE_NUMBER_MAX; i++)
+    {
+        char fileName[MAX_PATH];
+        wsprintf(fileName, "%sStageNumber%d.fbx", FILE_PAS_.c_str(), (i + 1));
+        stageNum_Modele_[i] = Model::Load(fileName);
+    }
 }
 
 //更新
@@ -48,21 +55,23 @@ void Title::Update()
     if (Input::IsKeyDown(DIK_SPACE))
     {
         //決定ボタンのSE
-        Audio::Play(se_[SE_NUMBER_2]);
+        Audio::Play(se_[SE_DECISION]);
 
         //背景のモデル番号を変更
         imageNum_ = 1;
 
         //SceneManagerクラスを探す
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
-        switch (stageNum_)
-        {
-        //stageNum_の値に対応したステージに移行
-        case MODELE_NUMVER_1: pSceneManager->ChangeScene(SCENE_ID_STAGE1); break;
-        case MODELE_NUMVER_2: pSceneManager->ChangeScene(SCENE_ID_STAGE2); break;
-        case MODELE_NUMVER_3: pSceneManager->ChangeScene(SCENE_ID_STAGE3); break;
-        case MODELE_NUMVER_4: pSceneManager->ChangeScene(SCENE_ID_STAGE4); break;
-        }
+        pSceneManager->ChangeScene((SCENE_ID)stageNum_);
+
+        //switch (stageNum_)
+        //{
+        ////stageNum_の値に対応したステージに移行
+        //case STAGE_NUMVER_1: pSceneManager->ChangeScene(SCENE_ID_STAGE1); break;
+        //case STAGE_NUMVER_2: pSceneManager->ChangeScene(SCENE_ID_STAGE2); break;
+        //case STAGE_NUMVER_3: pSceneManager->ChangeScene(SCENE_ID_STAGE3); break;
+        //case MODELE_NUMVER_4: pSceneManager->ChangeScene(SCENE_ID_STAGE4); break;
+        //}
     }
 
     //デバッグ用のステージに移行
@@ -95,7 +104,7 @@ void Title::Draw()
     //ステージ番号の位置決定
     stageNum.position_.x = STAGE_NUMBER_BESIDE_;
     stageNum.position_.y = STAGE_NUMBER_VERTICAL_;
-    stageNum.position_.z = DEPTH_ - 0.1;
+    stageNum.position_.z = DEPTH_ - DEPTH_DIFFERRENCE_;
 
     //サイズも指定
     stageNum.scale_.x = SCALE_MAGNIFICATION_;

@@ -10,7 +10,7 @@
 //クラスの前方宣言
 class Stage;
 
-class Basic : public GameObject
+class Actor : public GameObject
 {
 	char meanTimeGimmickNumber_;		//押している間発動するボタンの1の位
 	char no1DoubleGimmickNumber_;		//片方の同時押しボタンの1の位
@@ -23,7 +23,7 @@ public:
 	void Update() override;			//更新
 	void Draw() override;			//描画
 	void Release() override;		//開放
-	Basic(GameObject* parent, const std::string& name);//コンストラクタ
+	Actor(GameObject* parent, const std::string& name);//コンストラクタ
 	void CommonMeanTimeButtonDown();			//踏んでいる間発動するボタンを踏んだ瞬間の処理
 	void No1DoubleButtonDown();					//同時押しボタンの片方を踏んだ瞬間の処理
 	void No2DoubleButtonDown();					//もう片方の同時押しボタンを踏んだ瞬間の処理

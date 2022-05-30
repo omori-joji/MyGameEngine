@@ -89,8 +89,8 @@ void Stage::Initialize()
                 //プレイヤーの位置決定
                 //プレイヤーの初期位置を記憶する
                 Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
-                pPlayer->transform_.position_.x = x;
-                pPlayer->transform_.position_.y = y;
+                pPlayer->transform_.position_.x = (float)x;
+                pPlayer->transform_.position_.y = (float)y;
                 stertPos = pPlayer->transform_.position_;
             }
         }
@@ -155,8 +155,8 @@ void Stage::Draw()
             //位置
             //transの位置情報を決める
             Transform trans;
-            trans.position_.x = x;
-            trans.position_.y = y;
+            trans.position_.x = (float)x;
+            trans.position_.y = (float)y;
 
             //Calclationクラスで移動、回転、拡大行列の処理をする
             trans.Calclation();
@@ -429,8 +429,8 @@ void Stage::WarpBlockCollision(int getX, int getY)
                     if (map_[x][y] == NO2_WARP_BLOCK_ + i)
                     {
                         //Playerの位置をそこのワープブロックに反映させる
-                        pPlayer_->transform_.position_.x = x;
-                        pPlayer_->transform_.position_.y = y;
+                        pPlayer_->transform_.position_.x = (float)x;
+                        pPlayer_->transform_.position_.y = (float)y;
 
                         //永久ループ防止のためにフラグ処理をしておく
                         isWarp_ = false;
@@ -457,8 +457,8 @@ void Stage::WarpBlockCollision(int getX, int getY)
                     if (map_[x][y] == NO1_WARP_BLOCK_ + i)
                     {
                         //Playerの位置をそこのワープブロックに反映させる
-                        pPlayer_->transform_.position_.x = x;
-                        pPlayer_->transform_.position_.y = y;
+                        pPlayer_->transform_.position_.x = (float)x;
+                        pPlayer_->transform_.position_.y = (float)y;
 
                         //永久ループ防止のためにフラグ処理をしておく
                         isWarp_ = false;

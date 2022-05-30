@@ -1,27 +1,27 @@
-#include "Basic.h"
+#include "Actor.h"
 
 //初期化
-void Basic::Initialize()
+void Actor::Initialize()
 {
 }
 
 //更新
-void Basic::Update()
+void Actor::Update()
 {
 }
 
 //描画
-void Basic::Draw()
+void Actor::Draw()
 {
 }
 
 //解放
-void Basic::Release()
+void Actor::Release()
 {
 }
 
 //コンストラクタ
-Basic::Basic(GameObject* parent, const std::string& name)
+Actor::Actor(GameObject* parent, const std::string& name)
 	:GameObject(parent, name),
 	meanTimeGimmickNumber_(0),			//押している間発動するボタンの1の位
 	no1DoubleGimmickNumber_(0),			//片方の同時押しボタンの1の位
@@ -33,7 +33,7 @@ Basic::Basic(GameObject* parent, const std::string& name)
 }
 
 //踏んでいる間発動するボタンを踏んだ瞬間の処理
-void Basic::CommonMeanTimeButtonDown()
+void Actor::CommonMeanTimeButtonDown()
 {
 	//Stageクラスを格納
 	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
@@ -79,7 +79,7 @@ void Basic::CommonMeanTimeButtonDown()
 
 
 //同時押しボタンの片方を踏んだ瞬間の処理
-void Basic::No1DoubleButtonDown()
+void Actor::No1DoubleButtonDown()
 {
 	//変数宣言
 	//1フレーム前は踏んでいるかどうか
@@ -123,7 +123,7 @@ void Basic::No1DoubleButtonDown()
 
 //もう片方の同時押しボタンを踏んだ瞬間の処理
 //上記と同じ処理なのでコメントは省略
-void Basic::No2DoubleButtonDown()
+void Actor::No2DoubleButtonDown()
 {
 	bool nowNo2DoubleButton;
 

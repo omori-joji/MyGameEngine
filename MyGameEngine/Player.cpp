@@ -3,7 +3,7 @@
 
 
 Player::Player(GameObject* parent)
-	: Basic(parent, "Player"),
+	: Actor(parent, "Player"),
 	SPEED_(0.1f),					//移動速度
 	WIDTH_(0.3f),					//Playerの幅
 	HEIGHT_(0.6f),					//Playerの高さ
@@ -73,7 +73,7 @@ void Player::Update()
 	CommonMeanTimeButtonDown();
 
 	//同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
-	//Basicクラスから継承
+	//Actorクラスから継承
 	No1DoubleButtonDown();
 	No2DoubleButtonDown();
 

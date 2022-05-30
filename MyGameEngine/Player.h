@@ -1,12 +1,12 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Basic.h"
+#include "Actor.h"
 
 //クラスの前方宣言
 class Stage;
 
 //Player処理を行うクラス
-class Player :  public Basic
+class Player :  public Actor
 {
     //定数宣言
     const float SPEED_;                     //Playerの移動速度

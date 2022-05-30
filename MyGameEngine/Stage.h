@@ -71,7 +71,15 @@ public:
     void Draw() override;                           //描画
     void Release() override;                        //開放
     void GoalCol(int x, int y);                     //ゴールを判定する関数。引数はプレイヤーの位置
-    void WarpBlockCollision(int getX, int getY);    //ワープブロックのギミックをまとめた関数。引数はプレイヤーの位置
+    
+
+    //ワープブロックのギミックをまとめた関数。
+    //引数：getX, getY プレイヤーの位置
+    //戻値：なし
+    void WarpBlockCollision(int getX, int getY);    
+
+
+
     void ChengeButtonAndWall();                     //壁のモデルとボタンのモデルを切り替える関数。
     void SetMeanTimeStepNumberCountUp(int a);       //ボタンに乗っている人数をカウントアップする関数
     void SetMeanTimeStepNumberCountDown(int a);     //ボタンに乗っている人数をカウントアップする関数

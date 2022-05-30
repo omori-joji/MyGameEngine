@@ -81,7 +81,7 @@
     <ClCompile Include="Engine\Sound.cpp">
       <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Basic.cpp">
+    <ClCompile Include="Actor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rootjob.cpp">
@@ -171,7 +171,7 @@
     <ClInclude Include="Engine\VisualEffect.h">
       <Filter>ヘッダー ファイル\Engine</Filter>
     </ClInclude>
-    <ClInclude Include="Basic.h">
+    <ClInclude Include="Actor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rootjob.h">

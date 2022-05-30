@@ -3,7 +3,7 @@
 #include "Stage.h"
 
 Shadow::Shadow(GameObject* parent)
-	:Basic(parent, "Shadow"),
+	:Actor(parent, "Shadow"),
 	frameCounter_(0),					//毎フレーム動きを記録するためのカウンター
 	shadowDirection_(0),				//Playerの向きを記録する動的配列
 	shadowModelNumber_(0),				//走っているモデル番号を記録する動的配列
@@ -43,7 +43,7 @@ void Shadow::Update()
 	CommonMeanTimeButtonDown();
 
 	//同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
-	//Basicクラスから継承
+	//Actorクラスから継承
 	No1DoubleButtonDown();
 	No2DoubleButtonDown();
 

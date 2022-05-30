@@ -40,8 +40,8 @@ void Result::Draw()
 	Transform trans;
 
 	//位置決定
-	trans.position_.x = BACK_GROUND_BESIDE_ /2;
-	trans.position_.y = BACK_GROUND_VERTICAL_ /2;
+	trans.position_.x = BACK_GROUND_BESIDE_ /2.0f;
+	trans.position_.y = BACK_GROUND_VERTICAL_ /2.0f;
 	trans.position_.z = BACK_GROUND_DEPTH_;
 
 	//ワールド行列
