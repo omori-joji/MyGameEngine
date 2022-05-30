@@ -1,7 +1,7 @@
 #include "Player.h"
 #include "Stage.h"
 
-
+//コンストラクタ
 Player::Player(GameObject* parent)
 	: Actor(parent, "Player"),
 	SPEED_(0.1f),					//移動速度
@@ -20,6 +20,7 @@ Player::Player(GameObject* parent)
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
 	yMove_(0.02f),					//Y軸の移動
 	direction_(),					//Playerの向きのモデル番号
+	se_(),							//サウンドファイルを格納する配列
 	modelNumber_(0),				//Playerの走っているモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
 	MODEL_FILE_PAS_("Assets/Player/"),//Playerのモデルが保存されているファイルパス
@@ -30,10 +31,12 @@ Player::Player(GameObject* parent)
 {
 }
 
+//デストラクタ
 Player::~Player()
 {
 }
 
+//初期化
 void Player::Initialize()
 {
 	//サウンドファイルのロード
@@ -49,6 +52,7 @@ void Player::Initialize()
 	hModel_[DIR_LEFT][RUN_MODEL] = Model::Load(MODEL_FILE_PAS_ + "PlayerLeftRun.fbx");
 }
 
+//更新
 void Player::Update()
 {
 	//Find処理をまとめる関数
@@ -88,7 +92,9 @@ void Player::Update()
 	pStage_->WarpBlockCollision((int)transform_.position_.x, (int)(transform_.position_.y));
 }
 
-//Playerの当たり判定の処理をまとめた関数
+//Playyerの当たり判定をまとめる関数
+//引数：なし
+//戻り値：なし
 void Player::Collision()
 {
 	//プレイヤーの原点は上下で見ると下。左右で見ると真ん中
@@ -169,6 +175,8 @@ void Player::Collision()
 }
 
 //初期位置に戻る処理をまとめた関数
+//引数：なし
+//戻り値：なし
 void Player::Reset()
 {
 	//リセットボタンを押したら
@@ -182,6 +190,8 @@ void Player::Reset()
 }
 
 //ジャンプの処理をまとめた関数
+//引数：なし
+//戻り値：なし
 void Player::Jump()
 {
 	if (Input::IsKeyDown(DIK_SPACE))
@@ -216,6 +226,7 @@ void Player::Jump()
 	}
 }
 
+//描画
 void Player::Draw()
 {
 	//描画
@@ -223,7 +234,9 @@ void Player::Draw()
 	Model::Draw(hModel_[direction_][modelNumber_]);
 }
 
-//右移動の処理
+//Playerの右操作をまとめる関数
+//引数：なし
+//戻り値：なし
 void Player::PlayerRightMove()
 {
 	//右移動
@@ -242,7 +255,9 @@ void Player::PlayerRightMove()
 	else if (Input::IsKeyUp(DIK_RIGHT)) modelNumber_ = STANDING_MODEL;
 }
 
-//左移動の処理
+//Playerの左操作をまとめる関数
+//引数：なし
+//戻り値：なし
 void Player::PlayerLeftMove()
 {
 	//左移動
@@ -260,7 +275,9 @@ void Player::PlayerLeftMove()
 	else if (Input::IsKeyUp(DIK_LEFT)) modelNumber_ = STANDING_MODEL;
 }
 
-//Find処理をまとめた関数
+//Find処理をすべてまとめる関数
+//引数：なし
+//戻り値：なし
 void Player::AllFind()
 {
 	//Stageクラスを探す
@@ -268,13 +285,17 @@ void Player::AllFind()
 	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
 }
 
-//モデル番号を返す関数
+//Playerの走っているモデル番号を返す関数
+//引数：なし
+//戻り値：modelNumber_
 int Player::GetModelNumber()
 {
 	return modelNumber_;
 }
 
-//毎フレーム向いている方向を返す関数
+//Player向きのモデル番号を返す関数
+//引数：なし
+//戻り値：direction_
 int Player::GetDirection()
 {
 	return direction_;

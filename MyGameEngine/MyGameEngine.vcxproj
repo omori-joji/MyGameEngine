@@ -193,7 +193,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
-    <ClInclude Include="Engine\resource.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Engine\Audio.h" />
