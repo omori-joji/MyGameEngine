@@ -19,7 +19,7 @@ const int WINDOW_HEIGHT = 600;              //ウィンドウの高さ
 //プロトタイプ宣言
 LRESULT CALLBACK WndProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
-//Rootjobクラスおポインタ作成
+//Rootjobクラスのポインタ作成
 Rootjob* pRootJob;
 
 

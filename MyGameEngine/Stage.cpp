@@ -30,13 +30,13 @@ Stage::Stage(GameObject* parent)
     pPlayer_(nullptr),                      //Playerクラスを格納するポインタ
     pShadow_(),                             //Shadowクラスを格納するポインタ
     pSceneManager_(nullptr),                //SceneManagerクラスを格納するポインタ
-    stertPos(0,0,0),                        //Playerの初期位置を記憶する変数
+    stertPos_(0,0,0),                       //Playerの初期位置を記憶する変数
     isBlinking_(true),                      //壁が消えたか消えていないか
     isWarp_(true),                          //ワープしたかしていないか
     isDoubleButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
-    steppingNumberMeanTime_(),               //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No1Double_(),             //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No2Double_(),             //ボタンに乗っている人数を記憶する変数
+    steppingNumberMeanTime_(),              //ボタンに乗っている人数を記憶する変数
+    steppingNumber_No1Double_(),            //ボタンに乗っている人数を記憶する変数
+    steppingNumber_No2Double_(),            //ボタンに乗っている人数を記憶する変数
     NO1_DOUBLE_BUTTON_UP_(111),             //同時押しボタンの片方。踏んでいない状態のモデル番号
     NO1_DOUBLE_BUTTON_DOWN_(121),           //同時押しボタンの片方。踏んでいる状態のモデル番号
     NO2_DOUBLE_BUTTON_UP_(131),             //同時押しボタンのもう片方。踏んでいない状態のモデル番号
@@ -91,7 +91,7 @@ void Stage::Initialize()
                 Player* pPlayer = (Player*)Instantiate<Player>(this->pParent_);
                 pPlayer->transform_.position_.x = (float)x;
                 pPlayer->transform_.position_.y = (float)y;
-                stertPos = pPlayer->transform_.position_;
+                stertPos_ = pPlayer->transform_.position_;
             }
         }
     }
@@ -571,7 +571,7 @@ bool Stage::isCrash(int x, int y)
 //スポーン地点を渡す関数
 XMFLOAT3 Stage::GetStartPosition()
 {
-    return stertPos;
+    return stertPos_;
 }
 
 //開放
