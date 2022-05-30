@@ -5,16 +5,16 @@ Title::Title(GameObject* parent)
 	: GameObject(parent, "Title"), 
     imageNum_(0),                   //背景のモデル番号
     stageNum_(0),                   //移行したいステージのモデル番号
-    BACK_GROUND_VERTICAL_(23.0f),      //背景のY軸の値
-    BACK_GROUND_BESIDE_(28.0f),        //背景のX軸の値
+    BACK_GROUND_VERTICAL_(23.0f),   //背景のY軸の値
+    BACK_GROUND_BESIDE_(28.0f),     //背景のX軸の値
     hModel_(),                      //モデルを格納する変数
     se_(),                          //SEを格納する変数
     stageNum_Modele_(),             //ステージ番号のモデルを格納する変数
     DEPTH_(-17.9f),                 //背景の奥行
-    DEPTH_DIFFERRENCE_(0.1f),
-    STAGE_NUMBER_VERTICAL_(9.7f),    //ステージ番号Y軸の値
-    STAGE_NUMBER_BESIDE_(17.3f),     //ステージ番号X軸の値
-    SCALE_MAGNIFICATION_(0.6f),      //ステージ番号の奥行
+    DEPTH_DIFFERRENCE_(0.1f),       //背景との奥行の差
+    STAGE_NUMBER_VERTICAL_(9.7f),   //ステージ番号Y軸の値
+    STAGE_NUMBER_BESIDE_(17.3f),    //ステージ番号X軸の値
+    SCALE_MAGNIFICATION_(0.6f),     //ステージ番号の奥行
     FILE_PAS_("Assets/Title/")      //Titleのモデルデータのファイルパス
 {
 }
@@ -62,23 +62,9 @@ void Title::Update()
 
         //SceneManagerクラスを探す
         SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
+
+        //現在のステージ番号に対応したステージに移行
         pSceneManager->ChangeScene((SCENE_ID)stageNum_);
-
-        //switch (stageNum_)
-        //{
-        ////stageNum_の値に対応したステージに移行
-        //case STAGE_NUMVER_1: pSceneManager->ChangeScene(SCENE_ID_STAGE1); break;
-        //case STAGE_NUMVER_2: pSceneManager->ChangeScene(SCENE_ID_STAGE2); break;
-        //case STAGE_NUMVER_3: pSceneManager->ChangeScene(SCENE_ID_STAGE3); break;
-        //case MODELE_NUMVER_4: pSceneManager->ChangeScene(SCENE_ID_STAGE4); break;
-        //}
-    }
-
-    //デバッグ用のステージに移行
-    if (Input::IsKeyDown(DIK_1))
-    {
-        SceneManager* pSceneManager = (SceneManager*)Find("SceneManager");
-        pSceneManager->ChangeScene(SCENE_ID_DEBUG);
     }
 }
 
