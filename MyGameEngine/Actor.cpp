@@ -33,6 +33,8 @@ Actor::Actor(GameObject* parent, const std::string& name)
 }
 
 //踏んでいる間発動するボタンを踏んだ瞬間の処理
+//引数：なし
+//戻り値：なし
 void Actor::CommonMeanTimeButtonDown()
 {
 	//Stageクラスを格納
@@ -79,6 +81,8 @@ void Actor::CommonMeanTimeButtonDown()
 
 
 //同時押しボタンの片方を踏んだ瞬間の処理
+//引数：なし
+//戻り値：なし
 void Actor::No1DoubleButtonDown()
 {
 	//変数宣言
@@ -122,6 +126,8 @@ void Actor::No1DoubleButtonDown()
 
 
 //もう片方の同時押しボタンを踏んだ瞬間の処理
+//引数：なし
+//戻り値：なし
 //上記と同じ処理なのでコメントは省略
 void Actor::No2DoubleButtonDown()
 {
