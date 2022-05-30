@@ -4,7 +4,6 @@
 #include <time.h>
 #include "time.h"
 #include <stdlib.h>
-
 #pragma comment(lib, "winmm.lib")
 
 GameObject::GameObject()
@@ -20,10 +19,12 @@ GameObject::GameObject(GameObject* parent, const std::string& name) :
 {
 }
 
+//デストラクタ
 GameObject::~GameObject()
 {
 }
 
+//初期化
 void GameObject::Initialize()
 {
 }
@@ -104,6 +105,7 @@ void GameObject::ReleaseSub()
 	}
 }
 
+//消えるフラグをtrueにする関数
 void GameObject::killMe()
 {
 	isDead_ = true;
@@ -151,16 +153,19 @@ void GameObject::KillObjectSub(GameObject* obj)
 	obj->Release();
 }
 
+//子情報を返す関数
 std::list<GameObject*>* GameObject::GetChildList()
 {
 	return &childList_;
 }
 
+//当たり判定を設定
 void GameObject::AddCollider(Collider* collider)
 {
 	pCollider_ = collider;
 }
 
+//親情報を返す関数
 GameObject* GameObject::GetRootJob()
 {
 	if (pParent_ == nullptr)
@@ -183,7 +188,6 @@ void GameObject::Collision(GameObject* target)
 		XMVECTOR d = myPos - targetPos;
 
 		float length = XMVectorGetX(XMVector3Length(d));
-
 		float radius = pCollider_->GetRadius() + target->pCollider_->GetRadius();
 
 		if (length <= radius * radius)
@@ -211,8 +215,11 @@ GameObject* GameObject::FindSub(std::string objectName)
 	{
 		for (auto i = childList_.begin(); i != childList_.end(); i++)
 		{
-			GameObject* go = (*i)->FindSub(objectName);//探してるやつだったらその名前が入る。そうじゃなかったらnullが入る
-			if (go != nullptr) //探してるやつだったらそいつを返す
+			//探してるやつだったらその名前が入る。そうじゃなかったらnullが入る
+			GameObject* go = (*i)->FindSub(objectName);
+
+			//探してるやつだったらそいつを返す
+			if (go != nullptr) 
 			{
 				return go;
 			}
