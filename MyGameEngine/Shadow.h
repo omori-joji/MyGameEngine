@@ -31,20 +31,17 @@ class Shadow : public Basic
 	std::vector<int> recordDirection_;			//Playerの向きを記録する動的配列
 	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列
 	std::vector<XMFLOAT3> recordData_;			//プレイヤーの位置を記録する可変長配列
-	enum
-	{
-		
-	};
 
 	enum S_Model
 	{
-		S_DIR_RIGHT,//右向き
-		S_DIR_LEFT,//左向き
-		S_DIRMAX,//配列の最大要素数
+		S_DIR_RIGHT,							//右向き
+		S_DIR_LEFT,								//左向き
+		S_DIRMAX,								//配列の最大要素数
 
 		STANDING_MODEL = 0,						//立っているモデル番号
 		RUN_MODEL,								//走っているモデル番号
-	}s_Model_;
+	};
+	S_Model s_Modele;
 	int hModel_[S_DIRMAX][S_DIRMAX];			//影のモデルを格納する多次元配列
 public:
 	Shadow(GameObject* parent);					//コンストラクタ

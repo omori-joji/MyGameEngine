@@ -43,6 +43,7 @@ void Shadow::Update()
 	CommonMeanTimeButtonDown();
 
 	//同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
+	//Basicクラスから継承
 	No1DoubleButtonDown();
 	No2DoubleButtonDown();
 

@@ -22,8 +22,8 @@ Player::Player(GameObject* parent)
 	direction_(),					//Playerの向きのモデル番号
 	modelNumber_(0),				//Playerの走っているモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
-	MODEL_FILE_PAS_("Assets/Player/"),	//Playerのモデルが保存されているファイルパス
-	SE_FILE_PAS_("Assets/Sound/"),
+	MODEL_FILE_PAS_("Assets/Player/"),//Playerのモデルが保存されているファイルパス
+	SE_FILE_PAS_("Assets/Sound/"),	//サウンドファイルのファイルパス
 	isJump_(false),					//ジャンプ中か
 	pStage_(nullptr),				//ステージの情報を入れるポインタ
 	hSe_()							//SEをロードするための配列
@@ -73,6 +73,7 @@ void Player::Update()
 	CommonMeanTimeButtonDown();
 
 	//同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
+	//Basicクラスから継承
 	No1DoubleButtonDown();
 	No2DoubleButtonDown();
 

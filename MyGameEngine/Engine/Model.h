@@ -1,7 +1,7 @@
 #pragma once
 #include "Texture.h"
 #include "Transform.h"
-#include "FbxParts.h"
+//#include "FbxParts.h"
 #include "Fbx.h"
 #include<string>
 
