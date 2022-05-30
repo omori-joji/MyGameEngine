@@ -170,6 +170,7 @@ void Player::Collision()
 	//
 	else
 	{
+		//ƒWƒƒƒ“ƒv‚µ‚Ä‚¢‚é
 		isJump_ = true;
 	}
 }

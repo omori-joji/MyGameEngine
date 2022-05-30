@@ -11,6 +11,7 @@ Shadow::Shadow(GameObject* parent)
 	BACK_DRAW_(0.1f),					//Playerに重ならないように少し奥に描画する
 	MATCH_VALU_(1),						//配列の要素数を合わせるための値
 	hModel_(),							//影のモデルを格納する多次元配列
+	s_Modele(),							//影のモデル番号
 	filePas_("Assets/Shadow/"),			//Shadowのファイルパス
 	isRecording_(false),				//Playerの動きを記録しているか
 	pPlayer_(nullptr),					//プレイヤーの情報を入れる関数
@@ -52,7 +53,9 @@ void Shadow::Update()
 	pStage_->ChengeButtonAndWall();
 }
 
-//影の表示非表示、再生中か記録中かをを管理する関数
+//Playerの動きを記録と再生する関数
+//引数：なし
+//戻り値：なし
 void Shadow::RecordingandPlayBack()
 {
 	//記録中
@@ -128,7 +131,9 @@ void Shadow::Release()
 {
 }
 
-//Find処理をまとめた関数
+//Find処理をまとめる関数
+//引数：なし
+//戻り値：なし
 void Shadow::AllFind()
 {
 	//Playerの情報を格納

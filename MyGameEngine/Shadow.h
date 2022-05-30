@@ -13,13 +13,10 @@ class Stage;
 //Shadowを管理するクラス
 class Shadow : public Actor
 {
-	//定数宣言
 	const int MATCH_VALU_;						//配列の要素数を合わせるための値
 	const char RESET_VALU_;						//初期化用
 	const float BACK_DRAW_;						//Playerに重ならないように少し奥に描画する
 	const string filePas_;						//モデルが保存されているファイルパス
-
-	//変数宣言
 	char shadowDirection_;						//影の向き
 	char shadowModelNumber_;					//走っているモデル番号
 	bool isRecording_;							//記録中かどうか
@@ -32,6 +29,7 @@ class Shadow : public Actor
 	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列
 	std::vector<XMFLOAT3> recordData_;			//プレイヤーの位置を記録する可変長配列
 
+	//影のモデル番号
 	enum S_Model
 	{
 		S_DIR_RIGHT,							//右向き
@@ -40,8 +38,7 @@ class Shadow : public Actor
 
 		STANDING_MODEL = 0,						//立っているモデル番号
 		RUN_MODEL,								//走っているモデル番号
-	};
-	S_Model s_Modele;
+	}s_Modele;
 	int hModel_[S_DIRMAX][S_DIRMAX];			//影のモデルを格納する多次元配列
 public:
 	Shadow(GameObject* parent);					//コンストラクタ
@@ -49,9 +46,20 @@ public:
 	void Update() override;						//更新
 	void Draw() override;						//描画
 	void Release() override;					//開放
-	void ShadowIsPlayFlag();					//影の表示非表示、再生中か記録中かをを管理する関数
+
+	//影の表示非表示、再生中か記録中かをを管理する関数
+	//引数：なし
+	//戻り値：なし
+	void ShadowIsPlayFlag();
 private:
-	void AllFind();								//Find処理をまとめる関数
-	void RecordingandPlayBack();				//Playerの動きを記録と再生する関数
+	//Find処理をまとめる関数
+	//引数：なし
+	//戻り値：なし
+	void AllFind();
+
+	//Playerの動きを記録と再生する関数
+	//引数：なし
+	//戻り値：なし
+	void RecordingandPlayBack();
 };
 
