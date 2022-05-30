@@ -24,8 +24,20 @@ public:
 	void Draw() override;			//描画
 	void Release() override;		//開放
 	Actor(GameObject* parent, const std::string& name);//コンストラクタ
-	void CommonMeanTimeButtonDown();			//踏んでいる間発動するボタンを踏んだ瞬間の処理
-	void No1DoubleButtonDown();					//同時押しボタンの片方を踏んだ瞬間の処理
-	void No2DoubleButtonDown();					//もう片方の同時押しボタンを踏んだ瞬間の処理
+
+	//踏んでいる間発動するボタンを踏んだ瞬間の処理
+	//引数：なし
+	//戻り値：なし
+	void CommonMeanTimeButtonDown();
+
+	//同時押しボタンの片方を踏んだ瞬間の処理
+	//引数：なし
+	//戻り値：なし
+	void No1DoubleButtonDown();	
+
+	//もう片方の同時押しボタンを踏んだ瞬間の処理
+	//引数：なし
+	//戻り値：なし
+	void No2DoubleButtonDown();
 };
 
