@@ -1,7 +1,7 @@
 // Microsoft Visual C++ で生成されたリソース スクリプトです。
 //
 
-#include "resource.h"
+#include "Engine/resource.h"
 
 #define APSTUDIO_READONLY_SYMBOLS
 /////////////////////////////////////////////////////////////////////////////

@@ -148,8 +148,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Basic.cpp" />
+    <ClCompile Include="Engine\Collider.cpp" />
+    <ClCompile Include="Engine\GameObject.cpp" />
+    <ClCompile Include="Engine\Model.cpp" />
     <ClCompile Include="Result.cpp" />
-    <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\CsvReader.cpp" />
@@ -157,7 +159,6 @@
     <ClCompile Include="Engine\Fbx.cpp" />
     <ClCompile Include="Engine\FbxParts.cpp" />
     <ClCompile Include="Engine\Input.cpp" />
-    <ClCompile Include="Engine\Quad.cpp" />
     <ClCompile Include="Engine\Rootjob.cpp" />
     <ClCompile Include="Engine\SceneManager.cpp" />
     <ClCompile Include="Engine\Sound.cpp" />
@@ -165,9 +166,7 @@
     <ClCompile Include="Engine\Transform.cpp" />
     <ClCompile Include="Engine\VFX.cpp" />
     <ClCompile Include="Engine\VisualEffect.cpp" />
-    <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Model.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayScene.cpp" />
     <ClCompile Include="Shadow.cpp" />
@@ -194,6 +193,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Basic.h" />
+    <ClInclude Include="Engine\resource.h" />
     <ClInclude Include="Result.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\Camera.h" />
@@ -206,7 +206,6 @@
     <ClInclude Include="Engine\GameObject.h" />
     <ClInclude Include="Engine\Input.h" />
     <ClInclude Include="Engine\Model.h" />
-    <ClInclude Include="Engine\Quad.h" />
     <ClInclude Include="Engine\Rootjob.h" />
     <ClInclude Include="Engine\SceneManager.h" />
     <ClInclude Include="Engine\Sound.h" />
@@ -216,7 +215,6 @@
     <ClInclude Include="Engine\VisualEffect.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayScene.h" />
-    <ClInclude Include="resource.h" />
     <ClInclude Include="Shadow.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="Title.h" />

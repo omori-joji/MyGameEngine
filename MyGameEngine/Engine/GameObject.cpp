@@ -1,5 +1,5 @@
-#include "Engine\GameObject.h"
-#include "Engine/Common.h"
+#include "GameObject.h"
+#include "Common.h"
 #include <Windows.h>
 #include <time.h>
 #include "time.h"
