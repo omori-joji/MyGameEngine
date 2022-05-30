@@ -37,7 +37,7 @@ class Stage : public GameObject
     const int DOUBLE_BUTTON_WALL_;                  //同時押しボタンに対応した壁。開いてない状態のモデル番号
     const int DOUBLE_BUTTON_WALL_ALPHA_;            //同時押しボタンに対応した壁。開いている状態のモデル番号
     char shadowCount_;                              //影の数
-    const std::string FILE_PAS_;                    //Assetsファイルのパス
+    const string FILE_PAS_;                    //Assetsファイルのパス
     int timeCount_;                                 //点滅ブロックの点滅間隔
     bool isBlinking_;                               //ブロックが消えたかどうか
     bool isWarp_;                                   //ワープしたか塚

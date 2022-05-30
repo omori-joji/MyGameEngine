@@ -26,7 +26,7 @@ Stage::Stage(GameObject* parent)
     GOAL_BLOCK_(3),                         //ゴールブロックのモデル番号
     shadowCount_(0),                        //今いる影の数
     timeCount_(0),                          //秒数を格納する変数
-    FILE_PAS_("StageBlock/"),        //モデルのファイルパス
+    FILE_PAS_("Assets/StageBlock/"),        //モデルのファイルパス
     pPlayer_(nullptr),                      //Playerクラスを格納するポインタ
     pShadow_(),                             //Shadowクラスを格納するポインタ
     pSceneManager_(nullptr),                //SceneManagerクラスを格納するポインタ
@@ -584,10 +584,10 @@ void Stage::Release()
 void Stage::ModelLoad()
 {
     //サウンドデータのロード
-    hSound_[0] = Audio::Load("Sound/ButtonDown.wav",4);
-    hSound_[1] = Audio::Load("Sound/Goal.wav",4);
-    hSound_[2] = Audio::Load("Sound/OpenWall.wav",4);
-    hSound_[3] = Audio::Load("Sound/Warpe.wav",4);
+    hSound_[0] = Audio::Load("Assets/Sound/ButtonDown.wav",4);
+    hSound_[1] = Audio::Load("Assets/Sound/Goal.wav",4);
+    hSound_[2] = Audio::Load("Assets/Sound/OpenWall.wav",4);
+    hSound_[3] = Audio::Load("Assets/Sound/Warpe.wav",4);
 
     //ステージを構成するブロック
     hModel_[0] = Model::Load(FILE_PAS_ + "Block.fbx");
