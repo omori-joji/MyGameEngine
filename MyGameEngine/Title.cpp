@@ -5,7 +5,7 @@ Title::Title(GameObject* parent)
 	: GameObject(parent, "Title"), 
     imageNum_(0),                   //背景のモデル番号
     stageNum_(0),                   //移行したいステージのモデル番号
-    BACK_GROUND_VERTICAL_(23.0f),   //背景のY軸の値
+    BACK_GROUND_VERTICAL_(23),   //背景のY軸の値
     BACK_GROUND_BESIDE_(28.0f),     //背景のX軸の値
     hModel_(),                      //モデルを格納する変数
     se_(),                          //SEを格納する変数
@@ -29,11 +29,7 @@ void Title::Initialize()
     hModel_[BACKGROUND] = Model::Load(FILE_PAS_ + "TitleBG_01.fbx");
     hModel_[BACKGROUND_NOWLOADING] = Model::Load(FILE_PAS_ + "TitleBG_02.fbx");
 
-    //Stage番号のモデル
-    //stageNum_Modele_[STAGE_NUMVER_1] = Model::Load(FILE_PAS_ + "StageNumber1.fbx");
-    //stageNum_Modele_[STAGE_NUMVER_2] = Model::Load(FILE_PAS_ + "StageNumber2.fbx");
-    //stageNum_Modele_[STAGE_NUMVER_3] = Model::Load(FILE_PAS_ + "StageNumber3.fbx");
-    //stageNum_Modele_[MODELE_NUMVER_4] = Model::Load(FILE_PAS_ + "StageNumber4.fbx");
+    //ステージナンバーのモデルをロード
     for (int i = 0; i < STAGE_NUMBER_MAX; i++)
     {
         char fileName[MAX_PATH];
