@@ -16,6 +16,7 @@ class Title : public GameObject
 	const float SCALE_MAGNIFICATION_;	//ステージ番号の奥行
 	int stageNum_;						//移行したいステージのモデル番号
 	int imageNum_;						//背景のモデル番号
+	const string FILE_PAS_;				//Titleのモデルデータのファイルパス
 	enum
 	{
 		MODELE_NUMVER_1,	//ステージ番号1

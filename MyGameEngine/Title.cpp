@@ -13,7 +13,8 @@ Title::Title(GameObject* parent)
     DEPTH_(-17.8f),                 //背景の奥行
     STAGE_NUMBER_VERTICAL_(9.7),    //ステージ番号Y軸の値
     STAGE_NUMBER_BESIDE_(17.3),     //ステージ番号X軸の値
-    SCALE_MAGNIFICATION_(0.6)       //ステージ番号の奥行
+    SCALE_MAGNIFICATION_(0.6),      //ステージ番号の奥行
+    FILE_PAS_("Assets/Title/")      //Titleのモデルデータのファイルパス
 {
 }
 
@@ -24,14 +25,14 @@ void Title::Initialize()
     se_[SE_NUMBER_2] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
 
     //モデルデータのロード
-    hModel_[0] = Model::Load("Assets/StageBlock/Title.fbx");
-    hModel_[1] = Model::Load("Assets/StageBlock/TitleNowLoading.fbx");
+    hModel_[0] = Model::Load(FILE_PAS_ + "TitleBG_01.fbx");
+    hModel_[1] = Model::Load(FILE_PAS_ + "TitleBG_02.fbx");
 
     //Stage番号のモデル
-    stageNum_Modele_[MODELE_NUMVER_1] = Model::Load("Assets/StageBlock/TitleNumber1.fbx");
-    stageNum_Modele_[MODELE_NUMVER_2] = Model::Load("Assets/StageBlock/TitleNumber2.fbx");
-    stageNum_Modele_[MODELE_NUMVER_3] = Model::Load("Assets/StageBlock/TitleNumber3.fbx");
-    stageNum_Modele_[MODELE_NUMVER_4] = Model::Load("Assets/StageBlock/TitleNumber4.fbx");
+    stageNum_Modele_[MODELE_NUMVER_1] = Model::Load(FILE_PAS_ + "StageNumber1.fbx");
+    stageNum_Modele_[MODELE_NUMVER_2] = Model::Load(FILE_PAS_ + "StageNumber2.fbx");
+    stageNum_Modele_[MODELE_NUMVER_3] = Model::Load(FILE_PAS_ + "StageNumber3.fbx");
+    stageNum_Modele_[MODELE_NUMVER_4] = Model::Load(FILE_PAS_ + "StageNumber4.fbx");
 }
 
 //更新
