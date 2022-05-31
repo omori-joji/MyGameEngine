@@ -4,11 +4,12 @@
 //コンストラクタ
 Result::Result(GameObject* parent)
 	: GameObject(parent, "Result"), 
-	hModel_(-1),				//モデル番号を格納する変数
+	hModel_(-1),					//モデル番号を格納する変数
 	BACK_GROUND_VERTICAL_(22.0f),	//背景のY軸の高さ
-	BACK_GROUND_BESIDE_(28.0f),	//背景のX軸の高さ
-	BACK_GROUND_DEPTH_(-21.4f),	//背景の奥行
-	FILE_PAS_("Assets/Result/")	//リザルト画面のモデルのファイルパス
+	BACK_GROUND_BESIDE_(28.0f),		//背景のX軸の高さ
+	BACK_GROUND_DEPTH_(-21.4f),		//背景の奥行
+	FILE_PAS_("Assets/Result/"),	//リザルト画面のモデルのファイルパス
+	resultBGM_()
 {
 }
 
@@ -17,6 +18,12 @@ void Result::Initialize()
 {
 	//モデルデータのロード
 	hModel_ = Model::Load(FILE_PAS_ + "ResultBG.fbx");
+
+	//BGMのロード
+	//resultBGM_ = Audio::Load("ResultBGM", 1);
+
+	//BGMを鳴らす
+	//Audio::Play(resultBGM_);
 }
 
 //更新

@@ -23,8 +23,9 @@ Title::Title(GameObject* parent)
 void Title::Initialize()
 {
     //サウンドファイルをロード
-    se_[SE_DECISION] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
     se_[SOUND_BGM] = Audio::Load("Assets/Sound/TitleBGM.wav", 1);
+    //se_[SE_ARROW] = Audio::Load("Assets/Sound/StageNumSelect.wav", 1);
+    //se_[SE_DECISION] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
 
     //モデルデータのロード
     hModel_[BACKGROUND] = Model::Load(FILE_PAS_ + "TitleBG_01.fbx");
@@ -36,13 +37,15 @@ void Title::Initialize()
         char fileName[MAX_PATH];
         wsprintf(fileName, "%sStageNumber%d.fbx", FILE_PAS_.c_str(), (i + 1));
         stageNum_Modele_[i] = Model::Load(fileName);
-    }
+    } 
+    //BGMを鳴らす
+    Audio::Play(se_[SOUND_BGM]);
 }
 
 //更新
 void Title::Update()
 {
-    Audio::Play(se_[SOUND_BGM]);
+   
     //表示するステージ番号の変動
     //上下キーで値を変える
     //とりあえす4ステージ分
@@ -53,8 +56,8 @@ void Title::Update()
     if (Input::IsKeyDown(DIK_SPACE))
     {
         //決定ボタンのSE
-        Audio::Play(se_[SE_DECISION]);
-
+        //Audio::Play(se_[SE_DECISION]);
+        Audio::Stop(se_[SOUND_BGM]);
         //背景のモデル番号を変更
         imageNum_ = 1;
 

@@ -17,6 +17,7 @@ class Actor : public GameObject
 	char no2DoubleGimmickNumber_;		//もう片方の同時押しボタンの1の位
 	bool isPastMeanTimeButton_;			//1フレーム前に同時ボタンを踏んでいるかいないか
 	bool isPastDoubleButton_[2];		//1フレーム前に踏んでいる間発動するボタンを踏んでいるかいないか
+	int buttonSE_;						//SEを格納する変数
 	Stage* pStage_;						//Stageクラスを格納するポインタ
 public:
 	void Initialize() override;		//初期化

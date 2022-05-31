@@ -3,6 +3,7 @@
 //初期化
 void Actor::Initialize()
 {
+	
 }
 
 //更新
@@ -28,7 +29,8 @@ Actor::Actor(GameObject* parent, const std::string& name)
 	no2DoubleGimmickNumber_(0),			//もう片方の同時押しボタンの1の位
 	isPastDoubleButton_(),				//1フレーム前に同時ボタンを踏んでいるかいないか
 	isPastMeanTimeButton_(false),		//1フレーム前に踏んでいる間発動するボタンを踏んでいるかいないか
-	pStage_(nullptr)					//Stageクラスを格納するポインタ
+	pStage_(nullptr),					//Stageクラスを格納するポインタ
+	buttonSE_()
 {
 }
 
@@ -38,7 +40,13 @@ Actor::Actor(GameObject* parent, const std::string& name)
 void Actor::CommonMeanTimeButtonDown()
 {
 	//Stageクラスを格納
-	if (pStage_ == nullptr) pStage_ = (Stage*)Find("Stage");
+	//ついでにSEも
+	if (pStage_ == nullptr)
+	{
+		pStage_ = (Stage*)Find("Stage");
+
+		buttonSE_ = Audio::Load("Assets/Sound/ButtonDown.wav", 1);
+	}
 
 	//変数宣言
 	//今ボタンを踏んでいるかいないかを判断する
@@ -53,6 +61,9 @@ void Actor::CommonMeanTimeButtonDown()
 		//今は踏んでいる
 		if (nowMeanTimeButton)
 		{
+			//ボタンを押したときのSE
+			Audio::Play(buttonSE_);
+
 			//踏んだ瞬間の処理
 			//ギミックのモデル番号を調べる
 			//踏んだボタンのモデル番号の1の位が返される
@@ -98,6 +109,9 @@ void Actor::No1DoubleButtonDown()
 		//今は踏んでいる
 		if (nowNo1DoubleButton)
 		{
+			//ボタンを押したときのSE
+			Audio::Play(buttonSE_);
+
 			//踏んだ瞬間の処理
 			//ギミックのモデル番号を調べる
 			//踏んだボタンのモデル番号の1の位が返される
@@ -139,6 +153,8 @@ void Actor::No2DoubleButtonDown()
 	{
 		if (nowNo2DoubleButton)
 		{
+			Audio::Play(buttonSE_);
+
 			no2DoubleGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 			pStage_->SetNo2MultiStepNumberCountUp(no2DoubleGimmickNumber_);
 		}

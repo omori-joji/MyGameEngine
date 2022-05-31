@@ -33,16 +33,16 @@ Stage::Stage(GameObject* parent)
     stertPos_(0,0,0),                       //Playerの初期位置を記憶する変数
     isBlinking_(true),                      //壁が消えたか消えていないか
     isWarp_(true),                          //ワープしたかしていないか
-    isMultiButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
+    isMultiButton_(),                       //同時押しボタンの二つ押したか判別するフラグ
     steppingNumberMeanTime_(),              //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No1Multi_(),            //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No2Multi_(),            //ボタンに乗っている人数を記憶する変数
-    NO1_MULTI_BUTTON_UP_(111),             //同時押しボタンの片方。踏んでいない状態のモデル番号
-    NO1_MULTI_BUTTON_DOWN_(121),           //同時押しボタンの片方。踏んでいる状態のモデル番号
-    NO2_MULTI_BUTTON_UP_(131),             //同時押しボタンのもう片方。踏んでいない状態のモデル番号
-    NO2_MULTI_BUTTON_DOWN_(141),           //同時押しボタンの片方。踏んでいる状態のモデル番号
-    MULTI_BUTTON_WALL_(151),               //同時押しボタンに対応した壁。開いてない状態のモデル番号
-    MULTI_BUTTON_WALL_ALPHA_(161)          //同時押しボタンに対応した壁。開いている状態のモデル番号
+    steppingNumber_No1Multi_(),             //ボタンに乗っている人数を記憶する変数
+    steppingNumber_No2Multi_(),             //ボタンに乗っている人数を記憶する変数
+    NO1_MULTI_BUTTON_UP_(111),              //同時押しボタンの片方。踏んでいない状態のモデル番号
+    NO1_MULTI_BUTTON_DOWN_(121),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    NO2_MULTI_BUTTON_UP_(131),              //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    NO2_MULTI_BUTTON_DOWN_(141),            //同時押しボタンの片方。踏んでいる状態のモデル番号
+    MULTI_BUTTON_WALL_(151),                //同時押しボタンに対応した壁。開いてない状態のモデル番号
+    MULTI_BUTTON_WALL_ALPHA_(161)           //同時押しボタンに対応した壁。開いている状態のモデル番号
 {
 }
 
@@ -98,6 +98,9 @@ void Stage::Initialize()
     //影の生成
     //最初は非表示で影を生成する
     pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this->pParent_);
+
+    //BGNを鳴らす
+    Audio::Play(hSound_[BGM]);
 }
 
 //更新
@@ -108,6 +111,7 @@ void Stage::Update()
     {
         pPlayer_ = (Player*)Find("Player");
     }
+
 
     //影を再生する処理をまとめた関数
     PlayRecord();
@@ -552,6 +556,7 @@ void Stage::GoalCol(int x, int y)
     //そこはゴール
     if (map_[x][y] == GOAL_BLOCK_)
     {
+        Audio::Stop(hSound_[0]);
         //シーン移動
         //Find関数でSceneManagerクラスを探して
         //ChangeScene関数の引数に移動したいシーンのIDを渡す
@@ -612,10 +617,9 @@ void Stage::LoopLoad(int modelNum, string modelName)
 void Stage::ModelLoad()
 {
     //サウンドデータのロード
-    hSound_[0] = Audio::Load("Assets/Sound/ButtonDown.wav",4);
-    hSound_[1] = Audio::Load("Assets/Sound/Goal.wav",4);
-    hSound_[2] = Audio::Load("Assets/Sound/OpenWall.wav",4);
-    hSound_[3] = Audio::Load("Assets/Sound/Warpe.wav",4);
+    hSound_[BGM] = Audio::Load("Assets/Sound/GameBGM.wav", 4);
+    hSound_[SE_GOAl] = Audio::Load("Assets/Sound/Goal.wav",4);
+    hSound_[SE_WARPE] = Audio::Load("Assets/Sound/Warpe.wav",4);
 
     //ステージを構成するブロック
     hModel_[0] = Model::Load(FILE_PAS_ + "Block_01.fbx");

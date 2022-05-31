@@ -30,12 +30,12 @@ class Stage : public GameObject
     const int NO1_WARP_BLOCK_;                      //片方のワープブロックのモデル番号
     const int NO2_WARP_BLOCK_;                      //もう片方のワープブロックのモデル番号
     const int GOAL_BLOCK_;                          //ゴールブロックのモデル番号
-    const int NO1_MULTI_BUTTON_UP_;                //同時押しボタンの片方。踏んでいない状態のモデル番号
-    const int NO1_MULTI_BUTTON_DOWN_;              //同時押しボタンの片方。踏んでいる状態のモデル番号
-    const int NO2_MULTI_BUTTON_UP_;                //同時押しボタンのもう片方。踏んでいない状態のモデル番号
-    const int NO2_MULTI_BUTTON_DOWN_;              //同時押しボタンの片方。踏んでいる状態のモデル番号
-    const int MULTI_BUTTON_WALL_;                  //同時押しボタンに対応した壁。開いてない状態のモデル番号
-    const int MULTI_BUTTON_WALL_ALPHA_;            //同時押しボタンに対応した壁。開いている状態のモデル番号
+    const int NO1_MULTI_BUTTON_UP_;                 //同時押しボタンの片方。踏んでいない状態のモデル番号
+    const int NO1_MULTI_BUTTON_DOWN_;               //同時押しボタンの片方。踏んでいる状態のモデル番号
+    const int NO2_MULTI_BUTTON_UP_;                 //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    const int NO2_MULTI_BUTTON_DOWN_;               //同時押しボタンの片方。踏んでいる状態のモデル番号
+    const int MULTI_BUTTON_WALL_;                   //同時押しボタンに対応した壁。開いてない状態のモデル番号
+    const int MULTI_BUTTON_WALL_ALPHA_;             //同時押しボタンに対応した壁。開いている状態のモデル番号
     char shadowCount_;                              //今いる影の数
     const string FILE_PAS_;                         //Assetsファイルのパス
     int timeCount_;                                 //点滅ブロックの点滅間隔
@@ -49,19 +49,26 @@ class Stage : public GameObject
         MAP_BESIDE_ = 28,                           //マップのX軸
         MAP_VERTICAL = 23,                          //マップのY軸
         MAX_MODEL = 200,                            //hModel_の要素数
-        MAX_SOUND = 4,                              //hSound_の要素数
         MAX_STEPNUMBER = 10,                        //各ボタンが踏んでいる人数を記憶する配列の要素数
-        MAX_MULTI_FLAG = 2,                        //同時ボタンの踏んでいるフラグの要素数
+        MAX_MULTI_FLAG = 2,                         //同時ボタンの踏んでいるフラグの要素数
         MAX_SHADOW_NUMBER = 5,                      //影の最大生成数
     };
     int map_[MAP_BESIDE_][MAP_VERTICAL];            //ステージのマス情報
     int hModel_[MAX_MODEL];                         //モデル番号
-    int hSound_[MAX_SOUND];                         //サウンドファイル
-    char steppingNumberMeanTime_[MAX_STEPNUMBER];    //何人踏んでいるか
+
+    char steppingNumberMeanTime_[MAX_STEPNUMBER];   //何人踏んでいるか
     char steppingNumber_No1Multi_[MAX_STEPNUMBER];  //何人踏んでいるか
     char steppingNumber_No2Multi_[MAX_STEPNUMBER];  //何人踏んでいるか
-    bool isMultiButton_[MAX_MULTI_FLAG];          //同時ボタンの片方を押した
+    bool isMultiButton_[MAX_MULTI_FLAG];            //同時ボタンの片方を押した
     Shadow* pShadow_[MAX_SHADOW_NUMBER];            //Shadowクラスを格納するポインタ型の配列
+    enum Se
+    {
+        BGM,                                        //BGM
+        SE_GOAl,                                    //ゴール
+        SE_WARPE,                                   //ワープ音
+        MAX_SOUND = 4,                              //hSound_の要素数
+    };
+    int hSound_[MAX_SOUND];                         //サウンドファイル
 
 public:
     Stage(GameObject* parent);                      //コンストラクタ
