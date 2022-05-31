@@ -593,7 +593,7 @@ void Stage::ModelLoad()
     hModel_[0] = Model::Load(FILE_PAS_ + "Block.fbx");
     hModel_[1] = Model::Load(FILE_PAS_ + "NaturalBlock.fbx");
     hModel_[2] = Model::Load(FILE_PAS_ + "Goal.fbx");
-    hModel_[3] = Model::Load(FILE_PAS_ + "BackGround.fbx");
+    hModel_[3] = Model::Load(FILE_PAS_ + "GameBG.fbx");
     hModel_[4] = Model::Load(FILE_PAS_ + "GreenBlock.fbx");
     hModel_[5] = Model::Load(FILE_PAS_ + "GreenBlock.fbx");
     hModel_[6] = Model::Load(FILE_PAS_ + "GreenBlock.fbx");

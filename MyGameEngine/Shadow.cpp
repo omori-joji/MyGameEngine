@@ -23,12 +23,12 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	//右方向を向いているモデルのロード
-	hModel_[S_DIR_RIGHT][STANDING_MODEL] = Model::Load(filePas_  + "Shadow_Right.fbx");
-	hModel_[S_DIR_RIGHT][RUN_MODEL] = Model::Load(filePas_ + "ShadowRun_Right.fbx");
+	hModel_[S_DIR_RIGHT][STANDING_MODEL] = Model::Load(filePas_  + "ShadowRightStanding.fbx");
+	hModel_[S_DIR_RIGHT][RUN_MODEL] = Model::Load(filePas_ + "ShadowRightRun.fbx");
 
 	//左方向を向いているモデルのロード
-	hModel_[S_DIR_LEFT][STANDING_MODEL] = Model::Load(filePas_ + "Shadow_Left.fbx");
-	hModel_[S_DIR_LEFT][RUN_MODEL] = Model::Load(filePas_ +"ShadowRun_Left.fbx");
+	hModel_[S_DIR_LEFT][STANDING_MODEL] = Model::Load(filePas_ + "ShadowLeftStanding.fbx");
+	hModel_[S_DIR_LEFT][RUN_MODEL] = Model::Load(filePas_ +"ShadowLeftRun.fbx");
 }
 
 //更新
