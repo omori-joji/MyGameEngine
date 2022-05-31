@@ -167,7 +167,6 @@ void Player::Collision()
 		//ˆÊ’u‚ð–ß‚·
 		transform_.position_.y = (float)checkY1 + BACK_POSITION_DOWN_;
 	}
-	//
 	else
 	{
 		//ƒWƒƒƒ“ƒv‚µ‚Ä‚¢‚é
