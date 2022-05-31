@@ -40,6 +40,7 @@ class Title : public GameObject
 	{
 		SE_ARROW,			//矢印キーを押したときのSE
 		SE_DECISION,		//決定ボタンのSE
+		SOUND_BGM,
 		SE_MAX,
 	};
 

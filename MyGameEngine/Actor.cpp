@@ -90,7 +90,7 @@ void Actor::No1DoubleButtonDown()
 	bool nowNo1DoubleButton;
 
 	//踏んだらtrueが返されて、何もなければfalseが返される
-	nowNo1DoubleButton = pStage_->No1DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
+	nowNo1DoubleButton = pStage_->No1MultiButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 
 	//1フレーム前は踏んでいない
 	if (!isPastDoubleButton_[0])
@@ -105,7 +105,7 @@ void Actor::No1DoubleButtonDown()
 
 			//踏んだボタンに対応する変数をカウントアップ
 			//引数には踏んだモデル番号の1の位を渡す
-			pStage_->SetNo1DoubleStepNumberCountUp(no1DoubleGimmickNumber_);
+			pStage_->SetNo1MultiStepNumberCountUp(no1DoubleGimmickNumber_);
 		}
 	}
 	//1フレーム前は踏んでいる
@@ -117,7 +117,7 @@ void Actor::No1DoubleButtonDown()
 			//離れた瞬間の処理
 			//離れたボタンに対応する変数をカウントダウン
 			//引数には離れたモデル番号の1の位を渡す
-			pStage_->SetNo1DoubleStepNumberCountDown(no1DoubleGimmickNumber_);
+			pStage_->SetNo1MultiStepNumberCountDown(no1DoubleGimmickNumber_);
 		}
 	}
 	//フレームを１つ進める
@@ -133,21 +133,21 @@ void Actor::No2DoubleButtonDown()
 {
 	bool nowNo2DoubleButton;
 
-	nowNo2DoubleButton = pStage_->No2DoubleButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
+	nowNo2DoubleButton = pStage_->No2MultiButton((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
 
 	if (!isPastDoubleButton_[1])
 	{
 		if (nowNo2DoubleButton)
 		{
 			no2DoubleGimmickNumber_ = pStage_->CheckFootBlock((int)transform_.position_.x, (int)(transform_.position_.y) - 1);
-			pStage_->SetNo2DoubleStepNumberCountUp(no2DoubleGimmickNumber_);
+			pStage_->SetNo2MultiStepNumberCountUp(no2DoubleGimmickNumber_);
 		}
 	}
 	else if (isPastDoubleButton_[1])
 	{
 		if (!nowNo2DoubleButton)
 		{
-			pStage_->SetNo2DoubleStepNumberCountDown(no2DoubleGimmickNumber_);
+			pStage_->SetNo2MultiStepNumberCountDown(no2DoubleGimmickNumber_);
 		}
 	}
 	isPastDoubleButton_[1] = nowNo2DoubleButton;

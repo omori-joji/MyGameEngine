@@ -33,16 +33,16 @@ Stage::Stage(GameObject* parent)
     stertPos_(0,0,0),                       //Playerの初期位置を記憶する変数
     isBlinking_(true),                      //壁が消えたか消えていないか
     isWarp_(true),                          //ワープしたかしていないか
-    isDoubleButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
+    isMultiButton_(),                      //同時押しボタンの二つ押したか判別するフラグ
     steppingNumberMeanTime_(),              //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No1Double_(),            //ボタンに乗っている人数を記憶する変数
-    steppingNumber_No2Double_(),            //ボタンに乗っている人数を記憶する変数
-    NO1_DOUBLE_BUTTON_UP_(111),             //同時押しボタンの片方。踏んでいない状態のモデル番号
-    NO1_DOUBLE_BUTTON_DOWN_(121),           //同時押しボタンの片方。踏んでいる状態のモデル番号
-    NO2_DOUBLE_BUTTON_UP_(131),             //同時押しボタンのもう片方。踏んでいない状態のモデル番号
-    NO2_DOUBLE_BUTTON_DOWN_(141),           //同時押しボタンの片方。踏んでいる状態のモデル番号
-    DOUBLE_BUTTON_WALL_(151),               //同時押しボタンに対応した壁。開いてない状態のモデル番号
-    DOUBLE_BUTTON_WALL_ALPHA_(161)          //同時押しボタンに対応した壁。開いている状態のモデル番号
+    steppingNumber_No1Multi_(),            //ボタンに乗っている人数を記憶する変数
+    steppingNumber_No2Multi_(),            //ボタンに乗っている人数を記憶する変数
+    NO1_MULTI_BUTTON_UP_(111),             //同時押しボタンの片方。踏んでいない状態のモデル番号
+    NO1_MULTI_BUTTON_DOWN_(121),           //同時押しボタンの片方。踏んでいる状態のモデル番号
+    NO2_MULTI_BUTTON_UP_(131),             //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    NO2_MULTI_BUTTON_DOWN_(141),           //同時押しボタンの片方。踏んでいる状態のモデル番号
+    MULTI_BUTTON_WALL_(151),               //同時押しボタンに対応した壁。開いてない状態のモデル番号
+    MULTI_BUTTON_WALL_ALPHA_(161)          //同時押しボタンに対応した壁。開いている状態のモデル番号
 {
 }
 
@@ -56,7 +56,6 @@ void Stage::Initialize()
 {
     //ブロックなどのモデルをロードする処理をまとめた関数
     ModelLoad();
-
     //Csvファイルの読み込み
     CsvReader csv;
     //SceneManagerクラスの情報を格納する
@@ -169,8 +168,8 @@ void Stage::Draw()
 }
 
 //踏んでいる間発動するボタンがあるかどうかの処理を実行する
-//引数はPlayerもしくは影の足元の値
-//戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
+//引数：Player、ShadowのPosition.x_とPosition.y_ -1(足元)
+//戻り値：踏んでいればtrue踏んでいなければfalse
 bool Stage::MeanTimeButton(int x, int y)
 {
     //押している間ボタン
@@ -185,39 +184,41 @@ bool Stage::MeanTimeButton(int x, int y)
     return false;
 }
 
-//同時押しボタンの片方があるかどうかの処理を実行する
-//引数はPlayerもしくは影の足元の値
-//戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
-bool Stage::No1DoubleButton(int x, int y)
+//同時押しボタンの片方に乗ったらtrueそれ以外はfalseを返す関数
+//引数：Player、ShadowのPosition.x_とPosition.y_ -1(足元)
+//戻り値：踏んでいればtrue踏んでいなければfalse
+bool Stage::No1MultiButton(int x, int y)
 {
     //同時押しボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //下にあるボタンが同時押しボタンの押す前、もしくは押した後のモデルだったら
-        if (map_[x][y] == NO1_DOUBLE_BUTTON_UP_ + i || map_[x][y] == NO1_DOUBLE_BUTTON_DOWN_ + i) return true;
+        if (map_[x][y] == NO1_MULTI_BUTTON_UP_ + i || map_[x][y] == NO1_MULTI_BUTTON_DOWN_ + i) return true;
     }
     //離れた時の処理
     CollisionExit();
     return false;
 }
 
-//同時押しボタンのもう片方があるかどうかの処理を実行する
-//引数はPlayerもしくは影の足元の値
-//戻り値は目的のギミックがあればtrueそれ以外はfalseが返される
-bool Stage::No2DoubleButton(int x, int y)
+//同時押しボタンのもう片方に乗ったらtrueそれ以外はfalseを返す関数
+//引数：Player、ShadowのPosition.x_とPosition.y_ -1(足元)
+//戻り値：踏んでいればtrue踏んでいなければfalse
+bool Stage::No2MultiButton(int x, int y)
 {
     //同時押しボタン
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //下にあるボタンが同時押しボタンの押す前、もしくは押した後のモデルだったら
-        if (map_[x][y] == NO2_DOUBLE_BUTTON_UP_ + i || map_[x][y] == NO2_DOUBLE_BUTTON_DOWN_ + i) return true;
+        if (map_[x][y] == NO2_MULTI_BUTTON_UP_ + i || map_[x][y] == NO2_MULTI_BUTTON_DOWN_ + i) return true;
     }
     //離れた時の処理
     CollisionExit();
     return false;
 }
 
-//ギミックから離れた時の処理を実行する関数
+//ボタンから離れたら呼ばれる関数、モデルを切り替える処理を行う
+//引数：なし
+//戻り値：なし
 void Stage::CollisionExit()
 {
     //押している間だけのボタン
@@ -240,13 +241,13 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //同時押しボタンの片方のボタンに乗っている人数が0人だったら
-        if (steppingNumber_No1Double_[i] == 0)
+        if (steppingNumber_No1Multi_[i] == 0)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(NO1_DOUBLE_BUTTON_DOWN_ + i, false);
+            CheckBlock(NO1_MULTI_BUTTON_DOWN_ + i, false);
 
             //壁を開くフラグをtrueにする
-            isDoubleButton_[0] = false;
+            isMultiButton_[0] = false;
         }
     }
 
@@ -255,19 +256,20 @@ void Stage::CollisionExit()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //同時押しボタンのもう片方のボタンに乗っている人数が0人だったら
-        if (steppingNumber_No2Double_[i] == 0)
+        if (steppingNumber_No2Multi_[i] == 0)
         {
             //ボタンのモデルを切り替える
-            CheckBlock(NO2_DOUBLE_BUTTON_DOWN_ + i, false);
+            CheckBlock(NO2_MULTI_BUTTON_DOWN_ + i, false);
 
             //壁を開くフラグをtrueにする
-            isDoubleButton_[1] = false;
+            isMultiButton_[1] = false;
         }
     }
 }
 
-//ボタンのモデルと壁のモデルを変更する関数
-//引数は影とPlayerの1ブロック下の位置
+//壁のモデルとボタンのモデルを切り替える関数。
+//引数：なし
+//戻り値：なし
 void Stage::ChengeButtonAndWall()
 {
     //押している間発動するボタン
@@ -291,13 +293,13 @@ void Stage::ChengeButtonAndWall()
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
         //誰かが同時ボタンに乗っていたら
-        if (steppingNumber_No1Double_[i] != 0)
+        if (steppingNumber_No1Multi_[i] != 0)
         {
             //モデル変更
-            CheckBlock(NO1_DOUBLE_BUTTON_UP_ + i, true);
+            CheckBlock(NO1_MULTI_BUTTON_UP_ + i, true);
 
             //壁を開くフラグをtrueにする
-            isDoubleButton_[0] = true;
+            isMultiButton_[0] = true;
 
             //同時ボタンが2つとも押されていたら壁を開く処理をする関数
             SimultaneousWallOpen();
@@ -307,37 +309,41 @@ void Stage::ChengeButtonAndWall()
     //上記と同じ処理なのでコメントは省略
     for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
     {
-        if (steppingNumber_No2Double_[i] != 0)
+        if (steppingNumber_No2Multi_[i] != 0)
         {
-            CheckBlock(NO2_DOUBLE_BUTTON_UP_ + i, true);
-            isDoubleButton_[1] = true;
+            CheckBlock(NO2_MULTI_BUTTON_UP_ + i, true);
+            isMultiButton_[1] = true;
             SimultaneousWallOpen();
         }
     }
 }
 
-//同時ボタンのフラグがどちらもtrueだったら壁を開く関数
+//同時押しボタンがどちらも押されていたら。壁を開き、それ以外の条件だったら壁を閉じる関数
+//引数：なし
+//戻り値：なし
 void Stage::SimultaneousWallOpen()
 {
     //同時ボタンのギミック
     //どちらもボタンを押していたら壁を開く
-    if (isDoubleButton_[0] && isDoubleButton_[1]) CheckBlock(DOUBLE_BUTTON_WALL_, true);
+    if (isMultiButton_[0] && isMultiButton_[1]) CheckBlock(MULTI_BUTTON_WALL_, true);
 
     //それ以外の条件の場合
     //壁を閉じる
-    else CheckBlock(DOUBLE_BUTTON_WALL_ALPHA_, false);
+    else CheckBlock(MULTI_BUTTON_WALL_ALPHA_, false);
 }
 
-//Playerか影が踏んだギミックのモデル番号の1の位を返す関数
-//ボタンに乗っている人数を調べるために使う
-//引数はPlayerか影の足元
+//足元のブロックのモデル番号を引数で受け取り、それの1の位を返す関数
+//引数：Player、ShadowのPosition.x_とPosition.y_ -1(足元)
+//戻り値：ボタンのモデル番号の1の位
 int Stage::CheckFootBlock(int x, int y)
 {
     //1の位を返す
     return (map_[x][y] % 10) -1;
 }
 
-//影を出現させた時に行う処理
+//影の再生するフラグと生成の処理を行う関数
+//引数：なし
+//戻り値：なし
 void Stage::PlayRecord()
 {
     //再生スタート
@@ -366,50 +372,57 @@ void Stage::PlayRecord()
     }
 }
 
-//押している間発動するボタンに乗っている人数をカウントアップする関数
-//引数は対応するギミックの番号
+//ボタンに乗っている人数をカウントアップする関数
+//引数：踏んでいる間発動するボタンのモデル番号の1の位
+//戻り値：なし
 void Stage::SetMeanTimeStepNumberCountUp(int meanTimeNum)
 {
     steppingNumberMeanTime_[meanTimeNum]++;
 }
 
-//押している間発動するボタンに乗っている人数をカウントダウンする関数
-//引数は対応するギミックの番号
+//ボタンに乗っている人数をカウントダウンする関数
+//引数：踏んでいる間発動するボタンのモデル番号の1の位
+//戻り値：なし
 void Stage::SetMeanTimeStepNumberCountDown(int meanTimeNum)
 {
     steppingNumberMeanTime_[meanTimeNum]--;
 }
 
-//同時ボタンの片方に乗っている人数をカウントアップする関数
-//引数は対応するギミックの番号
-void Stage::SetNo1DoubleStepNumberCountUp(int onDoubleNum)
+//同時押しボタンの片方のボタンの乗っている人数をカウントアップする関数
+//引数：同時押しボタンのモデル番号の1の位
+//戻り値：なし
+void Stage::SetNo1MultiStepNumberCountUp(int onDoubleNum)
 {
-    steppingNumber_No1Double_[onDoubleNum]++;
+    steppingNumber_No1Multi_[onDoubleNum]++;
 }
 
-//同時ボタンの片方に乗っている人数をカウントダウンする関数
-//引数は対応するギミックの番号
-void Stage::SetNo1DoubleStepNumberCountDown(int onDoubleNum)
+//同時押しボタンの片方のボタンの乗っている人数をカウントダウンする関数
+//引数：同時押しボタンのモデル番号の1の位
+//戻り値：なし
+void Stage::SetNo1MultiStepNumberCountDown(int onDoubleNum)
 {
-    steppingNumber_No1Double_[onDoubleNum]--;
+    steppingNumber_No1Multi_[onDoubleNum]--;
 }
 
-//同時ボタンのもう方に乗っている人数をカウントアップする関数
-//引数は対応するギミックの番号
-void Stage::SetNo2DoubleStepNumberCountUp(int orDunbleNum)
+//同時押しボタンのもう片方のボタンの乗っている人数をカウントアップする関数
+//引数：同時押しボタンのモデル番号の1の位
+//戻り値：なし
+void Stage::SetNo2MultiStepNumberCountUp(int orDunbleNum)
 {
-    steppingNumber_No2Double_[orDunbleNum]++;
+    steppingNumber_No2Multi_[orDunbleNum]++;
 }
 
-//同時ボタンのもう方に乗っている人数をカウントアップする関数
-//引数は対応するギミックの番号
-void Stage::SetNo2DoubleStepNumberCountDown(int orDunbleNum)
+//同時押しボタンのもう片方のボタンの乗っている人数をカウントダウンする関数
+//引数：同時押しボタンのモデル番号の1の位
+//戻り値：なし
+void Stage::SetNo2MultiStepNumberCountDown(int orDunbleNum)
 {
-    steppingNumber_No2Double_[orDunbleNum]--;
+    steppingNumber_No2Multi_[orDunbleNum]--;
 }
 
-//ワープブロックに入った時の処理を実行する
-//引数はPlayerもしくは影の
+//ワープブロックのギミックをまとめた関数。
+//引数：getX, getY プレイヤーの位置
+//戻値：なし
 void Stage::WarpBlockCollision(int getX, int getY)
 {
     //すべてのワープブロックを調べる
@@ -473,10 +486,9 @@ void Stage::WarpBlockCollision(int getX, int getY)
     if (map_[getX][getY] == RESET_VALU_) isWarp_ = true;
 }
 
-//点滅ブロック
-//第一引数は点滅させたいブロックの番号
-//第二引数は秒数。単位はフレーム
-//変えたいモデル番号+10には透明のブロック設定しておく
+//点滅ブロックのギミックをまとめた関数。
+//引数：点滅したいブロックのモデル番号, 点滅間隔。単位はフレーム
+//戻り値：なし
 void Stage::Blinking(int blockNum, int time)
 {
     //計測
@@ -509,9 +521,9 @@ void Stage::Blinking(int blockNum, int time)
     }
 }
 
-//すべてのブロックを探して、モデルを切り替える関数
-//第一引数は切り替えたいブロックの番号
-//第二引数はプラスかマイナスか
+//モデルを切り替える関数。
+//引数：変更したいモデル番号, trueで+10されたモデルに、falseで-10されたモデルに変更
+//戻り値：なし
 void Stage::CheckBlock(int find, bool which)
 {
     //Stageのサイズ分調べる
@@ -532,8 +544,9 @@ void Stage::CheckBlock(int find, bool which)
     }
 }
 
-//ゴールの処理をする関数
-//引数は今プレイヤーのいる位置にあるマス
+//ゴールを判定し、シーンを切り替える関数
+//引数：PlayerのPosition.x_とPosition.y_
+//戻り値：なし
 void Stage::GoalCol(int x, int y)
 {
     //そこはゴール
@@ -547,9 +560,9 @@ void Stage::GoalCol(int x, int y)
     }
 }
 
-//そのマスに障害物があるかどうか
-//戻り値、何かあるtrue,何もないfalse
-//引数はPlayerか影の位置
+//ぶつかったかどうか
+//引数：PlayerのPosition.x_とPosition.y_
+//戻り値：ぶつかったらfalse、何もなければtrue
 bool Stage::isCrash(int x, int y)
 {
     //当たり判定のないブロックを設定する
@@ -561,14 +574,16 @@ bool Stage::isCrash(int x, int y)
         map_[x][y] == MEANTIME_BLOCK_ALPHA_ ||
         map_[x][y] == MEANTIME_BLOCK_ALPHA_ + 1 ||
         map_[x][y] == BRINKING_BLOCKS_ ||
-        map_[x][y] == DOUBLE_BUTTON_WALL_ALPHA_)
+        map_[x][y] == MULTI_BUTTON_WALL_ALPHA_)
     {
         return false;
     }
     return true;
 }
 
-//スポーン地点を渡す関数
+//初期スポーン地点を返すゲッター
+//引数：なし
+ //戻り値：stertPos_
 XMFLOAT3 Stage::GetStartPosition()
 {
     return stertPos_;
@@ -579,8 +594,21 @@ void Stage::Release()
 {
 }
 
+//Load処理を10回ループする関数
+//引数：モデルを格納したい配列の初期値, ファイルネーム(fbxの名前だけでOK)
+//戻り値：なし
+void Stage::LoopLoad(int modelNum, string modelName)
+{
+    for (int i = modelNum; i < modelNum + 10; i++)
+    {
+        hModel_[i] = Model::Load(FILE_PAS_ + modelName);
+    }
+}
+
+
 //モデルをロードする処理をまとめた関数
-//ステージに置くギミックが増えるとモデルが変わるのでループ処理はしない
+//引数：なし
+//戻り値：なし
 void Stage::ModelLoad()
 {
     //サウンドデータのロード
@@ -602,210 +630,51 @@ void Stage::ModelLoad()
     hModel_[9] = Model::Load(FILE_PAS_ + "Block_01.fbx");
 
     //押したら発動するボタン
-    hModel_[10] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[11] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[12] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[13] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[14] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[15] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[16] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[17] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[18] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    hModel_[19] = Model::Load(FILE_PAS_ + "PushButton.fbx");
-    
+    LoopLoad(10, "PushButton.fbx");
+
     //押したら開き続ける壁
-    hModel_[20] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[21] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[22] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[23] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[24] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[25] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[26] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[27] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[28] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[29] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
+    LoopLoad(20, "Wall_01.fbx");
 
     //押している間だけ発動するボタン(押す前)
-    hModel_[30] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[31] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[32] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[33] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[34] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[35] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[36] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[37] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[38] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
-    hModel_[39] = Model::Load(FILE_PAS_ + "MeantimeButto_up.fbx");
+    LoopLoad(30, "MeantimeButto_up.fbx");
 
     //押している間だけ発動するボタン(押した後)
-    hModel_[40] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[41] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[42] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[43] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[44] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[45] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[46] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[47] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[48] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
-    hModel_[49] = Model::Load(FILE_PAS_ + "MeantimeButto_down.fbx");
+    LoopLoad(40, "MeantimeButto_down.fbx");
 
     //開く壁
-    hModel_[50] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[51] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[52] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[53] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[54] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[55] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[56] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[57] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[58] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[59] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
+    LoopLoad(50, "Wall_01.fbx");
 
     //開いている間の何もないブロック
-    hModel_[60] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[61] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[62] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[63] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[64] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[65] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[66] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[67] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[68] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[69] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-
+    LoopLoad(60, "Wall_02.fbx");
 
     //点滅するブロック(消える前)
-    hModel_[70] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[71] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[72] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[73] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[74] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[75] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[76] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[77] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[78] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[79] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-
+    LoopLoad(70, "Wall_01.fbx");
 
     //点滅するブロック(消えた後)
-    hModel_[80] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[81] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[82] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[83] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[84] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[85] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[86] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[87] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[88] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[89] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-
+    LoopLoad(80, "Wall_02.fbx");
 
     //ワープブロック(入口)
-    hModel_[90] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[91] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[92] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[93] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[94] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[95] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[96] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[97] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[98] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-    hModel_[99] = Model::Load(FILE_PAS_ + "WarpEntrance.fbx");
-
+    LoopLoad(90, "WarpEntrance.fbx");
 
     //ワープブロック(出口)
-    hModel_[100] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[101] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[102] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[103] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[104] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[105] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[106] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[107] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[108] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-    hModel_[109] = Model::Load(FILE_PAS_ + "WarpExit.fbx");
-
-
+    LoopLoad(100, "WarpExit.fbx");
 
     //同時押しボタン(押す前)
-    hModel_[110] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[111] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[112] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[113] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[114] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[115] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[116] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[117] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[118] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-    hModel_[119] = Model::Load(FILE_PAS_ + "MultiButton_01_up.fbx");
-
-
+    LoopLoad(110, "MultiButton_01_up.fbx");
 
     //同時押しボタン(押した後)
-    hModel_[120] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[121] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[122] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[123] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[124] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[125] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[126] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[127] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[128] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-    hModel_[129] = Model::Load(FILE_PAS_ + "MultiButton_01_down.fbx");
-
-
-
+    LoopLoad(120, "MultiButton_01_down.fbx");
 
     //同時押しボタン(押す前)
-    hModel_[130] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[131] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[132] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[133] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[134] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[135] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[136] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[137] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[138] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-    hModel_[139] = Model::Load(FILE_PAS_ + "MultiButton_02_up.fbx");
-
-
+    LoopLoad(130, "MultiButton_02_up.fbx");
 
     //同時押しボタン(押した後)
-    hModel_[140] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[141] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[142] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[143] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[144] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[145] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[146] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[147] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[148] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-    hModel_[149] = Model::Load(FILE_PAS_ + "MultiButton_02_down.fbx");
-
+    LoopLoad(140, "MultiButton_02_down.fbx");
 
     //同時ボタンが押されたら開く壁
-    hModel_[150] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[151] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[152] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[153] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[154] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[155] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[156] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[157] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[158] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-    hModel_[159] = Model::Load(FILE_PAS_ + "Wall_01.fbx");
-
+    LoopLoad(150, "Wall_01.fbx");
 
     //同時ボタンが離れたら閉じる壁
-    hModel_[160] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[161] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[162] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[163] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[164] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[165] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[166] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[167] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[168] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
-    hModel_[169] = Model::Load(FILE_PAS_ + "Wall_02.fbx");
+    LoopLoad(160, "Wall_02.fbx");
 }
 

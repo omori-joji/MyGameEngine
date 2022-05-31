@@ -24,6 +24,7 @@ void Title::Initialize()
 {
     //サウンドファイルをロード
     se_[SE_DECISION] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
+    se_[SOUND_BGM] = Audio::Load("Assets/Sound/TitleBGM.wav", 1);
 
     //モデルデータのロード
     hModel_[BACKGROUND] = Model::Load(FILE_PAS_ + "TitleBG_01.fbx");
@@ -41,6 +42,7 @@ void Title::Initialize()
 //更新
 void Title::Update()
 {
+    Audio::Play(se_[SOUND_BGM]);
     //表示するステージ番号の変動
     //上下キーで値を変える
     //とりあえす4ステージ分

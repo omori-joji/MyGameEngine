@@ -30,12 +30,12 @@ class Stage : public GameObject
     const int NO1_WARP_BLOCK_;                      //片方のワープブロックのモデル番号
     const int NO2_WARP_BLOCK_;                      //もう片方のワープブロックのモデル番号
     const int GOAL_BLOCK_;                          //ゴールブロックのモデル番号
-    const int NO1_DOUBLE_BUTTON_UP_;                //同時押しボタンの片方。踏んでいない状態のモデル番号
-    const int NO1_DOUBLE_BUTTON_DOWN_;              //同時押しボタンの片方。踏んでいる状態のモデル番号
-    const int NO2_DOUBLE_BUTTON_UP_;                //同時押しボタンのもう片方。踏んでいない状態のモデル番号
-    const int NO2_DOUBLE_BUTTON_DOWN_;              //同時押しボタンの片方。踏んでいる状態のモデル番号
-    const int DOUBLE_BUTTON_WALL_;                  //同時押しボタンに対応した壁。開いてない状態のモデル番号
-    const int DOUBLE_BUTTON_WALL_ALPHA_;            //同時押しボタンに対応した壁。開いている状態のモデル番号
+    const int NO1_MULTI_BUTTON_UP_;                //同時押しボタンの片方。踏んでいない状態のモデル番号
+    const int NO1_MULTI_BUTTON_DOWN_;              //同時押しボタンの片方。踏んでいる状態のモデル番号
+    const int NO2_MULTI_BUTTON_UP_;                //同時押しボタンのもう片方。踏んでいない状態のモデル番号
+    const int NO2_MULTI_BUTTON_DOWN_;              //同時押しボタンの片方。踏んでいる状態のモデル番号
+    const int MULTI_BUTTON_WALL_;                  //同時押しボタンに対応した壁。開いてない状態のモデル番号
+    const int MULTI_BUTTON_WALL_ALPHA_;            //同時押しボタンに対応した壁。開いている状態のモデル番号
     char shadowCount_;                              //今いる影の数
     const string FILE_PAS_;                         //Assetsファイルのパス
     int timeCount_;                                 //点滅ブロックの点滅間隔
@@ -51,16 +51,16 @@ class Stage : public GameObject
         MAX_MODEL = 200,                            //hModel_の要素数
         MAX_SOUND = 4,                              //hSound_の要素数
         MAX_STEPNUMBER = 10,                        //各ボタンが踏んでいる人数を記憶する配列の要素数
-        MAX_DOUBLE_FLAG = 2,                        //同時ボタンの踏んでいるフラグの要素数
+        MAX_MULTI_FLAG = 2,                        //同時ボタンの踏んでいるフラグの要素数
         MAX_SHADOW_NUMBER = 5,                      //影の最大生成数
     };
     int map_[MAP_BESIDE_][MAP_VERTICAL];            //ステージのマス情報
     int hModel_[MAX_MODEL];                         //モデル番号
     int hSound_[MAX_SOUND];                         //サウンドファイル
     char steppingNumberMeanTime_[MAX_STEPNUMBER];    //何人踏んでいるか
-    char steppingNumber_No1Double_[MAX_STEPNUMBER];  //何人踏んでいるか
-    char steppingNumber_No2Double_[MAX_STEPNUMBER];  //何人踏んでいるか
-    bool isDoubleButton_[MAX_DOUBLE_FLAG];          //同時ボタンの片方を押した
+    char steppingNumber_No1Multi_[MAX_STEPNUMBER];  //何人踏んでいるか
+    char steppingNumber_No2Multi_[MAX_STEPNUMBER];  //何人踏んでいるか
+    bool isMultiButton_[MAX_MULTI_FLAG];          //同時ボタンの片方を押した
     Shadow* pShadow_[MAX_SHADOW_NUMBER];            //Shadowクラスを格納するポインタ型の配列
 
 public:
@@ -100,22 +100,22 @@ public:
     //同時押しボタンの片方のボタンの乗っている人数をカウントアップする関数
     //引数：同時押しボタンのモデル番号の1の位
     //戻り値：なし
-    void SetNo1DoubleStepNumberCountUp(int b);
+    void SetNo1MultiStepNumberCountUp(int b);
 
     //同時押しボタンの片方のボタンの乗っている人数をカウントダウンする関数
     //引数：同時押しボタンのモデル番号の1の位
     //戻り値：なし
-    void SetNo1DoubleStepNumberCountDown(int b);
+    void SetNo1MultiStepNumberCountDown(int b);
 
     //同時押しボタンのもう片方のボタンの乗っている人数をカウントアップする関数
     //引数：同時押しボタンのモデル番号の1の位
     //戻り値：なし
-    void SetNo2DoubleStepNumberCountUp(int c);
+    void SetNo2MultiStepNumberCountUp(int c);
 
     //同時押しボタンのもう片方のボタンの乗っている人数をカウントダウンする関数
     //引数：同時押しボタンのモデル番号の1の位
     //戻り値：なし
-    void SetNo2DoubleStepNumberCountDown(int c);
+    void SetNo2MultiStepNumberCountDown(int c);
 
     //足元のブロックのモデル番号を引数で受け取り、それの1の位を返す関数
     //引数：Player、ShadowのPosition.x_とPosition.y_ -1(足元)
@@ -135,12 +135,12 @@ public:
     //同時押しボタンの片方に乗ったらtrueそれ以外はfalseを返す関数
     //引数：Player、ShadowのPosition.x_とPosition.y_ -1(足元)
     //戻り値：踏んでいればtrue踏んでいなければfalse
-    bool No1DoubleButton(int x, int y);
+    bool No1MultiButton(int x, int y);
 
     //同時押しボタンのもう片方に乗ったらtrueそれ以外はfalseを返す関数
     //引数：Player、ShadowのPosition.x_とPosition.y_ -1(足元)
     //戻り値：踏んでいればtrue踏んでいなければfalse
-    bool No2DoubleButton(int x, int y);
+    bool No2MultiButton(int x, int y);
 
 
     //初期スポーン地点を返すゲッター
@@ -178,4 +178,9 @@ private:
     //引数：なし
     //戻り値：なし
     void PlayRecord();
+
+    //Load処理を10回ループする関数
+    //引数：モデルを格納したい配列の初期値, ファイルネーム(fbxの名前だけでOK)
+    //戻り値：なし
+    void LoopLoad(int modelNum, string modelName);
 };
