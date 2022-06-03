@@ -15,7 +15,8 @@ Shadow::Shadow(GameObject* parent)
 	filePas_("Assets/Shadow/"),			//Shadowのファイルパス
 	isRecording_(false),				//Playerの動きを記録しているか
 	pPlayer_(nullptr),					//プレイヤーの情報を入れる関数
-	pStage_(nullptr)					//ステージの情報を入れる関数
+	pStage_(nullptr),					//ステージの情報を入れる関数
+	doubleSpeed_(1)
 {
 }
 
@@ -34,6 +35,7 @@ void Shadow::Initialize()
 //更新
 void Shadow::Update()
 {
+
 	//Find処理をまとめる関数
 	AllFind();
 
@@ -47,6 +49,15 @@ void Shadow::Update()
 	//Actorクラスから継承
 	No1DoubleButtonDown();
 	No2DoubleButtonDown();
+
+	if (Input::IsKeyDown(DIK_2))
+	{
+		doubleSpeed_ = 2;
+	}
+	else if(Input::IsKeyUp(DIK_2))
+	{
+		doubleSpeed_ = 1;
+	}
 
 	//ボタンと壁のモデルを切り替える関数
 	//引数に足元のブロックの情報を渡してあげる
@@ -88,7 +99,7 @@ void Shadow::RecordingandPlayBack()
 		shadowDirection_ = recordDirection_[frameCounter_];
 
 		//次のフレームへ
-		frameCounter_++;
+		frameCounter_ += doubleSpeed_;
 	}
 	//再生し終わったら
 	if (frameCounter_ >= recordData_.size() - MATCH_VALU_ && isRecording_ == true)

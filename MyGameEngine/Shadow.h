@@ -17,6 +17,7 @@ class Shadow : public Actor
 	const char RESET_VALU_;						//初期化用
 	const float BACK_DRAW_;						//Playerに重ならないように少し奥に描画する
 	const string filePas_;						//モデルが保存されているファイルパス
+	int doubleSpeed_;
 	char shadowDirection_;						//影の向き
 	char shadowModelNumber_;					//走っているモデル番号
 	bool isRecording_;							//記録中かどうか
