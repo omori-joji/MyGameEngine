@@ -197,7 +197,7 @@ void Player::Jump()
 	if (Input::IsKeyDown(DIK_SPACE))
 	{
 		//‘«Œ³‚ÉƒuƒƒbƒN‚ª‚È‚©‚Á‚½‚ç
-		if (!pStage_->isCrash((int)transform_.position_.x, (int)transform_.position_.y - 1))
+		if (!pStage_->isCrash((int)transform_.position_.x, transform_.position_.y-0.1))
 		{
 			return;
 		}

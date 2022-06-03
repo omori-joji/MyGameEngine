@@ -34,7 +34,7 @@ void Camera::Initialize()
 	//プロジェクション行列の処理を実行する関数
 	//引数は(画角, アスペクト比, この値より近いものは映らない, この値より遠いものは映らない)
 	//2D投影
-	projMatrix_ = XMMatrixOrthographicLH(25, 20, 0.1f, 100.0f);
+	projMatrix_ = XMMatrixOrthographicLH(20, 15, 0.1f, 100.0f);
 	//3D投影
 	//projMatrix_ = XMMatrixPerspectiveFovLH(XM_PIDIV4, (FLOAT)800 / (FLOAT)600, 0.1f, 100.0f);
 

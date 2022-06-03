@@ -112,7 +112,6 @@ void Stage::Update()
         pPlayer_ = (Player*)Find("Player");
     }
 
-
     //‰e‚ğÄ¶‚·‚éˆ—‚ğ‚Ü‚Æ‚ß‚½ŠÖ”
     PlayRecord();
 
@@ -373,6 +372,15 @@ void Stage::PlayRecord()
         }
         //‰e‚Ì¶¬
         if (shadowCount_ <= SHADOW_NAMBER_) { pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this); }
+    }
+
+    if (Input::IsKeyDown(DIK_3))
+    {
+        for (int i = 0; i < shadowCount_; i++)
+        {
+            pShadow_[i]->killMe();
+        }
+        shadowCount_ = 0;
     }
 }
 
