@@ -8,15 +8,13 @@ namespace Camera
 	XMMATRIX viewMatrix_;	//ビュー行列
 	XMMATRIX projMatrix_;	//プロジェクション行列
 
-	auto yscale = 0.9f;
-	auto viewWidht = 10.0f;
-	auto viewHeght = viewWidht * yscale;
-	auto nearZ = 1.0f / (1000.0f - 0.3f);
-	auto farZ = 1000.0f;
+	auto yscale = 0.1f;
+	auto viewWidht = 0.3f;
+	auto viewHeght = (FLOAT)800 / (FLOAT)600;
 
 	//カメラをステージの中央に出す処理
 	//Stageの大きさ
-	const int VERTICAL_ = 23;
+	const int VERTICAL_ = 25;
 	const int BESIDE_ = 28;
 
 	//カメラのZ軸の位置
@@ -35,8 +33,10 @@ void Camera::Initialize()
 
 	//プロジェクション行列の処理を実行する関数
 	//引数は(画角, アスペクト比, この値より近いものは映らない, この値より遠いものは映らない)
-	projMatrix_ = XMMatrixOrthographicLH(viewWidht, viewHeght, nearZ, farZ);//2D投影
-	//projMatrix_ = XMMatrixPerspectiveFovLH(XM_PIDIV4, (FLOAT)800 / (FLOAT)600, 0.1f, 100.0f);//3D投影
+	//2D投影
+	projMatrix_ = XMMatrixOrthographicLH(25, 20, 0.1f, 100.0f);
+	//3D投影
+	//projMatrix_ = XMMatrixPerspectiveFovLH(XM_PIDIV4, (FLOAT)800 / (FLOAT)600, 0.1f, 100.0f);
 
 	//ビュー行列の作成
 	//引数は(カメラの位置, 焦点, 上方向のベクトル)
