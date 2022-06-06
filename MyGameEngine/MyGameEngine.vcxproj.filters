@@ -102,6 +102,9 @@
     <ClCompile Include="Engine\Collider.cpp">
       <Filter>ソース ファイル\Engine\MyCreateCode</Filter>
     </ClCompile>
+    <ClCompile Include="F:\Quad.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Simple3D.hlsl" />
@@ -185,6 +188,9 @@
     </ClInclude>
     <ClInclude Include="Engine\Transform.h">
       <Filter>ヘッダー ファイル\Engine\MyCreateCode</Filter>
+    </ClInclude>
+    <ClInclude Include="F:\Quad.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
