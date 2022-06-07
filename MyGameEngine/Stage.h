@@ -1,11 +1,7 @@
 #pragma once
-#include "Engine/VisualEffect.h"
 #include "Engine/GameObject.h"
 #include "Engine/CsvReader.h"
-#include "Engine/Audio.h"
-#include "Engine/Input.h"
-#include "Engine/Model.h"
-#include "Engine/Fbx.h"
+
 
 //ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾
 class Player;

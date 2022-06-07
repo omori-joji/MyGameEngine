@@ -24,7 +24,7 @@ class Player :  public Actor
     const char PLAYER_FOOT_;                //Playerの足元を見るためにY軸を-1する定数
     const string MODEL_FILE_PAS_;           //モデルが保存されているファイルパス
     const string SE_FILE_PAS_;              //モデルが保存されているファイルパス
-    char modelNumber_;                      //走っているモデルの番号
+    char Model_Number_;                     //走っているモデルの番号
     float yMove_;                           //Y軸の移動
     bool isJump_;                           //ジャンプしているか
     Stage* pStage_;                         //ステージの情報を入れるポインタ

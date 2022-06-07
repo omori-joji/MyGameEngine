@@ -1,9 +1,4 @@
 #include "GameObject.h"
-#include "Common.h"
-#include <Windows.h>
-#include <time.h>
-#include "time.h"
-#include <stdlib.h>
 #pragma comment(lib, "winmm.lib")
 
 GameObject::GameObject()

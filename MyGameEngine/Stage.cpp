@@ -107,15 +107,10 @@ void Stage::Initialize()
 void Stage::Update()
 {
     //Player情報の格納
-    if (pPlayer_ == nullptr)
-    {
-        pPlayer_ = (Player*)Find("Player");
-    }
+    if (pPlayer_ == nullptr) pPlayer_ = (Player*)Find("Player");
 
-    //影を再生する処理をまとめた関数
     PlayRecord();
 
-    //一定時間ごとにブロック切り替える
     Blinking(BRINKING_BLOCKS_, FRAME_TIME_);
 }
 
@@ -125,18 +120,10 @@ void Stage::Draw()
     //背景の生成
     //ど真ん中に出す
     Transform back;
-
-    //横軸の真ん中
-    back.position_.x = MAP_BESIDE_ / 2;
-
-    //縦軸の真ん中
-    back.position_.y = MAP_VERTICAL / 2 + 1;
-
-    //少し奥に
-    back.position_.z = 0.5;
-
-    //Calclationクラスで移動、回転、拡大行列の処理をする
-    back.Calclation();
+    back.position_.x = MAP_BESIDE_ / 2;         //横軸の真ん中
+    back.position_.y = MAP_VERTICAL / 2 + 1;    //縦軸の真ん中
+    back.position_.z = 0.5;                     //少し奥に
+    back.Calclation();                          //Calclationクラスで移動、回転、拡大行列の処理をする
 
     //モデルの表示
     Model::SetTransform(hModel_[BACK_GROUND_], back);
@@ -374,12 +361,23 @@ void Stage::PlayRecord()
         if (shadowCount_ <= SHADOW_NAMBER_) { pShadow_[shadowCount_] = (Shadow*)Instantiate<Shadow>(this); }
     }
 
+    //保存された影をすべて解放する
     if (Input::IsKeyDown(DIK_3))
     {
         for (int i = 0; i < shadowCount_; i++)
         {
             pShadow_[i]->killMe();
         }
+
+        //保存された影を消すときにボタンをすべてリセット
+        for (int i = RESET_VALU_; i < ALL_GIMMICKS_; i++)
+        {
+            steppingNumberMeanTime_[i] = RESET_VALU_;
+            steppingNumber_No1Multi_[i] = RESET_VALU_;
+            steppingNumber_No2Multi_[i] = RESET_VALU_;
+        }
+
+        //今いる影の数をリセット
         shadowCount_ = 0;
     }
 }

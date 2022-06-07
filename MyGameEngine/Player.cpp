@@ -19,9 +19,9 @@ Player::Player(GameObject* parent)
 	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
 	yMove_(0.02f),					//Y軸の移動
-	direction_(),					//Playerの向きのモデル番号
-	se_(),							//サウンドファイルを格納する配列
-	modelNumber_(0),				//Playerの走っているモデル番号
+	//direction_(),					//Playerの向きのモデル番号
+	//se_(),							//サウンドファイルを格納する配列
+	Model_Number_(0),				//Playerの走っているモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
 	MODEL_FILE_PAS_("Assets/Player/"),//Playerのモデルが保存されているファイルパス
 	SE_FILE_PAS_("Assets/Sound/"),	//サウンドファイルのファイルパス
@@ -55,40 +55,28 @@ void Player::Initialize()
 //更新
 void Player::Update()
 {
-	//Find処理をまとめる関数
 	AllFind();
 
-	//Playerの右移動をまとめた関数
 	PlayerRightMove();
 
-	//Playerの左移動をまとめた関数
 	PlayerLeftMove();
 	
-	//ジャンプ
 	Jump();
 
-	//Playerの当たり判定をまとめる関数
 	Collision();
 
-	//初期位置に戻る処理をまとめた関数
 	Reset();
 
-	//ボタンに触れたかどうかを判定してStageの変数の値を変える関数
 	CommonMeanTimeButtonDown();
 
-	//同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
 	//Actorクラスから継承
 	No1DoubleButtonDown();
 	No2DoubleButtonDown();
 
-	//ボタンと壁のモデルを切り替える関数
-	//引数に足元のブロックの情報を渡してあげる
 	pStage_->ChengeButtonAndWall();
 
-	//ゴールに触れたかどうかを判別する関数を呼ぶ
 	pStage_->GoalCol((int)transform_.position_.x, (int)transform_.position_.y);
 
-	//ワープブロックに触れたかを判別する関数を呼ぶ
 	pStage_->WarpBlockCollision((int)transform_.position_.x, (int)(transform_.position_.y));
 }
 
@@ -230,8 +218,8 @@ void Player::Jump()
 void Player::Draw()
 {
 	//描画
-	Model::SetTransform(hModel_[direction_][modelNumber_], transform_);
-	Model::Draw(hModel_[direction_][modelNumber_]);
+	Model::SetTransform(hModel_[direction_][Model_Number_], transform_);
+	Model::Draw(hModel_[direction_][Model_Number_]);
 }
 
 //Playerの右操作をまとめる関数
@@ -248,11 +236,11 @@ void Player::PlayerRightMove()
 
 		//モデル番号を変更
 		direction_ = DIR_RIGHT;
-		modelNumber_ = RUN_MODEL;
+		Model_Number_ = RUN_MODEL;
 	}
 	//右矢印キーを離した瞬間
 	//モデル番号を変更
-	else if (Input::IsKeyUp(DIK_RIGHT)) modelNumber_ = STANDING_MODEL;
+	else if (Input::IsKeyUp(DIK_RIGHT)) Model_Number_ = STANDING_MODEL;
 }
 
 //Playerの左操作をまとめる関数
@@ -268,11 +256,11 @@ void Player::PlayerLeftMove()
 
 		//モデル番号を変更
 		direction_ = DIR_LEFT;
-		modelNumber_ = RUN_MODEL;
+		Model_Number_ = RUN_MODEL;
 	}
 	//左矢印キーを離したら
 	//モデル番号を変更
-	else if (Input::IsKeyUp(DIK_LEFT)) modelNumber_ = STANDING_MODEL;
+	else if (Input::IsKeyUp(DIK_LEFT)) Model_Number_ = STANDING_MODEL;
 }
 
 //Find処理をすべてまとめる関数
@@ -290,7 +278,7 @@ void Player::AllFind()
 //戻り値：modelNumber_
 int Player::GetModelNumber()
 {
-	return modelNumber_;
+	return Model_Number_;
 }
 
 //Player向きのモデル番号を返す関数

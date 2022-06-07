@@ -1,10 +1,6 @@
 #pragma once
 #include "Engine/GameObject.h"
-#include "Engine/Model.h"
-#include "Engine/Input.h"
-#include "Engine/Fbx.h"
 #include "Actor.h"
-#include <string>
 
 //クラスの前方宣言
 class Player;
@@ -16,19 +12,19 @@ class Shadow : public Actor
 	const int MATCH_VALU_;						//配列の要素数を合わせるための値
 	const char RESET_VALU_;						//初期化用
 	const float BACK_DRAW_;						//Playerに重ならないように少し奥に描画する
-	const string filePas_;						//モデルが保存されているファイルパス
-	int doubleSpeed_;
-	char shadowDirection_;						//影の向き
-	char shadowModelNumber_;					//走っているモデル番号
+	const string file_Pas_;						//モデルが保存されているファイルパス
+	int double_Speed_;							//二倍速にするための変数
+	char shadow_Direction_;						//影の向き
+	char shadow_Model_Number_;					//走っているモデル番号
 	bool isRecording_;							//記録中かどうか
-	DWORD frameCounter_;						//フレーム数
+	DWORD frame_Counter_;						//フレーム数
 	Player* pPlayer_;							//Playerの情報が入る変数
 	Stage* pStage_;								//Stageの情報が入る変数
 
 	//可変長配列
-	std::vector<int> recordDirection_;			//Playerの向きを記録する動的配列
-	std::vector<int> recordModelNumber_;		//走っているモデル番号を記録する動的配列
-	std::vector<XMFLOAT3> recordData_;			//プレイヤーの位置を記録する可変長配列
+	std::vector<int> record_Direction_;			//Playerの向きを記録する動的配列
+	std::vector<int> record_Model_Number_;		//走っているモデル番号を記録する動的配列
+	std::vector<XMFLOAT3> record_Data_;			//プレイヤーの位置を記録する可変長配列
 
 	//影のモデル番号
 	enum S_Model

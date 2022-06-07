@@ -5,7 +5,7 @@ Title::Title(GameObject* parent)
 	: GameObject(parent, "Title"), 
     imageNum_(0),                   //背景のモデル番号
     stageNum_(0),                   //移行したいステージのモデル番号
-    BACK_GROUND_VERTICAL_(24.0f),   //背景のY軸の値
+    BACK_GROUND_VERTICAL_(22.0f),   //背景のY軸の値
     BACK_GROUND_BESIDE_(28.0f),     //背景のX軸の値
     hModel_(),                      //モデルを格納する変数
     se_(),                          //SEを格納する変数
@@ -24,8 +24,6 @@ void Title::Initialize()
 {
     //サウンドファイルをロード
     se_[SOUND_BGM] = Audio::Load("Assets/Sound/TitleBGM.wav", 1);
-    //se_[SE_ARROW] = Audio::Load("Assets/Sound/StageNumSelect.wav", 1);
-    //se_[SE_DECISION] = Audio::Load("Assets/Sound/StageSelect.wav", 1);
 
     //モデルデータのロード
     hModel_[BACKGROUND] = Model::Load(FILE_PAS_ + "TitleBG_01.fbx");
@@ -55,9 +53,9 @@ void Title::Update()
     //スペースキーを押したら
     if (Input::IsKeyDown(DIK_SPACE))
     {
-        //決定ボタンのSE
-        //Audio::Play(se_[SE_DECISION]);
+        //BGMを止める
         Audio::Stop(se_[SOUND_BGM]);
+
         //背景のモデル番号を変更
         imageNum_ = 1;
 
@@ -72,16 +70,13 @@ void Title::Update()
 //描画
 void Title::Draw()
 {
-    //背景の描画
+    //背景の描画(3D)
     Transform trans, stageNum;
 
     //背景の位置決定
     trans.position_.x = BACK_GROUND_BESIDE_ / 2;
     trans.position_.y = BACK_GROUND_VERTICAL_ / 2;
-
-    trans.scale_.x = 3.2f;
-    trans.scale_.y = 3.4f;
-
+    trans.position_.z = DEPTH_;
 
     //ワールド行列
     trans.Calclation();
@@ -105,6 +100,40 @@ void Title::Draw()
     //描画開始
     Model::SetTransform(stageNum_Modele_[stageNum_], stageNum);
     Model::Draw(stageNum_Modele_[stageNum_]);
+
+    ////背景の描画(2D)
+    //Transform trans, stageNum;
+
+    ////背景の位置決定
+    //trans.position_.x = BACK_GROUND_BESIDE_ / 2;
+    //trans.position_.y = BACK_GROUND_VERTICAL_ / 2;
+
+    //trans.scale_.x = 3.2f;
+    //trans.scale_.y = 3.4f;
+
+
+    ////ワールド行列
+    //trans.Calclation();
+
+    ////描画開始
+    //Model::SetTransform(hModel_[imageNum_], trans);
+    //Model::Draw(hModel_[imageNum_]);
+
+
+    ////ステージ番号の位置決定
+    //stageNum.position_.x = STAGE_NUMBER_BESIDE_;
+    //stageNum.position_.y = STAGE_NUMBER_VERTICAL_;
+    //stageNum.position_.z = DEPTH_ - DEPTH_DIFFERRENCE_;
+
+    ////サイズも指定
+    //stageNum.scale_.x = SCALE_MAGNIFICATION_;
+    //stageNum.scale_.y = SCALE_MAGNIFICATION_;
+    ////ワールド行列
+    //stageNum.Calclation();
+
+    ////描画開始
+    //Model::SetTransform(stageNum_Modele_[stageNum_], stageNum);
+    //Model::Draw(stageNum_Modele_[stageNum_]);
 }
 
 //開放

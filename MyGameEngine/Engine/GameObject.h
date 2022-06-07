@@ -1,8 +1,18 @@
 #pragma once
+#include <Windows.h>
+#include <stdlib.h>
+#include <string>
+#include <time.h>
+#include <list>
+#include "VisualEffect.h"
 #include "Transform.h"
 #include "Collider.h"
-#include <list>
-#include <string>
+#include "Common.h"
+#include "Input.h"
+#include "Audio.h"
+#include "Model.h"
+#include "time.h"
+#include "Fbx.h"
 #define SAFE_DELETE(p) if(p != nullptr){ delete p; p = nullptr;}
 
 using namespace std;

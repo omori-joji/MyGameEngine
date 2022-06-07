@@ -4,19 +4,19 @@
 
 Shadow::Shadow(GameObject* parent)
 	:Actor(parent, "Shadow"),
-	frameCounter_(0),					//毎フレーム動きを記録するためのカウンター
-	shadowDirection_(0),				//Playerの向きを記録する動的配列
-	shadowModelNumber_(0),				//走っているモデル番号を記録する動的配列
+	frame_Counter_(0),					//毎フレーム動きを記録するためのカウンター
+	shadow_Direction_(0),				//Playerの向きを記録する動的配列
+	shadow_Model_Number_(0),			//走っているモデル番号を記録する動的配列
 	RESET_VALU_(0),						//初期化用
 	BACK_DRAW_(0.1f),					//Playerに重ならないように少し奥に描画する
 	MATCH_VALU_(1),						//配列の要素数を合わせるための値
 	hModel_(),							//影のモデルを格納する多次元配列
 	s_Modele(),							//影のモデル番号
-	filePas_("Assets/Shadow/"),			//Shadowのファイルパス
+	file_Pas_("Assets/Shadow/"),		//Shadowのファイルパス
 	isRecording_(false),				//Playerの動きを記録しているか
 	pPlayer_(nullptr),					//プレイヤーの情報を入れる関数
 	pStage_(nullptr),					//ステージの情報を入れる関数
-	doubleSpeed_(1)
+	double_Speed_(1)					//二倍速にするため変数
 {
 }
 
@@ -24,43 +24,31 @@ Shadow::Shadow(GameObject* parent)
 void Shadow::Initialize()
 {
 	//右方向を向いているモデルのロード
-	hModel_[S_DIR_RIGHT][STANDING_MODEL] = Model::Load(filePas_  + "ShadowRightStanding.fbx");
-	hModel_[S_DIR_RIGHT][RUN_MODEL] = Model::Load(filePas_ + "ShadowRightRun.fbx");
+	hModel_[S_DIR_RIGHT][STANDING_MODEL] = Model::Load(file_Pas_  + "ShadowRightStanding.fbx");
+	hModel_[S_DIR_RIGHT][RUN_MODEL] = Model::Load(file_Pas_ + "ShadowRightRun.fbx");
 
 	//左方向を向いているモデルのロード
-	hModel_[S_DIR_LEFT][STANDING_MODEL] = Model::Load(filePas_ + "ShadowLeftStanding.fbx");
-	hModel_[S_DIR_LEFT][RUN_MODEL] = Model::Load(filePas_ +"ShadowLeftRun.fbx");
+	hModel_[S_DIR_LEFT][STANDING_MODEL] = Model::Load(file_Pas_ + "ShadowLeftStanding.fbx");
+	hModel_[S_DIR_LEFT][RUN_MODEL] = Model::Load(file_Pas_ +"ShadowLeftRun.fbx");
 }
 
 //更新
 void Shadow::Update()
 {
-
-	//Find処理をまとめる関数
 	AllFind();
 
-	//Playerの動きを記録、再生する関数
 	RecordingandPlayBack();
 
-	//ボタンを踏んだか離れたかを処理する関数
 	CommonMeanTimeButtonDown();
 
-	//同時押しボタンを押した瞬間と離れた瞬間の処理を行う関数
 	//Actorクラスから継承
 	No1DoubleButtonDown();
 	No2DoubleButtonDown();
 
-	if (Input::IsKeyDown(DIK_2))
-	{
-		doubleSpeed_ = 2;
-	}
-	else if(Input::IsKeyUp(DIK_2))
-	{
-		doubleSpeed_ = 1;
-	}
+	//2キーを押している間だけ二倍速にする
+	if (Input::IsKeyDown(DIK_2)) double_Speed_ = 2;
+	else if(Input::IsKeyUp(DIK_2)) double_Speed_ = 1;
 
-	//ボタンと壁のモデルを切り替える関数
-	//引数に足元のブロックの情報を渡してあげる
 	pStage_->ChengeButtonAndWall();
 }
 
@@ -73,42 +61,42 @@ void Shadow::RecordingandPlayBack()
 	if (isRecording_ == false)
 	{
 		//動的配列に毎フレームプレイヤーの位置を記録する
-		recordData_.push_back(pPlayer_->transform_.position_);
+		record_Data_.push_back(pPlayer_->transform_.position_);
 
 		//動的配列にプレイヤーの向いている方向を記録する
-		recordDirection_.push_back(pPlayer_->GetDirection());
+		record_Direction_.push_back(pPlayer_->GetDirection());
 
 		//動的配列にモデル番号を記録する
-		recordModelNumber_.push_back(pPlayer_->GetModelNumber());
+		record_Model_Number_.push_back(pPlayer_->GetModelNumber());
 	}
 	//再生中
 	//動的配列のサイズ分影の位置を変える
 	//プレイヤーのアニメーション情報(モデル番号)を影に反映する(右左)
-	else if (frameCounter_ < recordData_.size() - MATCH_VALU_ && isRecording_ == true)
+	else if (frame_Counter_ < record_Data_.size() - MATCH_VALU_ && isRecording_ == true)
 	{
 		//毎フレーム影のPositonに記録したPlayeyの位置を反映する
-		transform_.position_ = recordData_[frameCounter_];
+		transform_.position_ = record_Data_[frame_Counter_];
 
 		//Playerより奥に描画する
 		transform_.position_.z += BACK_DRAW_;
 
 		//走っているモデル番号の情報を取得
-		shadowModelNumber_ = recordModelNumber_[frameCounter_];
+		shadow_Model_Number_ = record_Model_Number_[frame_Counter_];
 
 		//立っているモデル番号の情報を取得
-		shadowDirection_ = recordDirection_[frameCounter_];
+		shadow_Direction_ = record_Direction_[frame_Counter_];
 
 		//次のフレームへ
-		frameCounter_ += doubleSpeed_;
+		frame_Counter_ += double_Speed_;
 	}
 	//再生し終わったら
-	if (frameCounter_ >= recordData_.size() - MATCH_VALU_ && isRecording_ == true)
+	if (frame_Counter_ >= record_Data_.size() - MATCH_VALU_ && isRecording_ == true)
 	{
 		//非表示
 		isRecording_ = false;
 
 		//フレーム数のリセット
-		frameCounter_ = RESET_VALU_;
+		frame_Counter_ = RESET_VALU_;
 
 		//位置がそのままだとボタンから離れる時の処理が行われないので影の位置を初期位置に戻す
 		transform_.position_ = pStage_->GetStartPosition();
@@ -122,8 +110,8 @@ void Shadow::Draw()
 	//再生中であれば処理を行う
 	if (isRecording_)
 	{
-		Model::SetTransform(hModel_[shadowDirection_][shadowModelNumber_], transform_);
-		Model::Draw(hModel_[shadowDirection_][shadowModelNumber_]);
+		Model::SetTransform(hModel_[shadow_Direction_][shadow_Model_Number_], transform_);
+		Model::Draw(hModel_[shadow_Direction_][shadow_Model_Number_]);
 	}
 }
 
@@ -134,7 +122,7 @@ void Shadow::ShadowIsPlayFlag()
 	isRecording_ = true;
 
 	//最初のフレームへ
-	frameCounter_ = RESET_VALU_;
+	frame_Counter_ = RESET_VALU_;
 }
 
 //解放
