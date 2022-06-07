@@ -1,6 +1,5 @@
 #include "Rootjob.h"
 #include "SceneManager.h"
-#include "../PlayScene.h"
 
 Rootjob::Rootjob()
 {
