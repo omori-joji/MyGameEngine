@@ -128,6 +128,9 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <FxCompile>
+      <EntryPointName>main</EntryPointName>
+    </FxCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -149,14 +152,14 @@
   <ItemGroup>
     <ClCompile Include="Engine\Collider.cpp" />
     <ClCompile Include="Engine\GameObject.cpp" />
+    <ClCompile Include="Engine\Game\Actor.cpp" />
+    <ClCompile Include="Engine\Game\Player.cpp" />
+    <ClCompile Include="Engine\Game\Result.cpp" />
+    <ClCompile Include="Engine\Game\Shadow.cpp" />
+    <ClCompile Include="Engine\Game\Stage.cpp" />
+    <ClCompile Include="Engine\Game\Title.cpp" />
     <ClCompile Include="Engine\Model.cpp" />
     <ClCompile Include="Engine\Quad.cpp" />
-    <ClCompile Include="Game\Actor.cpp" />
-    <ClCompile Include="Game\Player.cpp" />
-    <ClCompile Include="Game\Result.cpp" />
-    <ClCompile Include="Game\Shadow.cpp" />
-    <ClCompile Include="Game\Stage.cpp" />
-    <ClCompile Include="Game\Title.cpp" />
     <ClCompile Include="Engine\Audio.cpp" />
     <ClCompile Include="Engine\Camera.cpp" />
     <ClCompile Include="Engine\CsvReader.cpp" />
@@ -174,18 +177,14 @@
     <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Game\Simple3D.hlsl" />
-    <FxCompile Include="Game\VFX.hlsl" />
-  </ItemGroup>
-  <ItemGroup>
+    <ClInclude Include="Engine\Game\Actor.h" />
+    <ClInclude Include="Engine\Game\Player.h" />
+    <ClInclude Include="Engine\Game\resource.h" />
+    <ClInclude Include="Engine\Game\Result.h" />
+    <ClInclude Include="Engine\Game\Shadow.h" />
+    <ClInclude Include="Engine\Game\Stage.h" />
+    <ClInclude Include="Engine\Game\Title.h" />
     <ClInclude Include="Engine\Quad.h" />
-    <ClInclude Include="Game\Actor.h" />
-    <ClInclude Include="Game\Player.h" />
-    <ClInclude Include="Game\resource.h" />
-    <ClInclude Include="Game\Result.h" />
-    <ClInclude Include="Game\Shadow.h" />
-    <ClInclude Include="Game\Stage.h" />
-    <ClInclude Include="Game\Title.h" />
     <ClInclude Include="Engine\Audio.h" />
     <ClInclude Include="Engine\Camera.h" />
     <ClInclude Include="Engine\Collider.h" />
@@ -207,6 +206,14 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="MyGameEngine.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Simple3D.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Vertex</ShaderType>
+    </FxCompile>
+    <FxCompile Include="VFX.hlsl">
+      <ShaderType Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Effect</ShaderType>
+    </FxCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
