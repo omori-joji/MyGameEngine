@@ -33,9 +33,6 @@
     <ClCompile Include="Engine\FbxParts.cpp">
       <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\SceneManager.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Audio.cpp">
       <Filter>ソース ファイル\Engine</Filter>
     </ClCompile>
@@ -50,9 +47,6 @@
     </ClCompile>
     <ClCompile Include="Engine\Sound.cpp">
       <Filter>ソース ファイル\Engine</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\GameObject.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Model.cpp">
       <Filter>ソース ファイル\Engine</Filter>
@@ -78,28 +72,31 @@
     <ClCompile Include="Engine\Collider.cpp">
       <Filter>ソース ファイル\Engine\MyCreateCode</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Quad.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="Main.cpp">
+      <Filter>ソース ファイル\Engine\MyCreateCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\GameObject.cpp">
+      <Filter>ソース ファイル\Engine\MyCreateCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\SceneManager.cpp">
+      <Filter>ソース ファイル\Engine\MyCreateCode</Filter>
+    </ClCompile>
+    <ClCompile Include="Game\Actor.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game\Actor.cpp">
+    <ClCompile Include="Game\Player.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game\Player.cpp">
+    <ClCompile Include="Game\Result.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game\Result.cpp">
+    <ClCompile Include="Game\Shadow.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game\Shadow.cpp">
+    <ClCompile Include="Game\Stage.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Game\Stage.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Game\Title.cpp">
+    <ClCompile Include="Game\Title.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -112,9 +109,6 @@
     </ClInclude>
     <ClInclude Include="Engine\Model.h">
       <Filter>ヘッダー ファイル\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\SceneManager.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="Engine\CsvReader.h">
       <Filter>ヘッダー ファイル\Engine</Filter>
@@ -143,9 +137,6 @@
     <ClInclude Include="Engine\Direct3D.h">
       <Filter>ヘッダー ファイル\Engine\MyCreateCode</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\GameObject.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Input.h">
       <Filter>ヘッダー ファイル\Engine\MyCreateCode</Filter>
     </ClInclude>
@@ -158,28 +149,34 @@
     <ClInclude Include="Engine\Transform.h">
       <Filter>ヘッダー ファイル\Engine\MyCreateCode</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameObject.h">
+      <Filter>ヘッダー ファイル\Engine\MyCreateCode</Filter>
+    </ClInclude>
     <ClInclude Include="Engine\Quad.h">
+      <Filter>ヘッダー ファイル\Engine\MyCreateCode</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\SceneManager.h">
+      <Filter>ヘッダー ファイル\Engine\MyCreateCode</Filter>
+    </ClInclude>
+    <ClInclude Include="Game\Actor.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\Actor.h">
+    <ClInclude Include="Game\Player.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\Player.h">
+    <ClInclude Include="Game\Result.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\resource.h">
+    <ClInclude Include="Game\Shadow.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\Result.h">
+    <ClInclude Include="Game\Stage.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\Shadow.h">
+    <ClInclude Include="Game\resource.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Game\Stage.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Game\Title.h">
+    <ClInclude Include="Game\Title.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

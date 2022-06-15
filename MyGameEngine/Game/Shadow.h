@@ -1,5 +1,5 @@
 #pragma once
-#include "Engine/GameObject.h"
+#include "../Engine/GameObject.h"
 #include "Actor.h"
 
 //ƒNƒ‰ƒX‚Ì‘O•ûéŒ¾

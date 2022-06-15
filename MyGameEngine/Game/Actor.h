@@ -1,9 +1,5 @@
 #pragma once
-#include "Engine/GameObject.h"
-#include "Engine/Model.h"
-#include "Engine/Input.h"
-#include "Engine/Audio.h"
-#include "Engine/Fbx.h"
+#include "../Engine/GameObject.h"
 #include "Stage.h"
 #include <string>
 

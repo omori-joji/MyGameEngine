@@ -1,9 +1,6 @@
 #pragma once
-#include "Engine/SceneManager.h"
-#include "Engine/GameObject.h"
-#include "Engine/Input.h"
-#include "Engine/Model.h"
-#include "Engine/Audio.h"
+#include "../Engine/SceneManager.h"
+#include "../Engine/GameObject.h"
 
 //Titleシーンを管理するクラス
 class Title : public GameObject

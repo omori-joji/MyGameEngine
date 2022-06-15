@@ -1,7 +1,6 @@
-#include "../PlayScene.h"
-#include "../Stage.h"
-#include "../Result.h"
-#include "../Title.h"
+#include "../Game/Stage.h"
+#include "../Game/Result.h"
+#include "../Game/Title.h"
 #include "sceneManager.h"
 #include "Model.h"
 
