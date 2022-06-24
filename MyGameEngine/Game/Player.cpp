@@ -19,8 +19,6 @@ Player::Player(GameObject* parent)
 	BACK_POSITION_DOWN_(1.0f),		//触れていたら位置を戻す値
 	DROP_DOWN_(-0.2f),				//Playerの下に何もなければ下に落ちるための定数
 	yMove_(0.02f),					//Y軸の移動
-	//direction_(),					//Playerの向きのモデル番号
-	//se_(),							//サウンドファイルを格納する配列
 	Model_Number_(0),				//Playerの走っているモデル番号
 	hModel_(),						//モデルをロードするための多次元配列
 	MODEL_FILE_PAS_("Assets/Player/"),//Playerのモデルが保存されているファイルパス
